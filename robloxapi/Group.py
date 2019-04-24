@@ -14,7 +14,7 @@ class Group:
         self.xcsrf = get_xcsrf()
     
     def groupSearch(self, groupName, show):
-        url = f'https://www.roblox.com/search/groups/list-json?keyword={groupName}&maxRows={show}&startRow=0'
+        url = f'https://www.roblox.com/search/groups/list-json?keyword={groupName}&maxRows={str(show)}&startRow=0'
         print(url)
         r = requests.get(url)
         r = json.loads(r.text)
