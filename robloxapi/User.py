@@ -6,6 +6,9 @@ import json
 class User:
      
     def __init__(self, cookie=str(), id=str()):
+        if cookie is None:
+            self.cookie = False
+            self.id = False
         self.cookie = cookie
         self.id = id
         self.xcsrf = get_xcsrf()
@@ -69,6 +72,9 @@ class User:
 
     #https://www.roblox.com/messages/send
     def send_message(self, receiver_id, subject, body):
+        if self.cookie is False:
+            raise Exception('Not logged in.')
+            
         data = {
             'body': body,
             'recipientid': receiver_id,
@@ -87,6 +93,8 @@ class User:
         return res.text + ' ' + str(res.status_code)
 
     def block_user(self, id):
+        if self.cookie is False:
+            raise Exception('Not logged in.')
         url = 'https://www.roblox.com/userblock/blockuser'
         data = {
             'blockeeId': id
@@ -116,6 +124,8 @@ class User:
 
     #https://www.roblox.com/userblock/unblockuser
     def unblock_user(self, id):
+        if self.cookie is False:
+            raise Exception('Not logged in.')
         url = 'https://www.roblox.com/userblock/unblockuser'
         data = {
             'blockeeId': id
@@ -142,28 +152,4 @@ class User:
             else:
                 print('Rython: Failed to block user')
                 return False
-       
-
-        
-             
-            
-            
-        
-    
-        
-
-
-        
-        
-
-
-
-
-    
-
-    
-
-
-
-        
-
+   
