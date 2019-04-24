@@ -97,7 +97,7 @@ class User:
         print(r.headers['X-CSRF-TOKEN'])
         headers['X-CSRF-TOKEN'] = r.headers['X-CSRF-TOKEN']
         res = requests.post('https://www.roblox.com/messages/send', data=data, cookies=cookies, headers=headers)
-        return res.text + ' ' + str(res.status_code)
+        return res.text
 
     def block_user(self, id):
         if self.cookie is False:
