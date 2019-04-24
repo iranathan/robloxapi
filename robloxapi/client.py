@@ -1,5 +1,5 @@
 import requests
-from User import User
+from .User import User
 def client(cookie=str()):
     global functions
     if cookie:
