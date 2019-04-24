@@ -24,6 +24,7 @@ class Group:
         url = f'https://groups.roblox.com/v1/groups/{id}'
         r = requests.get(url)
         if r.status_code is not 200:
+            print(r.status_code)
             return {'found': False}
         else:
             groupinfo = json.loads(r.text)
