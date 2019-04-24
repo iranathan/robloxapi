@@ -1,5 +1,6 @@
 import requests
 from .User import User
+from .Group import Group
 def client(cookie=str()):
     global functions
     if cookie:
@@ -11,14 +12,17 @@ def client(cookie=str()):
             print('Rython: Failed to login. Using Rython without login')
             functions = lambda: None
             functions.User = User(False, False)
+            functions.Group = Group(False, False)
             return functions
         else:   
             functions = lambda: None
             functions.User = User(cookie, r)
+            functions.Group = Group(cookie, r)
             return functions
     else:
         functions = lambda: None
         functions.User = User(False, False)
+        functions.Group = Group(False, False)
         return functions
 
 
