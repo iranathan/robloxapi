@@ -1,5 +1,5 @@
 import requests
-from .src.User import User
+from User import User
 def client(cookie=str()):
     global functions
     if cookie:
@@ -21,8 +21,5 @@ def client(cookie=str()):
         functions.User = User()
         return functions
 
-rbx = client()
-print(rbx.User.getProfile('109503558'))
 
-   
 
