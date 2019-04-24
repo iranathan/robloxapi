@@ -13,8 +13,8 @@ class Group:
         self.id = id
         self.xcsrf = get_xcsrf()
     
-    def groupSearch(name, show):
-        url = f'https://www.roblox.com/search/groups/list-json?keyword={name}&maxRows={show}&startRow=0'
+    def groupSearch(self, groupName, show):
+        url = f'https://www.roblox.com/search/groups/list-json?keyword={groupName}&maxRows={show}&startRow=0'
         print(url)
         r = requests.get(url)
         r = json.loads(r.text)
@@ -22,7 +22,7 @@ class Group:
         results = r['GroupSearchResults']        
         return results
 
-    def getGroup(id, login=False):
+    def getGroup(self, id, login=False):
         url = f'https://groups.roblox.com/v1/groups/{id}'
         r = requests.get(url)
         if r.status_code is not 200:
@@ -33,7 +33,7 @@ class Group:
             groupinfo['found'] = True
             return groupinfo
     
-    def getGroupRoles(id, login=False):
+    def getGroupRoles(self, id, login=False):
         url = f'https://groups.roblox.com/v1/groups/{id}/roles'
         if login is True and self.cookie is not False:
             cookies = {
