@@ -7,6 +7,7 @@ def client(cookie=str()):
             '.ROBLOSECURITY': cookie
         }
         r = requests.get('https://www.roblox.com/game/GetCurrentUser.ashx', cookies=cookies)
+        print(r.text)
         if r.text is 'null':
             print('Rython: Failed to login. Using Rython without login')
             functions = lambda: None
