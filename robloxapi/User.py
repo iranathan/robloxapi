@@ -24,7 +24,7 @@ class User:
     
     
     def getProfile(self, id):
-        url = 'https://www.roblox.com/users/' + id + '/profile'
+        url = 'https://www.roblox.com/users/' + str(id) + '/profile'
         r = Request(url, parse=False)
         soup = BeautifulSoup(r, 'html.parser')
         username = soup.find('h2').getText()
@@ -38,7 +38,7 @@ class User:
         FriendsCount = data['FriendsCount']
         online_status = soup.find('span', {'class': 'avatar-status online profile-avatar-status icon-online'})
         playing_status = soup.find('a', {'class': 'avatar-status game'})
-        print(playing_status + " " + online_status)
+        print(str(playing_status) + " " + str(online_status))
 
 
         #bc check
