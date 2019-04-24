@@ -10,7 +10,7 @@ def client(cookie=str()):
         if str(r.text) == 'null':
             print('Rython: Failed to login. Using Rython without login')
             functions = lambda: None
-            functions.User = User()
+            functions.User = User(False, False)
             return functions
         else:   
             functions = lambda: None
@@ -18,7 +18,7 @@ def client(cookie=str()):
             return functions
     else:
         functions = lambda: None
-        functions.User = User()
+        functions.User = User(False, False)
         return functions
 
 
