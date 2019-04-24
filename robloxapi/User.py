@@ -59,6 +59,7 @@ class User:
         Profile['username'] = username
         Profile['id'] = id
         Profile['avatar_url'] = avatar
+        Profile['status'] = status
         Profile['blurb'] = blurb
         Profile['bc'] = {
             'type': bc,
