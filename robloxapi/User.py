@@ -36,6 +36,11 @@ class User:
         follow_count = data['FollowersCount']
         Following_count = data['FollowingsCount'] 
         FriendsCount = data['FriendsCount']
+        online_status = soup.find('span', {'class': 'avatar-status online profile-avatar-status icon-online'})
+        playing_status = soup.find('a', {'class': 'avatar-status game'})
+        print(playing_status + " " + online_status)
+
+
         #bc check
         bc = 'NBC'
         getBc = soup.find('span', {'class': 'icon-bc'})
@@ -88,6 +93,7 @@ class User:
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:66.0) Gecko/20100101 Firefox/66.0'
         }
         r = requests.post('https://www.roblox.com/messages/send', data=data, cookies=cookies, headers=headers)
+        print(r.headers['X-CSRF-TOKEN'])
         headers['X-CSRF-TOKEN'] = r.headers['X-CSRF-TOKEN']
         res = requests.post('https://www.roblox.com/messages/send', data=data, cookies=cookies, headers=headers)
         return res.text + ' ' + str(res.status_code)
