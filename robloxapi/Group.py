@@ -17,6 +17,7 @@ class Group:
         url = f'https://www.roblox.com/search/groups/list-json?keyword={name}&maxRows={show}&startRow=0'
         r = requests.get(url)
         r = json.loads(r.text)
+        print(r)
         results = r['GroupSearchResults']        
         return results
 
