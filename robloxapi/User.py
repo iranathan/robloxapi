@@ -179,7 +179,7 @@ class User:
             }
             data = {
                 'id': id,
-                'RedirectUrl': f'https://web.roblox.com/users/{str(id)}/profile'
+                'RedirectUrl': f'https://web.roblox.com/users/{str(id)}/profile',
                 'Comment': message,
                 'PartyGuid': '',
                 'ConversationId': '', #what does roblox want with those 2 things lol
