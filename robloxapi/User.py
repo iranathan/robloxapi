@@ -186,7 +186,8 @@ class User:
                 'ReportCategory': int(tag)
             }
             data = json.dumps(data)
-            requests.post(url, data=data, headers=headers, cookies=cookies)
+            r = requests.post(url, data=data, headers=headers, cookies=cookies)
+            return r.status_code
             #1 = Inappropriate Language - Profanity & Adult Content
             #2 = Asking for or Giving Priver Information
             #3 = Bullying, Harassment, Hate Speech
