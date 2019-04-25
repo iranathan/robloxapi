@@ -17,7 +17,12 @@ https://github.com/iranathan/robloxapi/wiki/User
 
 ### Coming soon:
 
-**Group functions**
+**Docs for group functions**
+
+### Change log
+
+**Added reportUser** 
+**Added group functions**
 
 ***
 
