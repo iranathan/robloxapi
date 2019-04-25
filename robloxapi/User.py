@@ -37,9 +37,15 @@ class User:
         Following_count = data['FollowingsCount'] 
         FriendsCount = data['FriendsCount']
         online_status = soup.find('span', {'class': 'avatar-status online profile-avatar-status icon-online'})
-        playing_status = soup.find('a', {'class': 'avatar-status game'})
-        print(str(playing_status) + " " + str(online_status))
-
+        playing_status = soup.find('span', {'class': 'avatar-status game icon-game profile-avatar-status'})
+        get_status = ''
+        if online_status:
+            get_status = 'Browsing website'
+        if playing_status:
+            get_status = 'Playing a game'
+        if not online_status and not playing_status:
+            get_status = 'Offline'
+      
 
         #bc check
         bc = 'NBC'
@@ -59,12 +65,13 @@ class User:
         Profile['username'] = username
         Profile['id'] = id
         Profile['avatar_url'] = avatar
-        Profile['status'] = status
         Profile['blurb'] = blurb
+        Profile['status'] = status
         Profile['bc'] = {
             'type': bc,
             'image_url': bc_img
         }
+        Profile['Activity']: get_status
         Profile['count'] = {
             'FollowersCount': follow_count,
             'FollowingsCount': Following_count,
@@ -97,7 +104,7 @@ class User:
         print(r.headers['X-CSRF-TOKEN'])
         headers['X-CSRF-TOKEN'] = r.headers['X-CSRF-TOKEN']
         res = requests.post('https://www.roblox.com/messages/send', data=data, cookies=cookies, headers=headers)
-        return res.text
+        return res.text + ' ' + str(res.status_code)
 
     def block_user(self, id):
         if self.cookie is False:
@@ -159,7 +166,36 @@ class User:
             else:
                 print('Rython: Failed to block user')
                 return False
-       
+
+    def reportUser(self, id, tag, message):
+        if self.cookie is not False:
+            url = f'https://web.roblox.com/abusereport/userprofile?id={str(id)}&redirecturl=https%3a%2f%2fweb.roblox.com%2fusers%2f{str(id)}%2fprofile'
+            cookies = {
+                '.ROBLOSECURITY': self.cookie
+            }
+            headers = {
+                'X-CSRF-TOKEN': get_xcsrf(),
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:66.0) Gecko/20100101 Firefox/66.0'
+            }
+            data = {
+                'id': id,
+                'RedirectUrl': f'https://web.roblox.com/users/{str(id)}/profile'
+                'Comment': message,
+                'PartyGuid': '',
+                'ConversationId': '', #what does roblox want with those 2 things lol
+                'ReportCategory': int(tag)
+            }
+            data = json.dumps(data)
+            requests.post(url, data=data, headers=headers, cookies=cookies)
+            #1 = Inappropriate Language - Profanity & Adult Content
+            #2 = Asking for or Giving Priver Information
+            #3 = Bullying, Harassment, Hate Speech
+            #4 = Dating (wtf)
+            #5 = Exploiting, Cheating, Spamming
+            #6 = Account Theft - Phishing, Hacking, Trading
+            #7 = Inappropriate Content - Place, Image, Model
+            #8 = Real Life Threats & Suicide Threats
+            #9 = Other Rule violation
 
         
              
