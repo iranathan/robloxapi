@@ -22,6 +22,7 @@ https://github.com/iranathan/robloxapi/wiki/User
 ### Change log
 
 **Added reportUser** 
+
 **Added group functions**
 
 ***
