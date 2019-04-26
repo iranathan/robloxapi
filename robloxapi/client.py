@@ -1,5 +1,5 @@
 from .User import User
-from .Group import Group
+#from .Group import Group
 def client(cookie=str()):
     global functions
     functions = lambda: None
