@@ -42,7 +42,6 @@ class request:
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:66.0) Gecko/20100101 Firefox/66.0',
         'Accept': 'application/json, text/plain, */*',
         'Accept-Language': 'en-US,en;q=0.5',
-        'Content-Type': 'application/json;charset=utf-8',
         'Origin': 'https://www.roblox.com',
         'X-CSRF-TOKEN': self.xcsrf,
         'DNT': '1',
