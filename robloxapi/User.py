@@ -154,15 +154,15 @@ class User:
         res = requests.post(url, data=data, cookies=cookies, headers=headers)
         if res.status_code == 403:
             headers['X-CSRF-TOKEN'] = res.headers['X-CSRF-TOKEN']
-            res = requests.post(url, data=data, cookies=cookies, headers=headers)
-            if json.loads(res.text)['success'] is True:
-                return json.loads(res.text)
-        elif res.status_code != 403 and res.status_code != 200:
+            r = requests.post(url, data=data, cookies=cookies, headers=headers)
+            if json.loads(r.text)['success'] is True:
+                return json.loads(r.text)
+        elif r.status_code != 403 and r.status_code != 200:
             print('Rython: Failed to block user')
             return False
         else:
-            if json.loads(res.text)['success'] is True:
-                return json.loads(res.text)
+            if json.loads(r.text)['success'] is True:
+                return json.loads(r.text)
             else:
                 print('Rython: Failed to block user')
                 return False
