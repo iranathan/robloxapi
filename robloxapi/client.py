@@ -4,6 +4,6 @@ def client(cookie=str()):
     global functions
     functions = lambda: None
     functions.User = User(cookie, False)
-    functions.Group = Group(cookie, False)
+    #functions.Group = Group(cookie, False)
     return functions
        
