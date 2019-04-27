@@ -45,4 +45,4 @@ class Group:
         }
         print(data)
         r = self._request(url=url, method='PATCH', data=json.dumps(data))
-        return json.loads(r)
+        return r
