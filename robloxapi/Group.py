@@ -43,5 +43,6 @@ class Group:
         data = {
             'message': message
         }
+        print(data)
         r = self._request(url=url, method='PATCH', data=json.dumps(data))
         return json.loads(r)
