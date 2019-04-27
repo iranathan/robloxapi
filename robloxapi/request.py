@@ -22,7 +22,7 @@ class request:
         if 'X-CSRF-TOKEN' in kwargs: kwargs['headers']['X-CSRF-TOKEN'] = kwargs['X-CSRF-TOKEN']
         url = kwargs['url']
         method = kwargs['method']
-        r = self._request.request(method, url, cookies=self.cookies, headers=kwargs['headers'], data=data)
+        r = self._request.request(method, url, cookies=self.cookies, headers=kwargs['headers'], data=kwargs['data'])
         if r.status_code == 200:
             return r.text
         elif r.status_code == 403:
