@@ -21,7 +21,7 @@ class Group:
         url = f'https://groups.roblox.com/v1/groups/{id}/roles'
         results = json.loads(self._request(url=url, method="GET"))
     
-   def groupPayout(self, groupid, userid, amount):
+    def groupPayout(self, groupid, userid, amount):
         url = f'https://groups.roblox.com/v1/groups/{groupid}/payouts'
         data = {
             'PayoutType': 'FixedAmount',
