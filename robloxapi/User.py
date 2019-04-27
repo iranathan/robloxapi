@@ -8,7 +8,7 @@ class User:
      
     def __init__(self, request_client):
         self.cookie = None
-        self._request = request_client
+        self._request = request_client.request
         self.xcsrf = get_xcsrf()
     
     #/users/get-by-username?username={id}
