@@ -29,7 +29,8 @@ class request:
             if r.headers['X-CSRF-TOKEN']:
                 self.xcsrf = r.headers['X-CSRF-TOKEN']
                 kwargs['X-CSRF-TOKEN'] = self.xcsrf
-                self.request(**kwargs)
+                res = self.request(**kwargs)
+                return res.text
             else:
                 raise Exception('Failed to get xcsrf token.')
         else:
