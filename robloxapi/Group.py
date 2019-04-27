@@ -4,7 +4,7 @@ from .xcsrf import get_xcsrf
 import json
 class Group:
      
-    def __init__(self, request_client:
+    def __init__(self, request_client):
         self._request = request_client.request
         
     
@@ -36,7 +36,3 @@ class Group:
         results = json.loads(self._request(url=url, method='POST', data=data))
         return results
       
-
-        
-
-
