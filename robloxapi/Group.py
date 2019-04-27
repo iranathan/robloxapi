@@ -16,10 +16,12 @@ class Group:
     def getGroup(self, id, login=False):
         url = f'https://groups.roblox.com/v1/groups/{id}'
         results = json.loads(self._request(url=url, method='GET'))
+        return results
     
     def getGroupRoles(self, id, login=False):
         url = f'https://groups.roblox.com/v1/groups/{id}/roles'
         results = json.loads(self._request(url=url, method="GET"))
+        return results
     
     def groupPayout(self, groupid, userid, amount):
         url = f'https://groups.roblox.com/v1/groups/{groupid}/payouts'
