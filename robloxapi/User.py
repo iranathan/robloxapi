@@ -78,6 +78,10 @@ class User:
         return Profile
 
     #Requires auth:
+      def get_self(self):
+        url = 'https://www.roblox.com/game/GetCurrentUser.ashx'
+        res = self._request(url=url, method="GET")
+        return res
 
 
 
