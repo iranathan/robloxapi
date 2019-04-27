@@ -2,7 +2,7 @@ from distutils.core import setup
 setup(
   name = 'robloxapi',         # How you named your package folder (MyLib)
   packages = ['robloxapi'],   # Chose the same as "name"
-  version = '1',      # Start with a small number and increase it with every change you make
+  version = '2.5',      # Start with a small number and increase it with every change you make
   license='MIT',        # Chose a license from here: https://help.github.com/articles/licensing-a-repository
   description = 'A Python wrapper for roblox',   # Give a short description about your library
   author = 'Iranathan',                   # Type in your name
