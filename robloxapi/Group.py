@@ -25,7 +25,7 @@ class Group:
     
     def groupPayout(self, groupid, userid, amount):
         url = f'https://groups.roblox.com/v1/groups/{str(groupid)}/payouts'
-        data = {
+        payout_data = {
             'PayoutType': 'FixedAmount',
             'Recipients': [
                     {
@@ -35,7 +35,7 @@ class Group:
                     }
                 ]
             }
-        results = self._request(url=url, method='POST', data=json.dumps(data))
+        results = self._request(url=url, method='POST', data=json.dumps(payout_data))
         return results
       
     def postShout(self, groupid, message):
