@@ -1,77 +1,89 @@
-import requests
-from json import loads
-from json import dumps
+
+from .request import request
+from bs4 import BeautifulSoup
 import requests
 from .xcsrf import get_xcsrf
-class request:
-
-    def __init__(self, cookie=None):
-        self.auth = False
+import json
+class User:
+     
+    def __init__(self, request_client):
+        self.cookie = None
+        self.request = request_client
         self.xcsrf = get_xcsrf()
-        self._request = requests
-        self.cookies = {}
-        if cookie:
-            self.login(cookie)
-            
-
-
-    def request(self, **kwargs):
-        if not 'method' in kwargs: kwargs['method'] = 'GET'
-        if not 'headers' in kwargs: kwargs['headers'] = self.get_headers()
-        if not 'data' in kwargs: kwargs['data'] = None
-        if 'X-CSRF-TOKEN' in kwargs: kwargs['headers']['X-CSRF-TOKEN'] = kwargs['X-CSRF-TOKEN']
-        url = kwargs['url']
-        method = kwargs['method']
-        r = self._request.request(method, url, cookies=self.cookies, headers=kwargs['headers'], data=dumps(kwargs['data']))
-        if r.status_code == 200:
-            return r.text
-        elif r.status_code == 403:
-            if r.headers['X-CSRF-TOKEN']:
-                self.xcsrf = r.headers['X-CSRF-TOKEN']
-                kwargs['X-CSRF-TOKEN'] = self.xcsrf
-                self.request(kwargs)
-            else:
-                raise Exception('Failed to get xcsrf token.')
-        else:
-            raise Exception('Error with request: ', r.text)
-         
-
-
-    def get_headers(self):
-        return {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:66.0) Gecko/20100101 Firefox/66.0',
-        'Accept': 'application/json, text/plain, */*',
-        'Accept-Language': 'en-US,en;q=0.5',
-        'Content-Type': 'application/json;charset=utf-8',
-        'Origin': 'https://www.roblox.com',
-        'X-CSRF-TOKEN': self.xcsrf,
-        'DNT': '1',
-        }
     
-    def request_cookie():
-        pass
+    #/users/get-by-username?username={id}
+    def IdByUsername(self, username):
+        r = self.request(url='http://api.roblox.com/users/get-by-username?username=' + username)
+        return json.loads(r)
+    #/users/{id}
+    def UsernameById(self, id):
+        r = self.request(url='http://api.roblox.com/users/' + id)
+        return r
+    
+    
+    def getProfile(self, id):
+        url = 'https://www.roblox.com/users/' + str(id) + '/profile'
+        r = self.request(url=url)
+        soup = BeautifulSoup(r, 'html.parser')
+        username = soup.find('h2').getText()
+        avatar = str(soup.find('img').get('src'))
+        blurb = soup.find('span', {'class': 'profile-about-content-text linkify'}).getText()
+        status_req = self.request(url='https://www.roblox.com/users/profile/profileheader-json?userId=' + id)
+        data = json.loads(status_req)
+        status = data['UserStatus']
+        follow_count = data['FollowersCount']
+        Following_count = data['FollowingsCount'] 
+        FriendsCount = data['FriendsCount']
+        online_status = soup.find('span', {'class': 'avatar-status online profile-avatar-status icon-online'})
+        playing_status = soup.find('span', {'class': 'avatar-status game icon-game profile-avatar-status'})
+        get_status = ''
+        if online_status:
+            get_status = 'Browsing website'
+        if playing_status:
+            get_status = 'Playing a game'
+        if not online_status and not playing_status:
+            get_status = 'Offline'
+      
 
-        
-
-
-    def login(self, cookie):
-        url = 'https://www.roblox.com/game/GetCurrentUser.ashx'
-        cookies = {
-            '.ROBLOSECURITY': cookie
+        #bc check
+        bc = 'NBC'
+        getBc = soup.find('span', {'class': 'icon-bc'})
+        getTbc = soup.find('span', {'class': 'icon-tbc'})
+        getObc = soup.find('span', {'class': 'icon-obc'})
+        if getBc is not None:
+            bc = 'BC'
+        if getTbc is not None:
+            bc = 'TBC'
+        if getObc is not None:
+            bc = 'OBC'
+        bc_img = str('https://www.roblox.com/Thumbs/BCOverlay.ashx?username=' + username)
+        badge_url = 'https://www.roblox.com/badges/roblox?userId={}&imgWidth=110&imgHeight=110&imgFormat=png'.format(id)
+        badge_data = json.loads(self.request(url=badge_url))
+        Profile = {}
+        Profile['username'] = username
+        Profile['id'] = id
+        Profile['avatar_url'] = avatar
+        Profile['blurb'] = blurb
+        Profile['status'] = status
+        Profile['bc'] = {
+            'type': bc,
+            'image_url': bc_img
         }
-        r = requests.get(url, headers=self.get_headers(), cookies=cookies)
-        if r.text == 'null':
-            raise Exception('Unable to log in.')
-            self.cookies = {}
-            self.auth = False
-        else:
-            self.cookies = cookies
-            self.auth = True
+        Profile['Activity']: get_status
+        Profile['count'] = {
+            'FollowersCount': follow_count,
+            'FollowingsCount': Following_count,
+            'FriendsCount': FriendsCount
+        }
+        Profile['badges'] = badge_data['RobloxBadges']
+        return Profile
+
+    #Requires auth:
+
+    def get_self(self):
+        url = 'https://www.roblox.com/game/GetCurrentUser.ashx'
+        res = self._request(url=url, method="GET")
+        return res
 
 
 
-
-
-        
-        
-   
