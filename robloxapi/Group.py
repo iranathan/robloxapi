@@ -13,12 +13,12 @@ class Group:
         results = json.loads(self._request(url=url, method='GET'))['GroupSearchResults']  
         return results
 
-    def getGroup(self, id, login=False):
+    def getGroup(self, id):
         url = f'https://groups.roblox.com/v1/groups/{str(id)}'
         results = json.loads(self._request(url=url, method='GET'))
         return results
     
-    def getGroupRoles(self, id, login=False):
+    def getGroupRoles(self, id):
         url = f'https://groups.roblox.com/v1/groups/{str(id)}/roles'
         results = json.loads(self._request(url=url, method="GET"))
         return results
@@ -53,4 +53,6 @@ class Group:
         return json.loads(r)
     
     def promote(self, groupid, targetid):
-        print(self.setRank)
+        roles = self.getGroupRoles(groupid)
+        print(roles)
+
