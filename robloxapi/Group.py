@@ -1,4 +1,3 @@
-from .request import Request
 from bs4 import BeautifulSoup
 import requests
 from .xcsrf import get_xcsrf
