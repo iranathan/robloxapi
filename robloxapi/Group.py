@@ -33,6 +33,6 @@ class Group:
                     }
                 ]
             }
-        results = json.loads(self._request(url=url, method='POST', data=data))
+        results = self._request(url=url, method='POST', data=data)
         return results
       
