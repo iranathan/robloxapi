@@ -1,3 +1,4 @@
+
 from .request import request
 from bs4 import BeautifulSoup
 import requests
@@ -5,9 +6,9 @@ from .xcsrf import get_xcsrf
 import json
 class User:
      
-    def __init__(self, cookie=str(), id=str()):
+    def __init__(self, request_client):
         self.cookie = None
-        self.request = request(cookie).request
+        self.request = request_client
         self.xcsrf = get_xcsrf()
     
     #/users/get-by-username?username={id}
@@ -78,11 +79,11 @@ class User:
         return Profile
 
     #Requires auth:
-      def get_self(self):
+
+    def get_self(self):
         url = 'https://www.roblox.com/game/GetCurrentUser.ashx'
         res = self._request(url=url, method="GET")
         return res
 
 
 
-   
