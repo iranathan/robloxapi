@@ -47,31 +47,6 @@ class Group:
             del data['groupId']
             return data
 
-    def groupPayout(self, groupid, id, amount):
-        url = f'https://www.roblox.com/groups/{groupid}/one-time-payout/false'
-        if self.cookie is not False:
-            data = {
-                'percentages': {id: amount}
-            }
-            headers = {
-                'X-CSRF-TOKEN': get_xcsrf(),
-                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:66.0) Gecko/20100101 Firefox/66.0'
-            }
-            data = json.loads(data)
-            r = requests.post(url, data=data, headers=headers)
-            if r.status_code == 403:
-                headers['X-CSRF-TOKEN'] = r.headers['X-CSRF-TOKEN']
-                r2 = requests.post(url, data=data, headers=headers)
-                if r2 == 200:
-                    return True
-                else:
-                    return False
-            elif r.status_code == 200:
-                return True
-            else:
-                return False
-        else:
-            raise Exception('Not logged in..')
 
         
 
