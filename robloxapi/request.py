@@ -1,13 +1,14 @@
 import requests
 from json import loads
 from json import dumps
+import requests
 from .xcsrf import get_xcsrf
 class request:
 
     def __init__(self, cookie=None):
         self.auth = False
         self.xcsrf = get_xcsrf()
-        self.session = requests.session()
+        self._request = requests
         self.cookies = {}
         if cookie:
             self.login(cookie)
@@ -19,17 +20,18 @@ class request:
         if not 'headers' in kwargs: kwargs['headers'] = self.get_headers()
         if not 'data' in kwargs: kwargs['data'] = None
         if 'X-CSRF-TOKEN' in kwargs: kwargs['headers']['X-CSRF-TOKEN'] = kwargs['X-CSRF-TOKEN']
-        kwargs['cookies'] = self.cookies
+          
+        
         url = kwargs['url']
         method = kwargs['method']
-        r = self.session.request(method, url, cookies=kwargs['cookies'], headers=kwargs['headers'], data=dumps(kwargs['data']))
+        r = self._request.request(method, url, cookies=self.cookies, headers=kwargs['headers'], data=dumps(kwargs['data']))
         if r.status_code == 200:
             return r.text
         elif r.status_code == 403:
             if r.headers['X-CSRF-TOKEN']:
                 self.xcsrf = r.headers['X-CSRF-TOKEN']
                 kwargs['X-CSRF-TOKEN'] = self.xcsrf
-                self.request(method=method, url=url, cookies=kwargs['cookies'], headers=kwargs['headers'], data=dumps(kwargs['data']))
+                self.request(kwargs)
             else:
                 raise Exception('Failed to get xcsrf token.')
         else:
@@ -42,10 +44,14 @@ class request:
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:66.0) Gecko/20100101 Firefox/66.0',
         'Accept': 'application/json, text/plain, */*',
         'Accept-Language': 'en-US,en;q=0.5',
+        'Content-Type': 'application/json;charset=utf-8',
         'Origin': 'https://www.roblox.com',
         'X-CSRF-TOKEN': self.xcsrf,
         'DNT': '1',
         }
+    
+    def request_cookie():
+        pass
 
         
 
@@ -59,8 +65,10 @@ class request:
         if r.text == 'null':
             raise Exception('Unable to log in.')
             self.cookies = {}
+            self.auth = False
         else:
             self.cookies = cookies
+            self.auth = True
 
 
 
