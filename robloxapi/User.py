@@ -57,7 +57,7 @@ class User:
             bc = 'OBC'
         bc_img = str('https://www.roblox.com/Thumbs/BCOverlay.ashx?username=' + username)
         badge_url = 'https://www.roblox.com/badges/roblox?userId={}&imgWidth=110&imgHeight=110&imgFormat=png'.format(id)
-        badge_data = self.request(url=badge_url)
+        badge_data = json.loads(self.request(url=badge_url))
         Profile = {}
         Profile['username'] = username
         Profile['id'] = id
@@ -80,31 +80,5 @@ class User:
     #Requires auth:
 
 
-    #https://www.roblox.com/messages/send
-    def send_message(self, receiver_id, subject, body):
-        data = {
-            'body': body,
-            'recipientid': receiver_id,
-            'subject': subject
-        }
 
-        r = self.request(method='POST', url='https://www.roblox.com/messages/send', data=data)
-        return json.loads(res.text)
-
-    def block_user(self, id):
-        url = 'https://www.roblox.com/userblock/blockuser'
-        data = {
-            'blockeeId': id
-        }
-        res = self.request(url=url, data=data)
-        return json.loads(res)
-
-    #https://www.roblox.com/userblock/unblockuser
-    def unblock_user(self, id):
-        url = 'https://www.roblox.com/userblock/unblockuser'
-        data = {
-            'blockeeId': id
-        }
-        res = self.request(url=url, data=data)
-        return json.loads(res)
    
