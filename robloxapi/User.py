@@ -13,22 +13,22 @@ class User:
     
     #/users/get-by-username?username={id}
     def IdByUsername(self, username):
-        r = self.request(url='http://api.roblox.com/users/get-by-username?username=' + username)
+        r = self._request(url='http://api.roblox.com/users/get-by-username?username=' + username)
         return json.loads(r)
     #/users/{id}
     def UsernameById(self, id):
-        r = self.request(url='http://api.roblox.com/users/' + id)
+        r = self._request(url='http://api.roblox.com/users/' + id)
         return r
     
     
     def getProfile(self, id):
         url = 'https://www.roblox.com/users/' + str(id) + '/profile'
-        r = self.request(url=url)
+        r = self._request(url=url)
         soup = BeautifulSoup(r, 'html.parser')
         username = soup.find('h2').getText()
         avatar = str(soup.find('img').get('src'))
         blurb = soup.find('span', {'class': 'profile-about-content-text linkify'}).getText()
-        status_req = self.request(url='https://www.roblox.com/users/profile/profileheader-json?userId=' + id)
+        status_req = self._request(url='https://www.roblox.com/users/profile/profileheader-json?userId=' + id)
         data = json.loads(status_req)
         status = data['UserStatus']
         follow_count = data['FollowersCount']
