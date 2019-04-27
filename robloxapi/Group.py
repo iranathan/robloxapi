@@ -46,3 +46,11 @@ class Group:
         print(data)
         r = self._request(url=url, method='PATCH', data=json.dumps(data))
         return r
+     
+    def setRank(self, groupid, roleid, targetid):
+        url = f'https://www.roblox.com/groups/api/change-member-rank?groupId={groupid}&newRoleSetId={roleid}&targetUserId={targetid}'
+        r = self._request(url=url, method='POST')
+        return json.loads(r)
+    
+    def promote(self, groupid, targetid):
+        print(self.setRank)
