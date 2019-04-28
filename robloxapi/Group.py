@@ -66,8 +66,6 @@ class Group:
         if str(user_role) == 'Guest' or len(str(user_role)) > 20:
             raise Exception('User not in group')
             return None
-
-
         for i in range(len(roles)):
             role = roles[int(i)]
             role_name = role['name']
@@ -78,6 +76,32 @@ class Group:
             return None
         old_role_info = roles[int(cRole)]
         new_role_info = roles[int(cRole) + 1]
+        r = self.setRank(groupid, new_role_info['id'], targetid)
+        data = {
+            'oldRank': old_role_info,
+            'newRank': new_role_info,
+            'responseData': r
+        }
+        return data
+    
+        def demote(self, groupid, targetid):
+        cRole = None
+        roles = self.getGroupRoles(groupid)
+        roles = roles['roles']
+        user_role = self.playerRankInGroup(groupid, targetid)
+        if str(user_role) == 'Guest' or len(str(user_role)) > 20:
+            raise Exception('User not in group')
+            return None
+        for i in range(len(roles)):
+            role = roles[int(i)]
+            role_name = role['name']
+            if role_name in user_role: 
+                cRole = i
+        if not cRole:
+            raise Exception('Can\' find user: ' + targetid)
+            return None
+        old_role_info = roles[int(cRole)]
+        new_role_info = roles[int(cRole) - 1]
         r = self.setRank(groupid, new_role_info['id'], targetid)
         data = {
             'oldRank': old_role_info,
