@@ -61,7 +61,9 @@ class Group:
     def promote(self, groupid, targetid):
         roles = self.getGroupRoles(groupid)
         user_role = self.playerRankInGroup(groupid, targetid)
-        print(user_role)
-        #for role in roles['roles']:
+        for role in roles['roles']:
+            role_name = role['name']
+            if role_name in user_role:
+                print(role_name) 
 
 
