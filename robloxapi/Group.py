@@ -62,8 +62,7 @@ class Group:
         cRole = None
         roles = self.getGroupRoles(groupid)
         roles = roles['roles']
-        print(roles['roles'])
-        print('asd')
+
         user_role = self.playerRankInGroup(groupid, targetid)
         for i in range(len(roles)):
             role = roles[int(i)]
