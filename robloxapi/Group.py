@@ -62,7 +62,7 @@ class Group:
         cRole = None
         roles = self.getGroupRoles(groupid)
         user_role = self.playerRankInGroup(groupid, targetid)
-        for i in range(roles):
+        for i in list(range(roles)):
             role = roles[int(i)]
             role_name = role['name']
             if role_name in user_role:
