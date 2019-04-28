@@ -73,8 +73,15 @@ class Group:
         if not cRole:
             raise Exception('Can\' find user: ' + targetid)
             return None
-        role_id = roles[int(cRole)]
-        return role_id
+        old_role_info = roles[int(cRole)]
+        new_role_info = roles[int(cRole) + 1]
+        r = None#self.setRank(groupid, new_role_info['id'], targetid)
+        data = {
+            'oldRank': old_role_info,
+            'newRank': new_role_info,
+            'responseData': r
+        }
+        return data
 
 
                 
