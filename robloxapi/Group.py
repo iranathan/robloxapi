@@ -39,7 +39,7 @@ class Group:
         return results
     
     def playerRankInGroup(self, groupid, id):
-        url = 'https:////www.roblox.com/Game/LuaWebService/HandleSocialRequest.ashx?method=GetGroupRole&playerid=' + str(id) + '&groupId=' + groupid
+        url = 'https://www.roblox.com/Game/LuaWebService/HandleSocialRequest.ashx?method=GetGroupRole&playerid=' + str(id) + '&groupId=' + groupid
         r = self._request(url=url, method='GET')
         return r
 
