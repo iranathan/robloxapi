@@ -37,6 +37,12 @@ class Group:
             }
         results = self._request(url=url, method='POST', data=json.dumps(payout_data))
         return results
+    
+    def playerRankInGroup(self, groupid, id):
+        url = 'https://www.roblox.com/Game/LuaWebService/HandleSocialRequest.ashx?method=GetGroupRank&playerid=' + str(id) + '&groupId=' + groupid
+        r = self._request(url=url, method='GET')
+        return r
+
       
     def postShout(self, groupid, message):
         url = f'https://groups.roblox.com/v1/groups/{str(groupid)}/status'
@@ -54,5 +60,8 @@ class Group:
     
     def promote(self, groupid, targetid):
         roles = self.getGroupRoles(groupid)
-        print(roles)
+        user_role = self.playerRankInGroup(groupid, targetid)
+        print(user_role)
+        #for role in roles['roles']:
+
 
