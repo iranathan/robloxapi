@@ -67,13 +67,15 @@ class Group:
         for i in range(len(roles)):
             role = roles[int(i)]
             role_name = role['name']
-            if role_name in user_role:
+            if role_name in user_role: 
                 cRole = i
                 print(cRole)
         if not cRole:
             raise Exception('Can\' find user: ' + targetid)
             return None
-        role_id = role
+        role_id = roles[int(cRole)]
+        return role_id
+
 
                 
 
