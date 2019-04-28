@@ -59,11 +59,20 @@ class Group:
         return json.loads(r)
     
     def promote(self, groupid, targetid):
+        cRole = None
         roles = self.getGroupRoles(groupid)
         user_role = self.playerRankInGroup(groupid, targetid)
-        for role in roles['roles']:
+        for i in range(roles):
+            role = roles[int(i)]
             role_name = role['name']
             if role_name in user_role:
-                print(role_name) 
+                cRole = i
+                print(cRole)
+        if not cRole:
+            raise Exception('Can\' find user: ' + targetid)
+            return None
+        role_id = role
+
+                
 
 
