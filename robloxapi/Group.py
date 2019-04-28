@@ -83,7 +83,8 @@ class Group:
             'responseData': r
         }
         return data
-    
+        
+        #same as promote
         def demote(self, groupid, targetid):
         cRole = None
         roles = self.getGroupRoles(groupid)
