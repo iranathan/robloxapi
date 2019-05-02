@@ -17,7 +17,7 @@ class User:
         return json.loads(r)
     #/users/{id}
     def UsernameById(self, id):
-        r = self._request(url='http://api.roblox.com/users/' + id)
+        r = self._request(url='http://api.roblox.com/users/' + str(id))
         return r
     
     
