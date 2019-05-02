@@ -9,27 +9,27 @@ class Group:
         
     
     def groupSearch(self, name, show):
-        url = f'https://www.roblox.com/search/groups/list-json?keyword={str(name)}&maxRows={str(show)}&startRow=0'
+        url = f'https://www.roblox.com/search/groups/list-json?keyword={name}&maxRows={show}&startRow=0'
         results = json.loads(self._request(url=url, method='GET'))['GroupSearchResults']  
         return results
 
-    def getGroup(self, id):
-        url = f'https://groups.roblox.com/v1/groups/{str(id)}'
+    def getGroup(self, id, login=False):
+        url = f'https://groups.roblox.com/v1/groups/{id}'
         results = json.loads(self._request(url=url, method='GET'))
         return results
     
-    def getGroupRoles(self, id):
-        url = f'https://groups.roblox.com/v1/groups/{str(id)}/roles'
+    def getGroupRoles(self, id, login=False):
+        url = f'https://groups.roblox.com/v1/groups/{id}/roles'
         results = json.loads(self._request(url=url, method="GET"))
         return results
     
     def groupPayout(self, groupid, userid, amount):
-        url = f'https://groups.roblox.com/v1/groups/{str(groupid)}/payouts'
+        url = f'https://groups.roblox.com/v1/groups/{groupid}/payouts'
         payout_data = {
             'PayoutType': 'FixedAmount',
             'Recipients': [
                     {
-                        'recipientId': id,
+                        'recipientId': userid,
                         'recipientType': 'User',
                         'amount': amount,
                     }
@@ -37,81 +37,12 @@ class Group:
             }
         results = self._request(url=url, method='POST', data=json.dumps(payout_data))
         return results
-    
-    def playerRankInGroup(self, groupid, id):
-        url = 'https://www.roblox.com/Game/LuaWebService/HandleSocialRequest.ashx?method=GetGroupRole&playerid=' + str(id) + '&groupId=' + groupid
-        r = self._request(url=url, method='GET')
-        return r
-
       
     def postShout(self, groupid, message):
-        url = f'https://groups.roblox.com/v1/groups/{str(groupid)}/status'
+        url = f'https://groups.roblox.com/v1/groups/{groupid}/status'
         data = {
             'message': message
         }
         print(data)
         r = self._request(url=url, method='PATCH', data=json.dumps(data))
         return r
-     
-    def setRank(self, groupid, roleid, targetid):
-        url = f'https://www.roblox.com/groups/api/change-member-rank?groupId={groupid}&newRoleSetId={roleid}&targetUserId={targetid}'
-        r = self._request(url=url, method='POST')
-        return json.loads(r)
-    
-    def promote(self, groupid, targetid):
-        cRole = None
-        roles = self.getGroupRoles(groupid)
-        roles = roles['roles']
-        user_role = self.playerRankInGroup(groupid, targetid)
-        if str(user_role) == 'Guest' or len(str(user_role)) > 20:
-            raise Exception('User not in group')
-            return None
-        for i in range(len(roles)):
-            role = roles[int(i)]
-            role_name = role['name']
-            if role_name in user_role: 
-                cRole = i
-        if not cRole:
-            raise Exception('Can\' find user: ' + targetid)
-            return None
-        old_role_info = roles[int(cRole)]
-        new_role_info = roles[int(cRole) + 1]
-        r = self.setRank(groupid, new_role_info['id'], targetid)
-        data = {
-            'oldRank': old_role_info,
-            'newRank': new_role_info,
-            'responseData': r
-        }
-        return data
-        
-        #same as promote
-    def demote(self, groupid, targetid):
-        cRole = None
-        roles = self.getGroupRoles(groupid)
-        roles = roles['roles']
-        user_role = self.playerRankInGroup(groupid, targetid)
-        if str(user_role) == 'Guest' or len(str(user_role)) > 20:
-            raise Exception('User not in group')
-            return None
-        for i in range(len(roles)):
-            role = roles[int(i)]
-            role_name = role['name']
-            if role_name in user_role: 
-                cRole = i
-        if not cRole:
-            raise Exception('Can\' find user: ' + targetid)
-            return None
-        old_role_info = roles[int(cRole)]
-        new_role_info = roles[int(cRole) - 1]
-        r = self.setRank(groupid, new_role_info['id'], targetid)
-        data = {
-            'oldRank': old_role_info,
-            'newRank': new_role_info,
-            'responseData': r
-        }
-        return data
-
-
-                
-
-
