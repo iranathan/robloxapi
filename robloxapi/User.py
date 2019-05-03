@@ -84,6 +84,25 @@ class User:
         url = 'https://www.roblox.com/game/GetCurrentUser.ashx'
         res = self._request(url=url, method="GET")
         return res
+     
+    def updateStatus(self, newStatus, facebook=False):
+        url = 'https://www.roblox.com/home/updatestatus'
+        data = {'status': str(newStatus)}
+        if facebook is True:
+            data['sendToFacebook'] = True
+        data = json.dumps(data)
+        r = self._request(url=url, method='POST', data=data)
+    
+
+   def blockUser(self, id):
+        url = 'https://www.roblox.com/userblock/blockuser'
+        data = json.dumps({'blockeeId': id})
+        self._request(url=url, method='POST', data=data)
+    
+   def unblockUser(self, id):
+        url = 'https://www.roblox.com/userblock/unblockuser'
+        data = json.dumps({'blockeeId': id}) 
+        self._request(url=data, method='POST', data=data)
 
 
 
