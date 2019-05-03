@@ -65,14 +65,14 @@ class request:
             raise Exception('Unable to log in.')
             self.cookies = {}
             self.auth = False
+            self.user_info = {}
         else:
             self.cookies = cookies
             self.auth = True
-
-
-
-
-
-        
-        
-   
+            info = self.request(url='https://www.roblox.com/my/profile', method='GET')
+            info = json.loads(info)
+            self.user_info = {
+                'username': info['Username'],
+                'Id': info['UserId'],
+                'Robux': info['Robux'].
+            }
