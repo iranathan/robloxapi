@@ -74,5 +74,5 @@ class request:
             self.user_info = {
                 'username': info['Username'],
                 'Id': info['UserId'],
-                'Robux': info['Robux'].
+                'Robux': info['Robux']
             }
