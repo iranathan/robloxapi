@@ -94,12 +94,12 @@ class User:
         r = self._request(url=url, method='POST', data=data)
     
 
-   def blockUser(self, id):
+    def blockUser(self, id):
         url = 'https://www.roblox.com/userblock/blockuser'
         data = json.dumps({'blockeeId': id})
         self._request(url=url, method='POST', data=data)
     
-   def unblockUser(self, id):
+    def unblockUser(self, id):
         url = 'https://www.roblox.com/userblock/unblockuser'
         data = json.dumps({'blockeeId': id}) 
         self._request(url=data, method='POST', data=data)
