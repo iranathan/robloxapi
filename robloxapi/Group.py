@@ -46,3 +46,8 @@ class Group:
         print(data)
         r = self._request(url=url, method='PATCH', data=json.dumps(data))
         return r
+    
+    def getWall(self, groupid):
+        url = f'https://groups.roblox.com/v2/groups/{groupid}/wall/posts?limit=10'
+        r = self._request(url=url)
+        return r
