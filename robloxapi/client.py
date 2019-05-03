@@ -3,7 +3,7 @@ from .User import User
 from .Group import Group
 from .Trade import Trade
 class client:
-    def __init__(self, cookie):
+    def __init__(self, cookie=True):
         self.request_client = request(cookie)
         self.user_info = self.request_client.user_info
         self.Group = Group(self.request_client)
