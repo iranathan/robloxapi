@@ -61,7 +61,7 @@ class User:
             bc = 'OBC'
         bc_img = str('https://www.roblox.com/Thumbs/BCOverlay.ashx?username=' + username)
         badge_url = 'https://www.roblox.com/badges/roblox?userId={}&imgWidth=110&imgHeight=110&imgFormat=png'.format(id)
-        badge_data = json.loads(self.request(url=badge_url))
+        badge_data = json.loads(self._request(url=badge_url))
         Profile = {}
         Profile['username'] = username
         Profile['id'] = id
