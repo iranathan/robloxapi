@@ -108,6 +108,20 @@ class User:
         data = json.dumps({'blockeeId': id}) 
         r = self._request(url=data, method='POST', data=data)
         return r
-
-
+    
+    def addFriend(self, Userid):
+        url = 'https://www.roblox.com/api/friends/sendfriendrequest'
+        data = {
+            'targetUserID': int(Userid)
+        }
+        r = self._request(url=url, data=json.dumps(data), method='POST')
+        return r
+   
+    def removeFriend(self, Userid):
+        url = 'https://www.roblox.com/api/friends/removefriend'
+        data = {
+            'targetUserID': int(Userid)
+        }
+        r = self._request(url=url, data=json.dumps(data), method='POST')
+        return r
 
