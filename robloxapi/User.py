@@ -20,6 +20,9 @@ class User:
         r = self._request(url='http://api.roblox.com/users/' + str(id))
         return r
     
+    def searchUsers(self, keyword):
+        if len(str(keyword)) > 3:
+            url = f'https://www.roblox.com/search/users/results?keyword={ketword}&maxRows=12&startIndex=0'
     
     def getProfile(self, id):
         url = 'https://www.roblox.com/users/' + str(id) + '/profile'
@@ -97,12 +100,14 @@ class User:
     def blockUser(self, id):
         url = 'https://www.roblox.com/userblock/blockuser'
         data = json.dumps({'blockeeId': id})
-        self._request(url=url, method='POST', data=data)
+        r = self._request(url=url, method='POST', data=data)
+        return r
     
     def unblockUser(self, id):
         url = 'https://www.roblox.com/userblock/unblockuser'
         data = json.dumps({'blockeeId': id}) 
-        self._request(url=data, method='POST', data=data)
+        r = self._request(url=data, method='POST', data=data)
+        return r
 
 
 
