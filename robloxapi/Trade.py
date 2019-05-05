@@ -1,4 +1,4 @@
-
+import json
 class Trade:
 
     def __init__(self, request):
@@ -12,15 +12,16 @@ class Trade:
             'startindex': 0,
             'statustype': 'inbound'
         }
-        r = self._request(url=self.getTrades, data=data, method='POST')
-        return r
+        r = self._request(url=self.getTrades, data=json.dumps(data), method='POST')
+        return json.loads(r)
     
     def getTrade(tradeId):
         data = {
             'TradeID': tradeId,
             'cmd': 'pull'
         }
-        r = self._request(url=self.action, data=data, method='POST')
+        r = self._request(url=self.action, data=json.dumps(data), method='POST')
+        return json.loads(r)
         
 
     def acceptTrade(tradeId):
@@ -28,13 +29,13 @@ class Trade:
             'TradeID': tradeId,
             'cmd': 'accept'
         }
-        r = self._request(url=self.action, data=data, method='POST')
-        return r
+        r = self._request(url=self.action, data=json.dumps(data), method='POST')
+        return json.loads(r)
     
     def declineTrade(tradeId):
         data = {
             'TradeID': tradeId,
             'cmd': 'decline'
         }
-        r = self._request(url=self.action, data=data, method='POST')
-        return r
+        r = self._request(url=self.action, data=json.dumps(data), method='POST')
+        return json.loads(r)
