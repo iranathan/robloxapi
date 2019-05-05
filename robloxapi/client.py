@@ -2,7 +2,7 @@ from .request import request
 from .User import User
 from .Group import Group
 from .Trade import Trade
-from xcsrf import get_xcsrf as xcsrf
+from .xcsrf import get_xcsrf as xcsrf
 class client:
     def __init__(self, cookie=True):
         self.request_client = request(cookie)
