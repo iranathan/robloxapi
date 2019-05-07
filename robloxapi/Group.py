@@ -45,19 +45,8 @@ class Group:
         found = soup.find('div', {'id': 'AuditPage'})
         allAudit = []
         for message in found.find_all('tr', {'class': 'datarow'}):
-            user = message.find('tr', {'class': 'User'})
-            print(user)
-            username = user.span.getText()
-            description = message.find('td', {'class': 'Description'})
-            description_text = message.getText()
-            audit_info = {
-                'User': {
-                    'username': username
-                },
-                'Description': description_text
-            }
-            allAudit.append(audit_info)
-        return allAudit
+            description = message.split('<td class="Description">')[1].split('<')[0]
+            print(description)
            
 
 
