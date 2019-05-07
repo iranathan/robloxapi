@@ -41,7 +41,7 @@ class Group:
     def getAuditLogs(self, groupid):
         url = f'https://www.roblox.com/Groups/Audit.aspx?groupid={groupid}'
         r = self._request(url=url, method='GET')
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r, 'html.parser')
         return soup.tbody
 
     def postShout(self, groupid, message):
