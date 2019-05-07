@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 from .xcsrf import get_xcsrf
 import json
+import html2text
 class Group:
      
     def __init__(self, request_client):
@@ -48,7 +49,7 @@ class Group:
             print(type(message))
             if message is not None:
                 description = str(message).split('<td class="Description">')[1]
-                print(description)
+                print(html2text.html2text(description))
            
 
 
