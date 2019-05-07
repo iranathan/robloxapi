@@ -44,8 +44,8 @@ class Group:
         soup = BeautifulSoup(r, 'html.parser')
         found = soup.find('div', {'id': 'AuditPage'})
         for message in found.find_all('tr', {'class': 'datarow'}):
-            new_soup = BeautifulSoup(message, 'html.parser')
-            print(new_soup.tr)
+            print(message + '\n\n')
+           
 
 
     def postShout(self, groupid, message):
