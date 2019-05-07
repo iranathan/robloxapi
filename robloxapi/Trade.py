@@ -13,7 +13,7 @@ class Trade:
             'statustype': 'inbound'
         }
         r = self._request(url=self.getTrades, data=json.dumps(data), method='POST')
-        return json.loads(r)
+        return json.loads(r['d'])
     
     def getTrade(tradeId):
         data = {
