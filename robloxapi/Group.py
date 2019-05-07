@@ -44,7 +44,7 @@ class Group:
         soup = BeautifulSoup(r, 'html.parser')
         found = soup.find('div', {'id': 'AuditPage'})
         for message in found.find_all('tr', {'class': 'datarow'}):
-            print(message + '\n\n')
+            print(str(message) + '\n\n')
            
 
 
