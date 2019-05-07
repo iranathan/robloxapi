@@ -43,7 +43,10 @@ class Group:
         r = self._request(url=url, method='GET')
         soup = BeautifulSoup(r, 'html.parser')
         found = soup.find('div', {'id': 'AuditPage'})
-        return found.find_all('tr', {'class': 'datarow'})
+        for message in found.find_all('tr', {'class': 'datarow'}):
+            new_soup = BeautifulSoup(message, 'html.parser')
+            print(new_soup.tr)
+
 
     def postShout(self, groupid, message):
         url = f'https://groups.roblox.com/v1/groups/{groupid}/status'
