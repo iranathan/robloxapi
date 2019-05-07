@@ -43,8 +43,20 @@ class Group:
         r = self._request(url=url, method='GET')
         soup = BeautifulSoup(r, 'html.parser')
         found = soup.find('div', {'id': 'AuditPage'})
+        allAudit = []
         for message in found.find_all('tr', {'class': 'datarow'}):
-            print(str(message) + '\n\n')
+            user = message.find('tr', {'class': 'User'})
+            username = user.span.getText()
+            description = message.find('td', {'class': 'Description'})
+            description_text = message.getText()
+            audit_info = {
+                'User': {
+                    'username': username
+                },
+                'Description': description_text
+            }
+            allAudit.append(audit_info)
+        return allAudit
            
 
 
