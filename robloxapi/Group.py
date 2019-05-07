@@ -45,7 +45,7 @@ class Group:
         found = soup.find('div', {'id': 'AuditPage'})
         allAudit = []
         for message in found.find_all('tr', {'class': 'datarow'}):
-            print(message)
+            print(type(message))
             if message is not None:
                 description = message.split('<td class="Description">')[1].split('<')[0]
                 print(description)
