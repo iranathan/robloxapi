@@ -47,7 +47,7 @@ class Group:
         for message in found.find_all('tr', {'class': 'datarow'}):
             print(type(message))
             if message is not None:
-                description = message.split('<td class="Description">')[1].split('<')[0]
+                description = str(message).split('<td class="Description">')[1].split('<')[0]
                 print(description)
            
 
