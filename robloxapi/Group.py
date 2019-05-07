@@ -46,6 +46,7 @@ class Group:
         allAudit = []
         for message in found.find_all('tr', {'class': 'datarow'}):
             user = message.find('tr', {'class': 'User'})
+            print(user)
             username = user.span.getText()
             description = message.find('td', {'class': 'Description'})
             description_text = message.getText()
