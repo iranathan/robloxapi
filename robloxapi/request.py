@@ -4,6 +4,7 @@ from json import dumps
 import json
 import requests
 from .xcsrf import get_xcsrf
+import logging
 class request:
 
     def __init__(self, cookie=None):
@@ -33,9 +34,9 @@ class request:
                 res = self.request(**kwargs)
                 return res
             else:
-                raise Exception('Failed to get xcsrf token.')
+                logging.error('Failed to get xcsrf token.')
         else:
-            raise Exception('Error with request: ', r.text)
+            logging.error('Error with request code: ' + r.status_code + ' data:' r.text)
          
 
 
@@ -63,7 +64,7 @@ class request:
         }
         r = requests.get(url, headers=self.get_headers(), cookies=cookies)
         if r.text == 'null':
-            raise Exception('Unable to log in.')
+            logging.warning('Failed to login using robloxapi without auth.')
             self.cookies = {}
             self.auth = False
             self.user_info = {}
