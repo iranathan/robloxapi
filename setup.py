@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 setup(
     name="robloxapi",
-    version="2.5",
+    version="2.6",
     packages=find_packages(),
     scripts=['when_install.py'],
 
