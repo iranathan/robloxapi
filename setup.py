@@ -4,7 +4,7 @@ setup(
   package_dir = {
       'robloxapi': 'robloxapi',
   },
-  packages = ['robloxapi'],
+  packages = ['robloxapi', 'robloxapi.utils'],
   version = '3.1',   
   license='MIT',       
   description = 'A Python wrapper for roblox',
