@@ -3,9 +3,6 @@ setup(
     name="robloxapi",
     version="2.6",
     packages=find_packages(),
-    scripts=['when_install.py'],
-
-
     install_requires=[
     'requests',
     'beautifulsoup4',
