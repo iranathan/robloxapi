@@ -3,9 +3,8 @@ setup(
   name = 'robloxapi',
   package_dir = {
       'robloxapi': 'robloxapi',
-      'robloxapi.utils': 'robloxapi/utils',
   },
-  packages = ['robloxapi', 'robloxapi.utils'],
+  packages = ['robloxapi'],
   version = '3.1',   
   license='MIT',       
   description = 'A Python wrapper for roblox',
