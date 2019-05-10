@@ -1,23 +1,25 @@
-from setuptools import setup, find_packages
+from distutils.core import setup
 setup(
-    name="robloxapi",
-    version="2.6",
-    packages=find_packages(),
-    install_requires=[
-    'requests',
-    'beautifulsoup4',
-    'html2text'
-    ],
+  name = 'robloxapi',        
+  packages = ['robloxapi'],
+  version = '3.0',   
+  license='MIT',       
+  description = 'A Python wrapper for roblox',
+  author = 'Iranathan',                
+  author_email = 'iranathan8@gmail.com',
+  url = 'https://github.com/user/reponame', 
+  keywords = ['python_roblox', 'roblox', 'robloxapi'],
+  install_requires=[            
+          'requests',
+          'beautifulsoup4'
+      ],
+  classifiers=[
+    'Development Status :: 3 - Alpha',      
 
-    author="iranathan",
-    description="A Python wrapper for roblox",
-    license="MIT",
-    keywords="https://github.com/iranathan/robloxapi",
-    url="https://github.com/iranathan/robloxapi",   
-    project_urls={
-        "Documentation": "https://github.com/iranathan/robloxapi/wiki",
-        "Source Code": "https://github.com/iranathan/robloxapi",
-    }
+    'Intended Audience :: Developers',     
+    'Topic :: Software Development :: Build Tools',
 
-
+    'License :: OSI Approved :: MIT License',  
+    'Programming Language :: Python :: 3.6',
+  ],
 )
