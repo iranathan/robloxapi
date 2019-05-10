@@ -1,8 +1,5 @@
-
-from .request import request
 from bs4 import BeautifulSoup
 import requests
-from .xcsrf import get_xcsrf
 import json
 class User:
      
