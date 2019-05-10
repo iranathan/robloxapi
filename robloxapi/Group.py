@@ -1,6 +1,5 @@
 from bs4 import BeautifulSoup
 import requests
-from .xcsrf import get_xcsrf
 import json
 import html2text
 class Group:
