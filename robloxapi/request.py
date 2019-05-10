@@ -1,4 +1,3 @@
-import requests
 from json import loads
 from json import dumps
 import json
