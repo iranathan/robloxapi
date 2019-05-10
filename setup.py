@@ -1,8 +1,8 @@
 from distutils.core import setup
 setup(
   name = 'robloxapi',        
-  packages = ['robloxapi'],
-  version = '3.0',   
+  packages = ['robloxapi', 'robloxapi.utils'],
+  version = '3.1',   
   license='MIT',       
   description = 'A Python wrapper for roblox',
   author = 'Iranathan',                
