@@ -1,9 +1,6 @@
 from distutils.core import setup
 setup(
   name = 'robloxapi',
-  package_dir = {
-      'robloxapi': 'robloxapi',
-  },
   packages = ['robloxapi', 'robloxapi.utils'],
   version = '3.1',   
   license='MIT',       
