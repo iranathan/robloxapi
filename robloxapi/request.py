@@ -36,7 +36,7 @@ class request:
             else:
                 logging.error('Failed to get xcsrf token.')
         else:
-            logging.error('Error with request code: ' + r.status_code + ' data:' + r.text)
+            logging.error('Error with request code: ' + str(r.status_code) + ' data:' + r.text)
          
 
 
