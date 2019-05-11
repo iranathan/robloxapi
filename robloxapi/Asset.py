@@ -21,8 +21,24 @@ class Asset:
         url = f'https://avatar.roblox.com/v1/outfits/{OutfitId}/wear'
         data = self._request(url=url, method='POST')
         return json.loads(data)
-    
+
+    def searchCatalog(self, keyword, page=1):
+        keyword = str(keyword).replace(' ', '+')
+        url = f'https://search.roblox.com/catalog/items?Category=1&Direction=2&Keyword={keyword}&PageNumber={page}'
+        r = self._request(url=url, method='GET')
+        return json.loads(r)['Items']
+
+    def getAssetInfo(self, id):
+        url = 'http://api.roblox.com/marketplace/productinfo?assetId=' + str(id)
+        return json.loads(self._request(url=url))
+
+    def buyAsset(self, id):
+        info = self.getAssetInfo(id)
+        if str(info) == '{}': return {}
+        productId =
+        url = f'https://www.roblox.com/api/item.ashx?rqtype=purchase&productID=34472976&expectedCurrency=1&expectedPrice=5&expectedSellerID=1&userAssetID='
+
+
 
             
             
-        
