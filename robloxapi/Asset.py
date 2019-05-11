@@ -34,9 +34,13 @@ class Asset:
 
     def buyAsset(self, id):
         info = self.getAssetInfo(id)
-        if str(info) == '{}': return {}
-        productId =
-        url = f'https://www.roblox.com/api/item.ashx?rqtype=purchase&productID=34472976&expectedCurrency=1&expectedPrice=5&expectedSellerID=1&userAssetID='
+        if str(info) == '{}': return False
+        productId = info['ProductId']
+        price = info['PriceInRobux']
+        id = info['Creator']['Id']
+        url = f'https://www.roblox.com/api/item.ashx?rqtype=purchase&productID={productId}&expectedCurrency=1&expectedPrice={price}&expectedSellerID={id}&userAssetID='
+        r = self._request(url=url, method='POST')
+        return json.loads(r)
 
 
 
