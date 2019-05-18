@@ -22,9 +22,10 @@ class request:
         if not 'headers' in kwargs: kwargs['headers'] = self.get_headers()
         if not 'data' in kwargs: kwargs['data'] = None
         if 'X-CSRF-TOKEN' in kwargs: kwargs['headers']['X-CSRF-TOKEN'] = kwargs['X-CSRF-TOKEN']
+        if not 'allow_redirects' in kwargs: kwargs['allow_redirects'] = False
         url = kwargs['url']
         method = kwargs['method']
-        r = self._request.request(method, url, cookies=self.cookies, headers=kwargs['headers'], data=kwargs['data'])
+        r = self._request.request(method, url, cookies=self.cookies, headers=kwargs['headers'], data=kwargs['data'], allow_redirects=kwargs['allow_redirects'])
         if r.status_code == 200:
             return r.text
         elif r.status_code == 403:

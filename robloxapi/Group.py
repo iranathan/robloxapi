@@ -64,3 +64,69 @@ class Group:
         url = f'https://groups.roblox.com/v2/groups/{groupid}/wall/posts?limit=10'
         r = self._request(url=url)
         return r
+
+    def getRoleInGroup(self, groupid, id):
+        url = 'https://www.roblox.com/Game/LuaWebService/HandleSocialRequest.ashx?method=GetGroupRole&playerid=' + id + '&groupId=' + groupid
+        r = self._request(url=url)
+        return json.loads(r)
+
+    def setRank(self, groupid, roleid, targetid):
+        url = f'https://www.roblox.com/groups/api/change-member-rank?groupId={groupid}&newRoleSetId={roleid}&targetUserId={targetid}'
+        r = self._request(url=url, method='POST')
+        return json.loads(r)
+
+    def promote(self, groupid, id):
+        found_role = None
+        roles = self.getGroupRoles(groupid)['roles']
+        user_role = self.getRoleInGroup(groupid, id)
+        for i in range(len(roles)):
+            role = roles[i]
+            if role['name'] == user_role:
+                found_role = i
+        if found_role is None:
+            return {'ranked': False, 'reason': 'User not in group'}
+        old_role_info = roles[int(found_role)]
+        new_role_info = roles[int(found_role) + 1]
+        r = self.setRank(groupid, new_role_info['id'])
+        if r['success'] is True:
+            return {
+                'ranked': True,
+                'reason': '',
+                'oldRole': old_role_info,
+                'newRole': new_role_info
+            }
+        else:
+            return {
+                'ranked': False,
+                'reason': 'Failed to rank member. Role too high'
+            }
+
+    def demote(self, groupid, id):
+        found_role = None
+        roles = self.getGroupRoles(groupid)['roles']
+        user_role = self.getRoleInGroup(groupid, id)
+        for i in range(len(roles)):
+            role = roles[i]
+            if role['name'] == user_role:
+                found_role = i
+        if found_role is None:
+            return {'ranked': False, 'reason': 'User not in group'}
+        old_role_info = roles[int(found_role)]
+        new_role_info = roles[int(found_role) - 1]
+        r = self.setRank(groupid, new_role_info['id'])
+        if r['success'] is True:
+            return {
+                'ranked': True,
+                'reason': '',
+                'oldRole': old_role_info,
+                'newRole': new_role_info
+            }
+        else:
+            return {
+                'ranked': False,
+                'reason': 'Failed to rank member. Role too high'
+            }
+
+
+
+
