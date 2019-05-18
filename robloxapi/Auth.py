@@ -12,7 +12,7 @@ class Auth:
         }
         headers = self.get()
         r = requests.get(url, cookies=cookies, headers=headers)
-        if r.text != 'null':
+        if r.text == 'null':
             return False
         else:
             return client(cookie)
