@@ -15,5 +15,5 @@ class Auth:
         if r.text == 'null':
             return False
         else:
-            return client(cookie)
+            return self.client_class(cookie)
 
