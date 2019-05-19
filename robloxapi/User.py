@@ -120,4 +120,12 @@ class User:
         }
         r = self._request(url=url, data=json.dumps(data), method='POST')
         return r
-
+    
+    def send_message(self, recipientid, subject, body):
+        url = 'https://www.roblox.com/messages/send'
+        data = {
+            'recipientid': recipientid,
+            'subject': subject,
+            'body': body
+        }
+        return json.loads(self._request(url=url, method='POST', data=data).text)
