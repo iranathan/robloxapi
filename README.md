@@ -1,30 +1,11 @@
 # robloxapi
-A python module for using the roblox api
+** THIS IS THE ASYNC VERSION OF THE PACKAGE **
+If you want to use the non async version: [Click here](https://github.com/iranathan/robloxapi/tree/master)
 
 ***
 
 ### Install command:
 
-`pip install git+https://github.com/iranathan/robloxapi.git`
+`pip install git+https://github.com/iranathan/robloxapi.git@async`
 
 ***
-
-### Docs:
-
-https://github.com/iranathan/robloxapi/wiki/User
-
-***
-
-### Coming soon:
-
-**Docs for group functions**
-
-### Change log
-
-**Added reportUser** 
-
-**Added group functions**
-
-***
-
-
