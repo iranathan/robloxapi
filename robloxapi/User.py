@@ -125,7 +125,7 @@ class User:
         r = await self._request(url=url, data=json.dumps(data), method='POST')
         return json.loads(r)
    
-    def removeFriend(self, Userid):
+    async def removeFriend(self, Userid):
         url = 'https://www.roblox.com/api/friends/removefriend'
         data = {
             'targetUserID': int(Userid)
