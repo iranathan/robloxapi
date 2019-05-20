@@ -16,7 +16,7 @@ class User:
         r = await self._request(url='http://api.roblox.com/users/' + str(id))
         return json.loads(r)
     
-    def searchUsers(self, keyword):
+    async def searchUsers(self, keyword):
         if len(str(keyword)) > 3:
             url = f'https://www.roblox.com/search/users/results?keyword={keyword}&maxRows=12&startIndex=0'
             r = await self._request(url=url)
