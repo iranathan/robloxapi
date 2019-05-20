@@ -8,26 +8,38 @@ class User:
         self._request = request_client.request
     
     #/users/get-by-username?username={id}
-    def IdByUsername(self, username):
-        r = self._request(url='http://api.roblox.com/users/get-by-username?username=' + username)
+    async def IdByUsername(self, username):
+        r = await self._request(url='http://api.roblox.com/users/get-by-username?username=' + username)
         return json.loads(r)
     #/users/{id}
-    def UsernameById(self, id):
-        r = self._request(url='http://api.roblox.com/users/' + str(id))
-        return r
+    async def UsernameById(self, id):
+        r = await self._request(url='http://api.roblox.com/users/' + str(id))
+        return json.loads(r)
     
     def searchUsers(self, keyword):
         if len(str(keyword)) > 3:
-            url = f'https://www.roblox.com/search/users/results?keyword={ketword}&maxRows=12&startIndex=0'
+            url = f'https://www.roblox.com/search/users/results?keyword={keyword}&maxRows=12&startIndex=0'
+            r = await self._request(url=url)
+            data = json.loads(r)
+            return {
+                'resultsCount': data['TotalResults'],
+                'results': data['UserSearchResults']
+            }
+        else:
+            return {
+                'resultsCount': 0,
+                'results': []
+            }
+
     
-    def getProfile(self, id):
+    async def getProfile(self, id):
         url = 'https://www.roblox.com/users/' + str(id) + '/profile'
-        r = self._request(url=url)
+        r = await self._request(url=url)
         soup = BeautifulSoup(r, 'html.parser')
         username = soup.find('h2').getText()
         avatar = str(soup.find('img').get('src'))
         blurb = soup.find('span', {'class': 'profile-about-content-text linkify'}).getText()
-        status_req = self._request(url='https://www.roblox.com/users/profile/profileheader-json?userId=' + id)
+        status_req = await self._request(url='https://www.roblox.com/users/profile/profileheader-json?userId=' + id)
         data = json.loads(status_req)
         status = data['UserStatus']
         follow_count = data['FollowersCount']
@@ -57,7 +69,7 @@ class User:
             bc = 'OBC'
         bc_img = str('https://www.roblox.com/Thumbs/BCOverlay.ashx?username=' + username)
         badge_url = 'https://www.roblox.com/badges/roblox?userId={}&imgWidth=110&imgHeight=110&imgFormat=png'.format(id)
-        badge_data = json.loads(self._request(url=badge_url))
+        badge_data = json.loads(await self._request(url=badge_url))
         Profile = {}
         Profile['username'] = username
         Profile['id'] = id
@@ -79,45 +91,45 @@ class User:
 
     #Requires auth:
 
-    def get_self(self):
+    async def get_self(self):
         url = 'https://www.roblox.com/game/GetCurrentUser.ashx'
-        res = self._request(url=url, method="GET")
+        res = await self._request(url=url, method="GET")
         return res
      
-    def updateStatus(self, newStatus, facebook=False):
+    async def updateStatus(self, newStatus, facebook=False):
         url = 'https://www.roblox.com/home/updatestatus'
         data = {'status': str(newStatus)}
         if facebook is True:
             data['sendToFacebook'] = True
         data = json.dumps(data)
-        r = self._request(url=url, method='POST', data=data)
+        return json.loads(await self._request(url=url, method='POST', data=data))
     
 
-    def blockUser(self, id):
+    async def blockUser(self, id):
         url = 'https://www.roblox.com/userblock/blockuser'
         data = json.dumps({'blockeeId': id})
-        r = self._request(url=url, method='POST', data=data)
-        return r
+        r = await self._request(url=url, method='POST', data=data)
+        return json.loads(r)
     
-    def unblockUser(self, id):
+    async def unblockUser(self, id):
         url = 'https://www.roblox.com/userblock/unblockuser'
         data = json.dumps({'blockeeId': id}) 
-        r = self._request(url=data, method='POST', data=data)
-        return r
+        r = await self._request(url=data, method='POST', data=data)
+        return json.loads(r)
     
-    def addFriend(self, Userid):
+    async def addFriend(self, Userid):
         url = 'https://www.roblox.com/api/friends/sendfriendrequest'
         data = {
             'targetUserID': int(Userid)
         }
-        r = self._request(url=url, data=json.dumps(data), method='POST')
-        return r
+        r = await self._request(url=url, data=json.dumps(data), method='POST')
+        return json.loads(r)
    
     def removeFriend(self, Userid):
         url = 'https://www.roblox.com/api/friends/removefriend'
         data = {
             'targetUserID': int(Userid)
         }
-        r = self._request(url=url, data=json.dumps(data), method='POST')
-        return r
+        r = await self._request(url=url, data=json.dumps(data), method='POST')
+        return json.loads(r)
 
