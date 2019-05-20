@@ -23,6 +23,10 @@ class request:
         if not 'allow_redirects' in kwargs: kwargs['allow_redirects'] = False
         url = kwargs['url']
         method = kwargs['method']
+        if kwargs['data'] == None:
+            kwargs['data'] = b''
+        else:
+            kwargs['data'] = str.encode(kwargs['data'])
         async with self.session.request(method, url, data=str.encode(kwargs['data']), headers=kwargs['headers']) as response:
             if response.status == 200:
                 return await response.text()
