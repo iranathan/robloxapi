@@ -18,6 +18,11 @@ class Group:
         results = json.loads(self._request(url=url, method='GET'))
         return results
     
+    def getShout(self, id)
+        url = f'https://groups.roblox.com/v1/groups/{id}'
+        results = json.loads(self._request(url=url, method="GET"))
+        return results[shout]
+     
     def getGroupRoles(self, id, login=False):
         url = f'https://groups.roblox.com/v1/groups/{id}/roles'
         results = json.loads(self._request(url=url, method="GET"))
