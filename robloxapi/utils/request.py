@@ -27,7 +27,7 @@ class request:
             kwargs['data'] = b''
         else:
             kwargs['data'] = str.encode(kwargs['data'])
-        async with self.session.request(method, url, data=str.encode(kwargs['data']), headers=kwargs['headers']) as response:
+        async with self.session.request(method, url, data=kwargs['data'], headers=kwargs['headers']) as response:
             if response.status == 200:
                 return await response.text()
             elif response.status == 403:
