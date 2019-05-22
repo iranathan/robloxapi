@@ -11,17 +11,17 @@ class Group:
     def groupSearch(self, name, show):
         url = f'https://www.roblox.com/search/groups/list-json?keyword={name}&maxRows={show}&startRow=0'
         results = json.loads(self._request(url=url, method='GET'))['GroupSearchResults']  
-        return results
+        return json.loads(results)
 
     def getGroup(self, id, login=False):
         url = f'https://groups.roblox.com/v1/groups/{id}'
         results = json.loads(self._request(url=url, method='GET'))
-        return results
+        return json.loads(results)
     
     def getGroupRoles(self, id, login=False):
         url = f'https://groups.roblox.com/v1/groups/{id}/roles'
         results = json.loads(self._request(url=url, method="GET"))
-        return results
+        return json.loads(results)
     
     def groupPayout(self, groupid, userid, amount):
         url = f'https://groups.roblox.com/v1/groups/{groupid}/payouts'
@@ -36,21 +36,7 @@ class Group:
                 ]
             }
         results = self._request(url=url, method='POST', data=json.dumps(payout_data))
-        return results
-    
-    def getAuditLogs(self, groupid):
-        url = f'https://www.roblox.com/Groups/Audit.aspx?groupid={groupid}'
-        r = self._request(url=url, method='GET')
-        soup = BeautifulSoup(r, 'html.parser')
-        found = soup.find('div', {'id': 'AuditPage'})
-        allAudit = []
-        for message in found.find_all('tr', {'class': 'datarow'}):
-            print(type(message))
-            if message is not None:
-                description = str(message).split('<td class="Description">')[1]
-                print(html2text.html2text(description))
-           
-
+        return json.loads(results)
 
     def postShout(self, groupid, message):
         url = f'https://groups.roblox.com/v1/groups/{groupid}/status'
@@ -58,12 +44,12 @@ class Group:
             'message': message
         }
         r = self._request(url=url, method='PATCH', data=json.dumps(data))
-        return r
+        return json.loads(r)
     
     def getWall(self, groupid):
         url = f'https://groups.roblox.com/v2/groups/{groupid}/wall/posts?limit=10'
         r = self._request(url=url)
-        return r
+        return json.loads(r)
 
     def setRank(self, groupid, roleid, targetid):
         url = f'https://www.roblox.com/groups/api/change-member-rank?groupId={groupid}&newRoleSetId={roleid}&targetUserId={targetid}'
