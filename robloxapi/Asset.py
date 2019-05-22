@@ -3,8 +3,8 @@ class Asset:
     def __init__(self, request):
         self._request = request.request
     
-    def getOutfits(self):
-        url = 'https://avatar.roblox.com/v1/users/109503558/outfits?isEditable=true&itemsPerPage=50&page=1'
+    def getOutfits(self, UserId):
+        url = f'https://avatar.roblox.com/v1/users/{UserId}/outfits?isEditable=true&itemsPerPage=50&page=1'
         r = self._request(url=url, method='GET')
         data = json.loads(r)
         Outfits = {}
