@@ -1,5 +1,4 @@
 import json
-from utils.JSON import is_num
 
 
 class Trade:
@@ -107,19 +106,5 @@ class Trade:
 
         return TradeJSON
 
-    # https://inventory.roblox.com/v1/users/109503558/assets/collectibles?cursor=&sortOrder=Desc&limit=25
 
-    """
-    TradeJSON = {"AgentOfferList": [{"AgentID": 109503558, "OfferList": [
-        {"UserAssetID": "12515090617", "Name": "Portrait+of+a+Hero+Camping",
-         "ItemLink": "https://www.roblox.com/catalog/904541305/Portrait-of-a-Hero-Camping",
-         "ImageLink": "https://www.roblox.com/asset-thumbnail/image?assetId=904541305&height=110&width=110",
-         "AveragePrice": 1758, "OriginalPrice": "---", "SerialNumber": 288, "SerialNumberTotal": 569,
-         "MembershipLevel": null}], "OfferRobux": 0, "OfferValue": 1758}, {"AgentID": 286018909, "OfferList": [
-        {"UserAssetID": "3126016213", "Name": "Portrait+of+a+Hero+in+ROBLOX+",
-         "ItemLink": "https://www.roblox.com/catalog/331486631/Portrait-of-a-Hero-in-ROBLOX",
-         "ImageLink": "https://www.roblox.com/asset-thumbnail/image?assetId=331486631&height=110&width=110",
-         "AveragePrice": 831, "OriginalPrice": "---", "SerialNumber": "---", "SerialNumberTotal": "---",
-         "MembershipLevel": null}], "OfferRobux": 0, "OfferValue": 831}], "IsActive": false, "TradeStatus": "Open"}
-         """
 
