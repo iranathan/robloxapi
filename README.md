@@ -13,7 +13,7 @@ A python module for using the roblox api
 
 https://robloxapi.readthedocs.io/en/latest/
 
-If you need further assistance please join this [discord](https://discord.gg/ZVcBRbV) server and ask questions in #python_robloxapi:
+If you need further assistance please join this [discord](https://discord.gg/ZVcBRbV) server and ask questions in [#python_robloxapi](https://discordapp.com/channels/332692436478590986/571069070263189515)
 
 
 
@@ -21,13 +21,7 @@ If you need further assistance please join this [discord](https://discord.gg/ZVc
 
 ### Coming soon:
 
-**Docs for group functions**
-
-### Change log
-
-**Added reportUser** 
-
-**Added group functions**
+**More auth functions**
 
 ***
 
