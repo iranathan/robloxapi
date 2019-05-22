@@ -8,7 +8,8 @@ class Trade:
         self.authorized = request.auth
         self.getTrades = 'https://www.roblox.com/my/money.aspx/getmyitemtrades'
         self.action = 'https://www.roblox.com/trade/tradehandler.ashx'
-        self.Id = request.user_info['Id']
+        if 'user_info' in self._request:
+            self.Id = self._request.user_info['Id']
         self.tradeFormat = {
             'AgentID': '',
             'OfferList': [],
