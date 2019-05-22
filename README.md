@@ -11,7 +11,11 @@ A python module for using the roblox api
 
 ### Docs:
 
-https://github.com/iranathan/robloxapi/wiki/User
+https://robloxapi.readthedocs.io/en/latest/
+
+If you need further assistance please join this [discord](https://discord.gg/ZVcBRbV) server and ask questions in #python_robloxapi:
+
+
 
 ***
 
