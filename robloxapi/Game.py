@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import re
 
 
+
 class Game:
 
     def __init__(self, request):
@@ -27,4 +28,8 @@ class Game:
                 'link': link
             }
         return gameDict
+
+
+
+
 
