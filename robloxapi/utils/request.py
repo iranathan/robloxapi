@@ -7,7 +7,7 @@ from .xcsrf import get_xcsrf
 import logging
 class request:
 
-    def __init__(self, cookie=None):
+    def __init__(self, cookie=None, debug=False):
         self.auth = False
         self.xcsrf = get_xcsrf()
         self._request = requests
@@ -15,12 +15,13 @@ class request:
         if cookie:
             self.login(cookie)
             
-
+    
 
     def request(self, **kwargs):
         if not 'method' in kwargs: kwargs['method'] = 'GET'
         if not 'headers' in kwargs: kwargs['headers'] = self.get_headers()
         if not 'data' in kwargs: kwargs['data'] = None
+        if kwargs['method'] == 'POST' and str(self.cookies) == '{}': return logging.error('You must be logged in to send that request.')
         if 'X-CSRF-TOKEN' in kwargs: kwargs['headers']['X-CSRF-TOKEN'] = kwargs['X-CSRF-TOKEN']
         url = kwargs['url']
         method = kwargs['method']
