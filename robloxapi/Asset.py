@@ -2,9 +2,10 @@ import json
 class Asset:
     def __init__(self, request):
         self._request = request.request
+        self.Id = request.user_info['Id']
     
-    def getOutfits(self, UserId):
-        url = f'https://avatar.roblox.com/v1/users/{UserId}/outfits?isEditable=true&itemsPerPage=50&page=1'
+    def getOutfits(self):
+        url = f'https://avatar.roblox.com/v1/users/{self.Id}/outfits?isEditable=true&itemsPerPage=50&page=1'
         r = self._request(url=url, method='GET')
         data = json.loads(r)
         Outfits = {}
