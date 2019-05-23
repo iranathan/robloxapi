@@ -19,7 +19,8 @@ class Auth:
 
     def RefreshToken(self):
         url = 'https://www.roblox.com/authentication/signoutfromallsessionsandreauthenticate'
-        print(self._request(url=url, method='POST'))
+        r = self._request(url=url, method='POST')
+        return r.cookies
 
     def IsUsenameTaken(self, username):
         url = f'https://auth.roblox.com/v1/usernames/validate?birthday=9999-06-08T22:00:00.000Z&context=Signup&username={username}'
