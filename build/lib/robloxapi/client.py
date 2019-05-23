@@ -16,10 +16,6 @@ class client:
         self.Auth = Auth(self.request_client, client)
         self.Game = Game(self.request_client) #TODO: Add more functions to Game class.
 
-        #Info
-        self.cookie = cookie
-
-
 
     
 
