@@ -4,6 +4,7 @@ import json
 class Asset:
     def __init__(self, request):
         self._request = request.request
+        self.rawRequest = request
 
     def getUserLimiteds(self, id, cursor=''):
         url = f'https://inventory.roblox.com/v1/users/{id}/assets/collectibles?cursor={cursor}&sortOrder=Desc&limit=100'
@@ -11,7 +12,7 @@ class Asset:
         return json.loads(r)
 
     def getOutfits(self):
-        self.Id = request.user_info['Id']
+        self.Id = self.rawRequest.user_info['Id']
         url = f'https://avatar.roblox.com/v1/users/{self.Id}/outfits?isEditable=true&itemsPerPage=50&page=1'
         r = self._request(url=url, method='GET')
         data = json.loads(r)
@@ -50,6 +51,10 @@ class Asset:
         r = self._request(url=url, method='POST')
         return json.loads(r)
 
+    # TODO:
     def sellAsset(self, AssetId):
         assetInfo = self.getAssetInfo(AssetId)
         id = assetInfo
+        data = {
+
+        }

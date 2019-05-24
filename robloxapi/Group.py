@@ -11,17 +11,17 @@ class Group:
     def groupSearch(self, name, show):
         url = f'https://www.roblox.com/search/groups/list-json?keyword={name}&maxRows={show}&startRow=0'
         results = json.loads(self._request(url=url, method='GET'))['GroupSearchResults']  
-        return json.loads(results)
+        return results
 
     def getGroup(self, id, login=False):
         url = f'https://groups.roblox.com/v1/groups/{id}'
         results = json.loads(self._request(url=url, method='GET'))
-        return json.loads(results)
+        return results
     
     def getGroupRoles(self, id, login=False):
         url = f'https://groups.roblox.com/v1/groups/{id}/roles'
         results = json.loads(self._request(url=url, method="GET"))
-        return json.loads(results)
+        return results
     
     def groupPayout(self, groupid, userid, amount):
         url = f'https://groups.roblox.com/v1/groups/{groupid}/payouts'

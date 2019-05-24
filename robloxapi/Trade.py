@@ -5,6 +5,7 @@ class Trade:
 
     def __init__(self, request):
         self._request = request.request
+        self.rawRequest = request
         self.authorized = request.auth
         self.getTrades = 'https://www.roblox.com/my/money.aspx/getmyitemtrades'
         self.action = 'https://www.roblox.com/trade/tradehandler.ashx'
@@ -21,7 +22,7 @@ class Trade:
             'statustype': 'inbound'
         }
         r = self._request(url=self.getTrades, data=json.dumps(data), method='POST')
-        return json.loads(r)['d']
+        return json.loads(json.loads(r)['d'])
 
     def getTrade(self, tradeId):
         data = {
@@ -48,7 +49,7 @@ class Trade:
         return json.loads(r)
 
     def sendTrade(self, id: int, SendItems: list, GetItems: list):
-        selfId = self._request.user_info['Id']
+        selfId = self.rawRequest.user_info['Id']
         url = f'https://inventory.roblox.com/v1/users/{selfId}/assets/collectibles?cursor=&sortOrder=Desc&limit=100'
         r = self._request(url=url)
         data = json.loads(r)
@@ -59,13 +60,13 @@ class Trade:
             'TradeStatus': 'Open'
         }]
         tradeMe = {
-            'AgentID': self.Id,
+            'AgentID': selfId,
             'OfferList': [],
             'OfferRobux': 0,
             'OfferValue': 0
         }
-        for item in data:
-            if item in SendItems:
+        for item in data['data']:
+            if (len(list(filter(lambda x: str(x) == str(item['assetId']), SendItems))) > 0):
                 assetId = item['assetId']
                 tradeMe['OfferList'].append({
                     'UserAssetID': item['userAssetId'],
@@ -85,9 +86,10 @@ class Trade:
         #
         url = f'https://inventory.roblox.com/v1/users/{id}/assets/collectibles?cursor=&sortOrder=Desc&limit=100'
         userItems = self._request(url=url, method='GET')
-        for item in userItems:
-            if item in GetItems:
-                tradeMe = self.tradeFormat
+        userItems = json.loads(userItems)
+        tradeMe = self.tradeFormat
+        for item in userItems['data']:
+            if (len(list(filter(lambda x: str(x) == str(item['assetId']), GetItems))) > 0):
                 tradeMe['AgentID'] = id
                 assetId = item['assetId']
                 tradeMe['OfferList'].append({
@@ -104,7 +106,14 @@ class Trade:
                 tradeMe['OfferValue'] = tradeMe['OfferValue'] + int(item['recentAveragePrice'])
         TradeJSON['AgentOfferList'].append(tradeMe)
 
-        return TradeJSON
+        #Send data to roblox
+
+        data = json.dumps({
+            'cmd': 'send',
+            'TradeJSON': json.dumps(TradeJSON)
+        })
+        r = self._request(url='https://www.roblox.com/Trade/tradehandler.ashx', data=data, method='POST')
+
 
 
 

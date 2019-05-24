@@ -53,3 +53,6 @@ class Asset:
     def sellAsset(self, AssetId):
         assetInfo = self.getAssetInfo(AssetId)
         id = assetInfo
+        data = {
+
+        }

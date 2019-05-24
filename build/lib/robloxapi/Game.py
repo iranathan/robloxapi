@@ -29,6 +29,10 @@ class Game:
             }
         return gameDict
 
+    def getGameServers(self, id):
+        url = f'https://www.roblox.com/games/getgameinstancesjson?placeId={id}&startIndex=0'
+        r = self._request(url=url, method='GET')
+        return json.loads(r)['Collection']
 
 
 

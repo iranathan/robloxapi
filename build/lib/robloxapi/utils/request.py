@@ -4,16 +4,23 @@ from json import dumps
 import json
 import requests
 from .xcsrf import get_xcsrf
+from .Errors import AuthError
 import logging
+
+
 class request:
 
-    def __init__(self, cookie=None, debug=False):
+    def __init__(self, cookie=None, debug=False, ready_event=None):
         self.auth = False
         self.xcsrf = get_xcsrf()
         self._request = requests
         self.cookies = {}
+        self.debug = debug
+        self.ready_event = ready_event
         if cookie:
             self.login(cookie)
+        else:
+            self.ready_event(user=None)
             
     
 
@@ -21,15 +28,17 @@ class request:
         if not 'method' in kwargs: kwargs['method'] = 'GET'
         if not 'headers' in kwargs: kwargs['headers'] = self.get_headers()
         if not 'data' in kwargs: kwargs['data'] = None
-        if kwargs['method'] == 'POST' and str(self.cookies) == '{}': return logging.error('You must be logged in to send that request.')
+        if kwargs['method'] == 'POST' and str(self.cookies) == '{}': raise AuthError('You must login to use that function')
         if 'X-CSRF-TOKEN' in kwargs: kwargs['headers']['X-CSRF-TOKEN'] = kwargs['X-CSRF-TOKEN']
         url = kwargs['url']
         method = kwargs['method']
         r = self._request.request(method, url, cookies=self.cookies, headers=kwargs['headers'], data=kwargs['data'])
+        if self.debug is True:
+            logging.debug(f'{url} {method} {r.status_code}')
         if r.status_code == 200:
             return r.text
         elif r.status_code == 403:
-            if r.headers['X-CSRF-TOKEN']:
+            if 'X-CSRF-TOKEN' in r.headers:
                 self.xcsrf = r.headers['X-CSRF-TOKEN']
                 kwargs['X-CSRF-TOKEN'] = self.xcsrf
                 res = self.request(**kwargs)
@@ -71,6 +80,7 @@ class request:
             self.cookies = {}
             self.auth = False
             self.user_info = {}
+            self.ready_event(user=None)
         else:
             self.cookies = cookies
             self.auth = True
@@ -81,3 +91,5 @@ class request:
                 'Id': info['UserId'],
                 'Robux': info['Robux']
             }
+            if self.ready_event:
+                self.ready_event(user=self.user_info)
