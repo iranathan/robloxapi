@@ -58,7 +58,6 @@ class Event:
             try:
                 catched[i]
             except IndexError:
-                print(current_audit[i])
                 log.append(current_audit[i])
         if len(catched) < len(current_audit):
             self.function(log)

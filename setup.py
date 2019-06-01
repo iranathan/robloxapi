@@ -5,9 +5,16 @@ setup(
   version = '3.4',
   license='MIT',       
   description = 'A Python wrapper for roblox',
+  long_description = '''
+  Just another wrapper for the roblox api. 
+  github: https://github.com/iranathan/robloxapi
+  docs: https://robloxapi.readthedocs.io/en/latest/ (not the full package is documented will be soon.)
+  
+  There is also an async version on the github.
+  ''',
+  url = 'https://github.com/iranathan/robloxapi',
   author = 'Iranathan',                
   author_email = 'iranathan8@gmail.com',
-  url = 'https://github.com/user/reponame', 
   keywords = ['python_roblox', 'roblox', 'robloxapi'],
   install_requires=[            
           'requests',
