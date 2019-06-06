@@ -36,8 +36,6 @@ class Event:
         self.client = client
         if event == 'onShout':
             self.rt = RepeatedTimer(3, self.onShout, args)
-        elif event == 'onAuditChange':
-            self.rt = RepeatedTimer(3, self.onAuditChange, args)
 
     def onShout(self, id):
         url = f'https://groups.roblox.com/v1/groups/{id}'
@@ -48,20 +46,6 @@ class Event:
             if self.catch['body'] == results['shout']['body']: return
             self.catch = results['shout']
             self.function(results['shout'])
-
-    def onAuditChange(self, id):
-        current_audit = self.client.Group.getAuditLog(id)
-        catched = None
-        if not catched: catched = current_audit
-        log = []
-        for i in list(range(len(current_audit))):
-            try:
-                catched[i]
-            except IndexError:
-                print(current_audit[i])
-                log.append(current_audit[i])
-        if len(catched) < len(current_audit):
-            self.function(log)
 
 
 
