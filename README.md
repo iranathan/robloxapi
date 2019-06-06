@@ -1,7 +1,7 @@
 # robloxapi
 
 ![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)
-[![ROBLOX API Discord](https://img.shields.io/badge/discord-roblox%20api%20chat-blue.svg)](https://discord.gg/ZVcBRbV)
+[![Largest Roblox API Discord](https://img.shields.io/discord/332692436478590986.svg?style=popout)](https://discord.gg/ZVcBRbV)
 [![Downloads](http://pepy.tech/badge/robloxapi)](http://pepy.tech/project/robloxapi)
 
 A python module for using the roblox api
