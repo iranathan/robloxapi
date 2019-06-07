@@ -45,10 +45,10 @@ class request:
                 return res
             else:
                 logging.error('Failed to get xcsrf token.')
-                return {}
+                return r.text
         else:
             logging.error('Error with request code: ' + str(r.status_code) + ' data:' + r.text)
-            return {}
+            return r.text
          
 
 
