@@ -17,10 +17,7 @@ class request:
         self.cookies = {}
         self.debug = debug
         self.ready_event = ready_event
-        if cookie:
-            self.login(cookie)
-        else:
-            self.ready_event(user=None)
+        self.login(cookie)
             
     
 
