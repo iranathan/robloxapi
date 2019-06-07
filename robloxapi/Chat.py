@@ -52,7 +52,7 @@ class Chat:
         })
         r = json.loads(self._request(url=url, method='POST', data=data))['conversation']
         return {
-            'id': r['id']
-            'title': r['title']
-            'members': r['participants'],
+            'id': r['id'],
+            'title': r['title'],
+            'members': r['participants']
         }

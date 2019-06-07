@@ -3,6 +3,7 @@ setup.cfg
 setup.py
 robloxapi/Asset.py
 robloxapi/Auth.py
+robloxapi/Chat.py
 robloxapi/Game.py
 robloxapi/Group.py
 robloxapi/Trade.py
