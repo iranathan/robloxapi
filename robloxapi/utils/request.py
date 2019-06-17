@@ -70,6 +70,10 @@ class request:
 
 
     def login(self, cookie):
+        if not cookie:
+            if self.ready_event:
+                self.self.ready_event()
+            
         url = 'https://www.roblox.com/game/GetCurrentUser.ashx'
         cookies = {
             '.ROBLOSECURITY': cookie
