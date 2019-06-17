@@ -10,11 +10,11 @@ class User:
     #/users/get-by-username?username={id}
     def IdByUsername(self, username):
         r = self._request(url='http://api.roblox.com/users/get-by-username?username=' + username)
-        return json.loads(r)
+        return json.loads(r).get('Username')
     #/users/{id}
     def UsernameById(self, id):
         r = self._request(url='http://api.roblox.com/users/' + str(id))
-        return r
+        return json.loads(r).get('Id')
     
     def searchUsers(self, keyword):
         if len(str(keyword)) > 3:
@@ -68,7 +68,7 @@ class User:
             'type': bc,
             'image_url': bc_img
         }
-        Profile['Activity']: get_status
+        Profile['Activity'] = get_status
         Profile['count'] = {
             'FollowersCount': follow_count,
             'FollowingsCount': Following_count,
@@ -91,19 +91,20 @@ class User:
             data['sendToFacebook'] = True
         data = json.dumps(data)
         r = self._request(url=url, method='POST', data=data)
+        return json.loads(r.text)
     
 
     def blockUser(self, id):
         url = 'https://www.roblox.com/userblock/blockuser'
         data = json.dumps({'blockeeId': id})
         r = self._request(url=url, method='POST', data=data)
-        return r
+        return json.loads(r.text)
     
     def unblockUser(self, id):
         url = 'https://www.roblox.com/userblock/unblockuser'
         data = json.dumps({'blockeeId': id}) 
         r = self._request(url=data, method='POST', data=data)
-        return r
+        return json.loads(r.text)
     
     def addFriend(self, Userid):
         url = 'https://www.roblox.com/api/friends/sendfriendrequest'
@@ -111,7 +112,8 @@ class User:
             'targetUserID': int(Userid)
         }
         r = self._request(url=url, data=json.dumps(data), method='POST')
-        return r
+        return json.loads(r.text)
+
    
     def removeFriend(self, Userid):
         url = 'https://www.roblox.com/api/friends/removefriend'
@@ -119,7 +121,7 @@ class User:
             'targetUserID': int(Userid)
         }
         r = self._request(url=url, data=json.dumps(data), method='POST')
-        return r
+        return json.loads(r.text)
     
     def send_message(self, recipientid, subject, body):
         url = 'https://www.roblox.com/messages/send'
