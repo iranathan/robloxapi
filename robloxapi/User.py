@@ -25,7 +25,7 @@ class User:
         r = self._request(url=url)
         soup = BeautifulSoup(r, 'html.parser')
         username = soup.find('h2').getText()
-        avatar = soup.find('div', {'id': 'UserAvatar'}).span.img['src']
+        avatar = soup.find('span', {'class': 'thumbnail-span'}).img['src']
         blurb = soup.find('span', {'class': 'profile-about-content-text linkify'}).getText()
         status_req = self._request(url='https://www.roblox.com/users/profile/profileheader-json?userId=' + id)
         data = json.loads(status_req)
