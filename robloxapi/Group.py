@@ -4,11 +4,13 @@ import json
 import html2text
 import re
 from .utils.Errors import AuthError
+
+
 class Group:
-     
+
     def __init__(self, request_client):
         self._request = request_client.request
-        
+
     def createGroup(self, name, description, image_path, public, buildersclubonly):
         url = 'https://groups.roblox.com/v1/groups/create'
         data = {
@@ -23,31 +25,31 @@ class Group:
 
     def groupSearch(self, name, show):
         url = f'https://www.roblox.com/search/groups/list-json?keyword={name}&maxRows={show}&startRow=0'
-        results = json.loads(self._request(url=url, method='GET'))['GroupSearchResults']  
+        results = json.loads(self._request(url=url, method='GET'))['GroupSearchResults']
         return results
 
     def getGroup(self, id, login=False):
         url = f'https://groups.roblox.com/v1/groups/{id}'
         results = json.loads(self._request(url=url, method='GET'))
         return results
-    
+
     def getGroupRoles(self, id, login=False):
         url = f'https://groups.roblox.com/v1/groups/{id}/roles'
         results = json.loads(self._request(url=url, method="GET"))
         return results
-    
+
     def groupPayout(self, groupid, userid, amount, others=[]):
         url = f'https://groups.roblox.com/v1/groups/{groupid}/payouts'
         payout_data = {
             'PayoutType': 'FixedAmount',
             'Recipients': [
-                    {
-                        'recipientId': userid,
-                        'recipientType': 'User',
-                        'amount': amount,
-                    }
-                ]
-            }
+                {
+                    'recipientId': userid,
+                    'recipientType': 'User',
+                    'amount': amount,
+                }
+            ]
+        }
         if len(others) > 0:
             for pay in others:
                 payout_data['Recipients'].append(pay)
@@ -64,7 +66,8 @@ class Group:
         requests = []
         for request in tr:
             requests.append({
-                'JoinId': request.find('span', {"class": "btn-control btn-control-medium accept-join-request"})['data-rbx-join-request'],
+                'JoinId': request.find('span', {"class": "btn-control btn-control-medium accept-join-request"})[
+                    'data-rbx-join-request'],
                 'User': {
                     'AvatarPicture': request.td.span.img['src'],
                     'Username': request.find('a').text,
@@ -74,6 +77,40 @@ class Group:
             })
         return requests
 
+    def acceptJoinRequest(self, requestid):
+        url = 'https://www.roblox.com/group/handle-join-request'
+        data = {
+            'groupJoinRequestId': requestid
+        }
+        r = self._request(url=url, method='POST', data=json.dumps(data))
+        return json.loads(r)
+
+    def declineJoinRequest(self, requestid):
+        url = 'https://www.roblox.com/group/handle-join-request'
+        data = {
+            'groupJoinRequestId': requestid,
+            'accept': False
+        }
+        r = self._request(url=url, method='POST', data=json.dumps(data))
+        return json.loads(r)
+
+    def acceptJoinRequestById(self, groupid, id):
+        requests = self.getJoinRequests(groupid)
+        for request in requests:
+            user = request['User']['Id']
+            if user == id:
+                JoinId = request['JoinId']
+                return self.acceptJoinRequest(JoinId)
+        return {"success": False}
+
+    def declineJoinRequestById(self, groupid, id):
+        requests = self.getJoinRequests(groupid)
+        for request in requests:
+            user = request['User']['Id']
+            if user == id:
+                JoinId = request['JoinId']
+                return self.declineJoinRequest(JoinId)
+        return {"success": False}
 
     def postShout(self, groupid, message):
         url = f'https://groups.roblox.com/v1/groups/{groupid}/status'
@@ -82,7 +119,7 @@ class Group:
         }
         r = self._request(url=url, method='PATCH', data=json.dumps(data))
         return json.loads(r)
-    
+
     def getAuditLog(self, groupid):
         logs = []
         url = f'https://www.roblox.com/Groups/Audit.aspx?groupid={groupid}'
