@@ -19,7 +19,7 @@ class Group:
             'request.buildersClubMembersOnly': str(buildersclubonly).lower() or 'false'
         }
         files = {'upload_file': ('group.png', open(image_path, 'rb'), 'application/octet-stream')}
-        r = self._request(url, data=data, files=files)
+        r = self._request(url=url, data=data, files=files)
         return json.loads(r)
 
     def groupSearch(self, name, show):
