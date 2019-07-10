@@ -22,7 +22,7 @@ class Auth:
         r = self._request(url=url, method='POST')
         return r.cookies
 
-    def IsUsenameTaken(self, username):
+    def IsUsernameTaken(self, username):
         url = f'https://auth.roblox.com/v1/usernames/validate?birthday=9999-06-08T22:00:00.000Z&context=Signup&username={username}'
         r = self._request(url=url)
         if json.loads(r)['code'] == 0:
