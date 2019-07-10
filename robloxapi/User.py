@@ -10,12 +10,12 @@ class User:
     #/users/get-by-username?username={id}
     def IdByUsername(self, username):
         r = self._request(url=f'http://api.roblox.com/users/get-by-username?username={username}')
-        return json.loads(r).get('Username')
+        return json.loads(r).get('Id')
 
     #/users/{id}
     def UsernameById(self, id):
         r = self._request(url=f'http://api.roblox.com/users/{id}')
-        return json.loads(r).get('Id')
+        return json.loads(r).get('Username')
     
     def searchUsers(self, keyword):
         if len(str(keyword)) > 3:

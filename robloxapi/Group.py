@@ -9,7 +9,18 @@ class Group:
     def __init__(self, request_client):
         self._request = request_client.request
         
-    
+    def createGroup(self, name, description, image_path, public, buildersclubonly):
+        url = 'https://groups.roblox.com/v1/groups/create'
+        data = {
+            'request.name': name,
+            'request.description': description,
+            'request.publicGroup': str(public).lower() or 'false',
+            'request.buildersClubMembersOnly': str(buildersclubonly).lower() or 'false'
+        }
+        files = {'upload_file': ('group.png', open(image_path, 'rb'), 'application/octet-stream')}
+        r = self._request(url, data=data, files=files)
+        return json.loads(r)
+
     def groupSearch(self, name, show):
         url = f'https://www.roblox.com/search/groups/list-json?keyword={name}&maxRows={show}&startRow=0'
         results = json.loads(self._request(url=url, method='GET'))['GroupSearchResults']  
