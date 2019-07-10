@@ -1,4 +1,4 @@
-import requests
+import requests, json
 class Auth:
     def __init__(self, request, client):
         self._request = request.request
