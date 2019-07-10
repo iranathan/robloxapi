@@ -1,7 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
 import json
-import html2text
 import re
 from .utils.Errors import AuthError
 
