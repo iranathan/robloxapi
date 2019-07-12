@@ -17,8 +17,10 @@ class request:
         self.cookies = {}
         self.debug = debug
         self.ready_event = ready_event
-        self.login(cookie)
+        self.user_info = {}
         self.proxies = {}
+        if cookie:
+            self.login(cookie)
             
     
 
@@ -84,7 +86,6 @@ class request:
             logging.warning('Failed to login using robloxapi without auth.')
             self.cookies = {}
             self.auth = False
-            self.user_info = {}
             if self.ready_event:
                 self.ready_event(user=None)
         else:

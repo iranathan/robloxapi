@@ -7,6 +7,7 @@ from .Asset import Asset
 from .Auth import Auth
 from .Game import Game
 from .Chat import Chat
+from .Settings import Settings
 
 class client:
     def __init__(self, cookie='', debug=False, ready_event=None):
@@ -18,7 +19,7 @@ class client:
         self.Auth = Auth(self.request_client, client)
         self.Game = Game(self.request_client) #TODO: Add more functions to Game class.
         self.Chat = Chat(self.request_client)
-
+        self.Settings = Settings(self.request_client)
 
         #Info
         self.cookie = cookie
