@@ -58,7 +58,7 @@ class request:
         cookies = {
             '.ROBLOSECURITY': cookie
         }
-        async with self.session.get(url, headers=get_headers()) as response:
+        async with self.session.get(url, headers=self.get_headers()) as response:
             data = await response.text()
             if data == 'null':
                 logging.warning('Failed to login. Using robloxapi without auth.')
