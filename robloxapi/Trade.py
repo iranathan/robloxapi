@@ -108,13 +108,15 @@ class Trade:
 
         #Send data to roblox
 
+
         data = json.dumps({
             'cmd': 'send',
             'TradeJSON': json.dumps(TradeJSON)
         })
         r = self._request(url='https://www.roblox.com/Trade/tradehandler.ashx', data=data, method='POST')
-        return json.loads(r.text)
+        return json.loads(r)
 
 
 
 
+ら
