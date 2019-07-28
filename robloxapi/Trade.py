@@ -54,11 +54,7 @@ class Trade:
         r = self._request(url=url)
         data = json.loads(r)
         TradeJSON = {}
-        TradeJSON['AgentOfferList'] = [{
-            'AgentOfferList': [],
-            'IsActive': False,
-            'TradeStatus': 'Open'
-        }]
+        TradeJSON['AgentOfferList'] = []
         tradeMe = {
             'AgentID': selfId,
             'OfferList': [],
@@ -69,15 +65,15 @@ class Trade:
             if (len(list(filter(lambda x: str(x) == str(item['assetId']), SendItems))) > 0):
                 assetId = item['assetId']
                 tradeMe['OfferList'].append({
-                    'UserAssetID': item['userAssetId'],
-                    'Name': item['name'].replace(' ', '+'),
+                    'UserAssetID': str(item['userAssetId']),
+                    'Name': item['name'],
                     'ItemLink': f'https://www.roblox.com/catalog/{assetId}/redirect',
                     'ImageLink': f'https://www.roblox.com/asset-thumbnail/image?assetId={assetId}&height=110&width=110',
                     'AveragePrice': item['recentAveragePrice'],
-                    'OriginalPrice': item['originalPrice'],
-                    'SerialNumber': item['serialNumber'],
-                    'SerialNumberTotal': item['assetStock'],
-                    'MembershipLevel': item['buildersClubMembershipType']
+                    'OriginalPrice': item['originalPrice'] or '---',
+                    'SerialNumber': item['serialNumber'] or '---',
+                    'SerialNumberTotal': item['assetStock'] or '---',
+                    'MembershipLevel': item['buildersClubMembershipType'] if item['buildersClubMembershipType'] != 0 else None
                 })
                 tradeMe['OfferValue'] = tradeMe['OfferValue'] + int(item['recentAveragePrice'])
         TradeJSON['AgentOfferList'].append(tradeMe)
@@ -93,28 +89,29 @@ class Trade:
                 tradeMe['AgentID'] = id
                 assetId = item['assetId']
                 tradeMe['OfferList'].append({
-                    'UserAssetID': item['userAssetId'],
-                    'Name': item['name'].replace(' ', '+'),
+                    'UserAssetID': str(item['userAssetId']),
+                    'Name': item['name'],
                     'ItemLink': f'https://www.roblox.com/catalog/{assetId}/redirect',
                     'ImageLink': f'https://www.roblox.com/asset-thumbnail/image?assetId={assetId}&height=110&width=110',
                     'AveragePrice': item['recentAveragePrice'],
-                    'OriginalPrice': item['originalPrice'],
-                    'SerialNumber': item['serialNumber'],
-                    'SerialNumberTotal': item['assetStock'],
-                    'MembershipLevel': item['buildersClubMembershipType']
+                    'OriginalPrice': item['originalPrice'] or '---',
+                    'SerialNumber': item['serialNumber'] or '---',
+                    'SerialNumberTotal': item['assetStock'] or '---',
+                    'MembershipLevel': item['buildersClubMembershipType'] if item['buildersClubMembershipType'] != 0 else None
                 })
                 tradeMe['OfferValue'] = tradeMe['OfferValue'] + int(item['recentAveragePrice'])
         TradeJSON['AgentOfferList'].append(tradeMe)
-
+        TradeJSON['IsActive'] = False
+        TradeJSON['TradeStatus'] = 'Open'
         #Send data to roblox
 
-
-        data = json.dumps({
+        data = {
             'cmd': 'send',
-            'TradeJSON': json.dumps(TradeJSON)
-        })
-        r = self._request(url='https://www.roblox.com/Trade/tradehandler.ashx', data=data, method='POST')
-        return json.loads(r)
+            'TradeJSON': json.dumps(TradeJSON).replace(' ', '')
+        }
+        r = self._request(url='https://www.roblox.com/Trade/tradehandler.ashx', data=data, method='POST', response=True)
+        print(r.text)
+
 
 
 
