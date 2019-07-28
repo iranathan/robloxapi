@@ -33,7 +33,7 @@ class User:
         username = soup.find('h2').getText()
         avatar = soup.find('img', {'alt': username})['src']
         blurb = soup.find('span', {'class': 'profile-about-content-text linkify'}).getText()
-        status_req = self._request(url='https://www.roblox.com/users/profile/profileheader-json?userId=' + id)
+        status_req = self._request(url='https://www.roblox.com/users/profile/profileheader-json?userId=' + str(id))
         data = json.loads(status_req)
         status = data['UserStatus']
         follow_count = data['FollowersCount']
