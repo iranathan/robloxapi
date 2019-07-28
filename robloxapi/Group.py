@@ -22,6 +22,10 @@ class Group:
         r = self._request(url=url, data=data, files=files)
         return json.loads(r)
 
+    def getFunds(self, groupId):
+        url = f'https://economy.roblox.com/v1/groups/{groupId}/currency'
+        return json.loads(self._request(url=url, method='GET')).get('robux')
+    
     def groupSearch(self, name, show):
         url = f'https://www.roblox.com/search/groups/list-json?keyword={name}&maxRows={show}&startRow=0'
         results = json.loads(self._request(url=url, method='GET'))['GroupSearchResults']

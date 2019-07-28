@@ -6,6 +6,7 @@ robloxapi/Auth.py
 robloxapi/Chat.py
 robloxapi/Game.py
 robloxapi/Group.py
+robloxapi/Settings.py
 robloxapi/Trade.py
 robloxapi/User.py
 robloxapi/__init__.py
