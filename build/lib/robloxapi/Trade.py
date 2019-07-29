@@ -8,7 +8,7 @@ class Trade:
         self.rawRequest = request
         self.authorized = request.auth
         self.getTrades = 'https://www.roblox.com/my/money.aspx/getmyitemtrades'
-        self.action = 'https://www.roblox.com/trade/tradehandler.ashx' #https://www.roblox.com/trade/tradehandler.ashx
+        self.action = 'https://www.roblox.com/trade/tradehandler.ashx'
         self.tradeFormat = {
             'AgentID': '',
             'OfferList': [],
@@ -29,7 +29,7 @@ class Trade:
             'TradeID': tradeId,
             'cmd': 'pull'
         }
-        r = self._request(url=self.action, data=data, method='POST')
+        r = self._request(url=self.action, data=json.dumps(data), method='POST')
         return json.loads(r)
 
     def acceptTrade(self, tradeId):
@@ -37,7 +37,7 @@ class Trade:
             'TradeID': tradeId,
             'cmd': 'accept'
         }
-        r = self._request(url=self.action, data=data, method='POST')
+        r = self._request(url=self.action, data=json.dumps(data), method='POST')
         return json.loads(r)
 
     def declineTrade(self, tradeId):
@@ -45,7 +45,7 @@ class Trade:
             'TradeID': tradeId,
             'cmd': 'decline'
         }
-        r = self._request(url=self.action, data=data, method='POST')
+        r = self._request(url=self.action, data=json.dumps(data), method='POST')
         return json.loads(r)
 
     def sendTrade(self, id: int, SendItems: list, GetItems: list):
