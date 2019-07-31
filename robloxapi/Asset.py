@@ -1,5 +1,5 @@
 import json
-
+from bs4 import BeautifulSoup
 
 class Asset:
     def __init__(self, request):
@@ -42,12 +42,17 @@ class Asset:
         return json.loads(self._request(url=url))
 
     def buyAsset(self, id):
+        url = f'https://www.roblox.com/catalog/{id}/redirect'
+        html = self._request(url=url, method='GET')
+        soup = BeautifulSoup(html, 'html.parser')
+        div = soup.find('div', {'id': 'item-container'})
+        userAssetId = div['data-expected-seller-id']
         info = self.getAssetInfo(id)
         if str(info) == '{}': return False
-        productId = info['ProductId']
+        productId = info["ProductId"]
         price = info['PriceInRobux']
         id = info['Creator']['Id']
-        url = f'https://www.roblox.com/api/item.ashx?rqtype=purchase&productID={productId}&expectedCurrency=1&expectedPrice={price}&expectedSellerID={id}&userAssetID='
+        url = f'https://www.roblox.com/api/item.ashx?rqtype=purchase&productID={productId}&expectedCurrency=1&expectedPrice={price}&expectedSellerID={id}&userAssetID={userAssetId}'
         r = self._request(url=url, method='POST')
         return json.loads(r)
 
