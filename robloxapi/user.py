@@ -72,7 +72,7 @@ class User:
         r = await self.request.request(url='https://www.roblox.com/api/friends/sendfriendrequest', method='POST', data=json.dumps(data))
         return r
 
-    async def send_message(self, recipientid, subject, body):
+    async def send_message(self, recipientid, subject, body) -> dict:
         data = {
             'recipientid': recipientid,
             'subject': subject,
