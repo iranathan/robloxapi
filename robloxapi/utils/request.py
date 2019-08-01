@@ -43,6 +43,7 @@ class Request:
         cookies = {
             '.ROBLOSECURITY': cookie
         }
+<<<<<<< HEAD
         r = await self.requests.get('https://www.roblox.com/game/GetCurrentUser.ashx', cookies=cookies, headers=self.headers)
         if r.text != 'null':
             self.auth = True
@@ -50,3 +51,13 @@ class Request:
             self.cookies = cookies
         else:
             logging.warning('The cookie was incorrect. Using lib without auth.')
+=======
+        async with self.session.get(url, headers=self.get_headers()) as response:
+            data = await response.text()
+            if data == 'null':
+                logging.warning('Failed to login. Using robloxapi without auth.')
+            else:
+                self.session = aiohttp.ClientSession(cookies=cookies, raise_for_status=False)
+
+
+>>>>>>> bc3a5178ce571d20ba87949ccde1e397ece30090
