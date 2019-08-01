@@ -1,11 +1,7 @@
-from .utils.request import request
-from .User import User
-from .Group import Group
+from utils.request import *
+import user
+
 class client:
-    def __init__(self, cookie=''):
-        self.request_client = request(cookie)
-        self.Group = Group(self.request_client)
-        self.User = User(self.request_client)
-
-    
-
+    def __init__(self, cookie=None):
+        self.request = Request(cookie)
+        self.User = user.User(self.request)
