@@ -6,6 +6,8 @@
 
 A python module for using the roblox api
 
+Here are some examples using this lib: https://github.com/Jaguar-515/robloxapi-examples
+
 ***
 
 ### Install command:
