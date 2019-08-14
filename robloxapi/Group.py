@@ -171,7 +171,7 @@ class Group:
             return {'ranked': False, 'reason': 'User not in group'}
         old_role_info = roles[int(found_role)]
         new_role_info = roles[int(found_role) + 1]
-        r = self.setRank(groupid, new_role_info['id'])
+        r = self.setRank(groupid, new_role_info['id'], id)
         if r['success'] is True:
             return {
                 'ranked': True,
@@ -197,7 +197,7 @@ class Group:
             return {'ranked': False, 'reason': 'User not in group'}
         old_role_info = roles[int(found_role)]
         new_role_info = roles[int(found_role) - 1]
-        r = self.setRank(groupid, new_role_info['id'])
+        r = self.setRank(groupid, new_role_info['id'], id)
         if r['success'] is True:
             return {
                 'ranked': True,
