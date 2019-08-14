@@ -29,7 +29,7 @@ class Game:
             }
         return gameDict
 
-    def favoritGame(gameId):
+    def favoriteGame(gameId):
         url = 'https://www.roblox.com/favorite/toggle'
         data = json.dumps({
             'assetID': gameId
