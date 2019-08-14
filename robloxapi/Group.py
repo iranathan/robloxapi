@@ -156,7 +156,7 @@ class Group:
         return json.loads(r)
 
     def getRoleInGroup(self, groupid, id):
-        url = f'//www.roblox.com/Game/LuaWebService/HandleSocialRequest.ashx?method=GetGroupRank&playerid={id}&groupId={groupid}'
+        url = f'https://www.roblox.com/Game/LuaWebService/HandleSocialRequest.ashx?method=GetGroupRole&playerid={id}&groupId={groupid}'
         return self._request(url=url, method='GET')
 
     def promote(self, groupid, id):
