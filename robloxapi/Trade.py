@@ -1,4 +1,5 @@
 import json
+import sys
 
 
 class Trade:
@@ -48,11 +49,22 @@ class Trade:
         r = self._request(url=self.action, data=data, method='POST')
         return json.loads(r)
 
-    def sendTrade(self, id: int, SendItems: list, GetItems: list):
+    def sendTrade(self, id: int, SendItems: list, GetItems: list, **kwargs):
+        flag_exit = kwargs.get("flag_exit",None) # Add flag if the user wants to immediately exit
         selfId = self.rawRequest.user_info['Id']
         url = f'https://inventory.roblox.com/v1/users/{selfId}/assets/collectibles?cursor=&sortOrder=Desc&limit=100'
         r = self._request(url=url)
-        data = json.loads(r)
+        data = None
+        try:
+            # Attempt to load json from response
+            data = json.loads(r)
+        except ValueError:
+            # If above fails, input this message and exit
+            print("Trade failed. Something went wrong.")
+            if flag_exit:
+                exit()
+            return
+
         TradeJSON = {}
         TradeJSON['AgentOfferList'] = []
         tradeMe = {
@@ -111,7 +123,3 @@ class Trade:
         }
         r = self._request(url='https://www.roblox.com/Trade/tradehandler.ashx', data=data, method='POST', response=True)
         print(r.text)
-
-
-
-
