@@ -97,20 +97,20 @@ class User:
             data['sendToFacebook'] = True
         data = json.dumps(data)
         r = self._request(url=url, method='POST', data=data)
-        return json.loads(r.text)
+        return json.loads(r)
     
 
     def blockUser(self, id):
         url = 'https://www.roblox.com/userblock/blockuser'
         data = json.dumps({'blockeeId': id})
         r = self._request(url=url, method='POST', data=data)
-        return json.loads(r.text)
+        return json.loads(r)
     
     def unblockUser(self, id):
         url = 'https://www.roblox.com/userblock/unblockuser'
         data = json.dumps({'blockeeId': id}) 
         r = self._request(url=data, method='POST', data=data)
-        return json.loads(r.text)
+        return json.loads(r)
     
     def addFriend(self, Userid):
         url = 'https://www.roblox.com/api/friends/sendfriendrequest'
@@ -118,7 +118,7 @@ class User:
             'targetUserID': int(Userid)
         }
         r = self._request(url=url, data=json.dumps(data), method='POST')
-        return json.loads(r.text)
+        return json.loads(r)
 
    
     def removeFriend(self, Userid):
@@ -127,7 +127,7 @@ class User:
             'targetUserID': int(Userid)
         }
         r = self._request(url=url, data=json.dumps(data), method='POST')
-        return json.loads(r.text)
+        return json.loads(r)
     
     def send_message(self, recipientid, subject, body):
         url = 'https://www.roblox.com/messages/send'
@@ -136,4 +136,4 @@ class User:
             'subject': subject,
             'body': body
         }
-        return json.loads(self._request(url=url, method='POST', data=data).text)
+        return json.loads(self._request(url=url, method='POST', data=data))
