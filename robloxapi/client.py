@@ -1,4 +1,4 @@
-from utils.request import *
+from .utils.request import *
 import user
 import group
 
