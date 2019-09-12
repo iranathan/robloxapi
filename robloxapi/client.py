@@ -1,9 +1,9 @@
 from .utils.request import *
-import user
-import group
+from .user import *
+from .group import *
 
 class client:
     def __init__(self, cookie=None):
         self.request = Request(cookie)
-        self.User = user.User(self.request)
-        self.Group = group.Group(self.request)
+        self.User = User(self.request)
+        self.Group = Group(self.request)
