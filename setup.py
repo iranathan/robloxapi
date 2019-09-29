@@ -17,7 +17,7 @@ setup(
   author_email = 'iranathan8@gmail.com',
   keywords = ['python_roblox', 'roblox', 'robloxapi'],
   install_requires=[            
-          'requests',
+          'httpx',
           'beautifulsoup4'
       ],
   classifiers=[
