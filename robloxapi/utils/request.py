@@ -1,4 +1,5 @@
 import http3, logging
+from .errors import *
 
 
 class Request:
@@ -14,8 +15,6 @@ class Request:
             'X-CSRF-TOKEN': '',
             'DNT': '1',
         }
-        self.auth = False
-        self.user = {}
         if cookie:
             loop = asyncio.get_event_loop()
             loop.run_until_complete(self.login(cookie))
@@ -30,13 +29,14 @@ class Request:
 
     async def request(self, **kwargs):
         if not 'method' in kwargs: kwargs['method'] = 'GET'
+        if kwargs['method'] == "POST" and not '.ROBLOSECURITY' in self.cookies:
+            raise NotAuthenticated("You can't preform a post request without being authenticated.")
         r = await self.requests.request(kwargs['method'], kwargs['url'], headers=self.headers, cookies=self.cookies, data=kwargs.get('data'))
         if r.status_code == 403 and r.headers.get('X-CSRF-TOKEN'):
             self.headers['X-CSRF-TOKEN'] = r.headers.get('X-CSRF-TOKEN')
             return await request(**kwargs)
-        elif r.status_code != 200:
-            logging.error(f'Error with endpoint {kwargs["url"]} statuscode: {r.status_code}')
-            return r
+        elif not r.status_code == 200:
+            raise BadStatus(f'Got status {r.status_code} from {kwargs["url"]}')
         return r
 
     async def login(self, cookie):
@@ -45,8 +45,6 @@ class Request:
         }
         r = await self.requests.get('https://www.roblox.com/game/GetCurrentUser.ashx', cookies=cookies, headers=self.headers)
         if r.text != 'null':
-            self.auth = True
-            self.user['Id'] = r.text
             self.cookies = cookies
         else:
-            logging.warning('The cookie was incorrect. Using lib without auth.')
+            raise NotAuthenticated("Cookie was incorrect.")

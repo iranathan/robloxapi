@@ -3,7 +3,8 @@ from .user import *
 from .group import *
 from .settings import *
 
-class client:
+
+class Client:
     def __init__(self, cookie=None):
         self.request = Request(cookie)
         self.User = User(self.request)
