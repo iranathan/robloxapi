@@ -36,7 +36,8 @@ class Request:
             self.headers['X-CSRF-TOKEN'] = r.headers.get('X-CSRF-TOKEN')
             return await request(**kwargs)
         elif not r.status_code == 200:
-            raise BadStatus(f'Got status {r.status_code} from {kwargs["url"]}')
+            if not kwargs.get('noerror'):
+                raise BadStatus(f'Got status {r.status_code} from {kwargs["url"]}')
         return r
 
     async def login(self, cookie):

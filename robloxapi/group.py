@@ -2,113 +2,71 @@ import json
 import logging
 from bs4 import BeautifulSoup
 from .utils.errors import *
+from .utils.classes import *
+from .joinrequest import JoinRequest
 
 
 class Group:
-    def __init__(self, request):
+    def __init__(self, request, group_id, group_name, description, member_count, owner_id=None, owner_username=None):
         self.request = request
-
-    async def get_funds(self, group_id: int) -> int:
-        r = await self.request.request(url=f'https://economy.roblox.com/v1/groups/{group_id}/currency', method='GET')
-        return int(r.json().get('robux'))
-
-    async def search_group(self, keyword: str, show=100) -> list:
-        r = await self.request.request(url=f'https://www.roblox.com/search/groups/list-json?keyword={keyword}&maxRows={show}&startRow=0', method='GET')
-        return r.json().get('GroupSearchResults')
-
-    async def get_group(self, group_id: int) -> dict:
-        r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{group_id}', method='GET')
-        return r.json()
-
-    async def get_group_roles(self, group_id: int) -> list:
-        r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{group_id}/roles', method='GET')
-        return r.json().get('roles')
-
-    async def get_role_in_group(self, group_id: int, rbx_id: int) -> str:
-        r = await self.request.request(url=f'https://www.roblox.com/Game/LuaWebService/HandleSocialRequest.ashx?method=GetGroupRank&playerid={rbx_id}&groupId={group_id}', method='GET')
-        return r.text
-
-    async def send_payout(self, group_id: int, user_id: int, amount: int) -> dict:
-        payout_data = {
-            'PayoutType': 'FixedAmount',
-            'Recipients': [
-                {
-                    'recipientId': user_id,
-                    'recipientType': 'User',
-                    'amount': amount,
-                }
-            ]
+        self.id = group_id
+        self.name = group_name
+        self.description = description
+        self.owner = {
+            'id': owner_id,
+            'name': owner_username
         }
-        r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{group_id}/payouts', data=json.dumps(payout_data), method='POST')
-        return r.json()
+        self.member_count = member_count
 
-    async def get_join_requests(self, groupid: int) -> list:
-        r = await self.request.request(url=f'https://www.roblox.com/groups/{groupid}/joinrequests-html?pageNum=1', method='GET')
-        soup = BeautifulSoup(r.text, 'html.parser')
-        found = soup.find('tbody')
-        tr = found.find_all('tr')
-        del tr[-1]
-        requests = []
-        for request in tr:
-            requests.append({
-                'JoinId': request.find('span', {"class": "btn-control btn-control-medium accept-join-request"})[
-                    'data-rbx-join-request'],
-                'User': {
-                    'AvatarPicture': request.td.span.img['src'],
-                    'Username': request.find('a').text,
-                    'Id': re.findall(r'\b\d+\b', request.find('a')['href']),
-                    'ProfileLink': request.find('a')['href']
-                }
-            })
-        return requests
+    async def exile(self, user_id: int) -> int:
+        r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{self.id}/users/{user_id}', method='GET')
+        return r.status_code
 
-    # thanks to Auxority i ~stole~ got the api from him
-    async def get_audit_log(self, group_id: int):
-        r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{group_id}/audit-log?sortOrder=Asc&limit=100')
-        return r.json()
+    async def set_rank(self, user_id: int, rank_id: int) -> int:
+        r = await self.request.request(url=f'https://www.roblox.com/groups/api/change-member-rank?groupId={self.id}&newRoleSetId={rank_id}&targetUserId={user_id}', method='POST')
+        return r.status_code
 
-    async def handle_join_request(self, request_id: int or str, accept: bool) -> dict:
-        data = {
-            'groupJoinRequestId': request_id
-        }
-        if accept:
-            data['accept'] = True
-        r = await self.request.request(url='https://www.roblox.com/group/handle-join-request', method='POST', data=json.dumps(data))
-        return r.json()
+    async def set_rank_by_id(self, user_id: int, role_id: int) -> int:
+        roles = await self.get_group_roles()
+        choose = None
+        for role in roles:
+            if role.rank == role_id:
+                choose = role
+        if not choose:
+            raise NotFound(f'Role {role_id} does not exist.')
+        return await self.set_rank(user_id, choose.id)
 
-    async def accept_join_request(self, request_id: int or str) -> dict:
-        return await self.handle_join_request(request_id, True)
+    async def get_wall(self, limit=10):
+        r = await self.request.request(url=f'https://groups.roblox.com/v2/groups/{self.id}/wall/posts?limit={limit}', method='GET')
 
-    async def decline_join_request(self, request_id: int or str) -> dict:
-        return await self.handle_join_request(request_id, False)
+    async def get_group_roles(self) -> list:
+        r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{self.id}/roles', method='GET')
+        roles = []
+        for role in r.json().get('roles'):
+            roles.append(Role(role['id'], role['name'], role['rank'], role['memberCount']))
+        return roles
 
-    async def post_shout(self, group_id: int, message: str) -> dict:
+    async def post_shout(self, message: str) -> Shout:
         data = {'message': message}
         r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{group_id}/status', method='PATCH', data=json.dumps(data))
-        return r.json()
+        json = r.json()
+        return Shout(message, json['poster']['username'], json['poster']['userId'], json['created'], json['updated'])
 
-    async def get_group_roles(self, group_id: int) -> list:
-        r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{group_id}/roles', method='GET')
-        return r.json().get('roles')
+    async def get_funds(self):
+        r = await self.request.request(url=f'https://economy.roblox.com/v1/groups/{self.id}/currency', method='GET')
+        return r.json().get('robux')
 
-    async def get_wall(self, group_id: int, limit=10) -> list:
-        r = await self.request.request(url=f'https://groups.roblox.com/v2/groups/{group_id}/wall/posts?limit={limit}', method='GET')
-        return r.json().get('data')
-
-    async def set_rank(self, group_id: int, target_id: int, role_id: int) -> dict:
-        r = await self.request.request(url=f'https://www.roblox.com/groups/api/change-member-rank?groupId={group_id}&newRoleSetId={role_id}&targetUserId={target_id}', method='POST')
-        return r.json()
-
-    async def set_rank_by_id(self, group_id: int, target_id: int, role_id) -> dict:
-        roles = await self.get_group_roles(group_id)
-        picked_role = None
-        for role in roles:
-            if role['rank'] == role_id:
-                picked_role = role['id']
-        if not picked_role:
-            raise NotFound('The role was not found. (set_rank_by_id)')
-        return await self.set_rank(group_id, target_id, picked_role)
-
-    async def exile(self, group_id: int, roblox_id: int) -> dict:
-        r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{group_id}/users/{roblox_id}', method='DELETE')
-        return r.json()
+    # TODO: Use https://groups.roblox.com/v1/groups/{groupId}/join-requests
+    async def get_join_requests(self):
+        r = await self.request.request(url=f'https://www.roblox.com/groups/{self.id}/joinrequests-html', method='GET')
+        soup = BeautifulSoup(r.text)
+        container = soup.find('tbody').find_all('tr')
+        del container[-1]
+        requests = []
+        for request in container:
+            request_id = request.find('span', {"class": "btn-control btn-control-medium accept-join-request"})['data-rbx-join-request']
+            roblox_avatar = request.td.span.img['src']
+            roblox_name = request.find('a').text
+            roblox_id = re.findall(r'\b\d+\b', request.find('a')['href'])
+            requests.append(JoinRequest(self.request, request_id, roblox_name, roblox_id, roblox_avatar))
+        return requests
