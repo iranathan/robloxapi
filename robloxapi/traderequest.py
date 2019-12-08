@@ -1,4 +1,4 @@
-class Trade:
+class TradeRequest:
     def __init__(self, request, date, expires, trade_partner_name, trade_partner_id, status, trade_id):
         self.request = request
         self.date = date
