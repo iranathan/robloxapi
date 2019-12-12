@@ -3,6 +3,11 @@ class NotFound(Exception):
     pass
 
 
+class RoleError(Exception):
+    """Raised when a role is too high"""
+    pass
+
+
 class BadStatus(Exception):
     """Raised when a status != 200"""
     pass

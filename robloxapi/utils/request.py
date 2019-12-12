@@ -1,4 +1,4 @@
-import http3, logging
+import http3, logging, asyncio
 from .errors import *
 
 
@@ -39,6 +39,9 @@ class Request:
             if not kwargs.get('noerror'):
                 raise BadStatus(f'Got status {r.status_code} from {kwargs["url"]}')
         return r
+
+    def check_parameter(self, provided, type_str):
+        pass
 
     async def login(self, cookie):
         cookies = {

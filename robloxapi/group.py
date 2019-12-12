@@ -26,7 +26,24 @@ class Group:
         r = await self.request.request(url=f'https://www.roblox.com/groups/api/change-member-rank?groupId={self.id}&newRoleSetId={rank_id}&targetUserId={user_id}', method='POST')
         return r.status_code
 
-    # TODO: Promote & Demote
+    async def promote(self, user_id: int) -> int:
+        return await self.change_rank(user_id, 1)
+
+    async def demote(self, user_id: int) -> int:
+        return await self.change_rank(user_id, -1)
+
+    async def change_rank(self, user_id: int, change: int) -> int:
+        roles = await self.get_group_roles()
+        role = await self.get_role_in_group(user_id)
+        user_role = 0
+        for r in roles:
+            user_role = user_role + 1
+            if r.id == role.id:
+                break
+        new_user_role = user_role + change
+        if len(roles) < new_user_role or int(roles[new_user_role].rank) == 255:
+            raise RoleError("The role is over 255 or does not exist")
+        return await self.set_rank(user_id, roles[new_user_role].id)
 
     async def set_rank_by_id(self, user_id: int, role_id: int) -> int:
         roles = await self.get_group_roles()
@@ -47,6 +64,19 @@ class Group:
         for role in r.json().get('roles'):
             roles.append(Role(role['id'], role['name'], role['rank'], role['memberCount']))
         return roles
+
+    async def get_role_in_group(self, user_id):
+        r = await self.request.request(url=f'https://groups.roblox.com/v1/users/{user_id}/groups/roles', method='GET')
+        json = r.json()
+        user_role = None
+        for group in json['data']:
+            if group['group']['id'] == self.id:
+                user_role = group
+                break
+        if not user_role:
+            raise NotFound('The user is not in that group.')
+        return Role(user_role['role']['id'], user_role['role']['name'], user_role['role']['rank'], user_role['role']['memberCount'])
+
 
     async def post_shout(self, message: str) -> Shout:
         data = {'message': message}
