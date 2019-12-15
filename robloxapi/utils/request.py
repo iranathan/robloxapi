@@ -16,9 +16,7 @@ class Request:
             'DNT': '1',
         }
         if cookie:
-            loop = asyncio.get_event_loop()
-            loop.run_until_complete(self.login(cookie))
-            loop.close()
+            asyncio.run(self.login(cookie))
 
     async def xcsrf(self):
         r = await self.requests.post('https://www.roblox.com/favorite/toggle')

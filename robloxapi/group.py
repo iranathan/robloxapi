@@ -35,7 +35,7 @@ class Group:
     async def change_rank(self, user_id: int, change: int) -> int:
         roles = await self.get_group_roles()
         role = await self.get_role_in_group(user_id)
-        user_role = 0
+        user_role = -1
         for r in roles:
             user_role = user_role + 1
             if r.id == role.id:
