@@ -32,10 +32,10 @@ class Request:
         r = await self.requests.request(kwargs['method'], kwargs['url'], headers=self.headers, cookies=self.cookies, data=kwargs.get('data'))
         if r.status_code == 403 and r.headers.get('X-CSRF-TOKEN'):
             self.headers['X-CSRF-TOKEN'] = r.headers.get('X-CSRF-TOKEN')
-            return await self.request(**kwargs)
+            return await request(**kwargs)
         elif not r.status_code == 200:
             if not kwargs.get('noerror'):
-                raise BadStatus(f'Got status {r.status_code} from {kwargs["url"]} data: {r.text}')
+                raise BadStatus(f'Got status {r.status_code} from {kwargs["url"]}')
         return r
 
     def check_parameter(self, provided, type_str):

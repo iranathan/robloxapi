@@ -23,10 +23,7 @@ class Group:
         return r.status_code
 
     async def set_rank(self, user_id: int, rank_id: int) -> int:
-        data = json.dumps({
-            'roleId': rank_id
-        })
-        r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{self.id}/users/{user_id}', method="PATCH", data=data)
+        r = await self.request.request(url=f'https://www.roblox.com/groups/api/change-member-rank?groupId={self.id}&newRoleSetId={rank_id}&targetUserId={user_id}', method='POST')
         return r.status_code
 
     async def promote(self, user_id: int) -> int:
@@ -44,7 +41,6 @@ class Group:
             if r.id == role.id:
                 break
         new_user_role = user_role + change
-        print(roles[new_user_role].rank)
         if len(roles) < new_user_role or int(roles[new_user_role].rank) == 255:
             raise RoleError("The role is over 255 or does not exist")
         return await self.set_rank(user_id, roles[new_user_role].id)

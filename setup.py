@@ -18,7 +18,8 @@ setup(
   keywords = ['python_roblox', 'roblox', 'robloxapi'],
   install_requires=[            
           'httpx',
-          'beautifulsoup4'
+          'beautifulsoup4',
+          'requests'
       ],
   classifiers=[
     'Development Status :: 3 - Alpha',      
