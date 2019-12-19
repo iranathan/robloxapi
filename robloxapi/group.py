@@ -84,7 +84,7 @@ class Group:
 
     async def post_shout(self, message: str) -> Shout:
         data = {'message': message}
-        r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{group_id}/status', method='PATCH', data=json.dumps(data))
+        r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{self.id}/status', method='PATCH', data=json.dumps(data))
         json = r.json()
         return Shout(message, json['poster']['username'], json['poster']['userId'], json['created'], json['updated'])
 
