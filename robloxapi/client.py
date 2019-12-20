@@ -24,7 +24,7 @@ class Client:
         if r.status_code != 200:
             raise NotFound('That group was not found.')
         json = r.json()
-        return Group(self.request, json['id'], json['name'], json['description'], json['memberCount'], json['owner'].get('userId'), json['owner'].get('username'))
+        return Group(self.request, json['id'], json['name'], json['description'], json['memberCount'], json['shout'], json['owner'].get('userId'), json['owner'].get('username'))
 
     async def get_user_by_username(self, roblox_name: str) -> User:
         r = await self.request.request(url=f'https://api.roblox.com/users/get-by-username?username={roblox_name}', method="GET")
@@ -39,6 +39,14 @@ class Client:
         if r.status_code != 200:
             raise NotFound('That user was not found.')
         return User(self.request, json['Id'], json['Username'])
+
+    async def get_user(self, name=None, id=None):
+        if name:
+            return await self.get_user_by_username(name)
+        if id:
+            return await self.get_user_by_id(id)
+        if not id and not name:
+            return None
 
     async def change_status(self, status: str) -> int:
         data = {'status': str(status)}

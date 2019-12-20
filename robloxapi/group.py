@@ -7,7 +7,7 @@ from .joinrequest import JoinRequest
 
 
 class Group:
-    def __init__(self, request, group_id, group_name, description, member_count, owner_id=None, owner_username=None):
+    def __init__(self, request, group_id, group_name, description, member_count, shout, owner_id=None, owner_username=None):
         self.request = request
         self.id = group_id
         self.name = group_name
@@ -17,6 +17,7 @@ class Group:
             'name': owner_username
         }
         self.member_count = member_count
+        self.shout = shout
 
     async def exile(self, user_id: int) -> int:
         r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{self.id}/users/{user_id}', method='GET')
@@ -80,7 +81,6 @@ class Group:
         if not user_role:
             raise NotFound('The user is not in that group.')
         return Role(user_role['role']['id'], user_role['role']['name'], user_role['role']['rank'], user_role['role']['memberCount'])
-
 
     async def post_shout(self, message: str) -> Shout:
         data = {'message': message}
