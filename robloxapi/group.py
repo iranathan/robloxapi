@@ -85,8 +85,8 @@ class Group:
     async def post_shout(self, message: str) -> Shout:
         data = {'message': message}
         r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{self.id}/status', method='PATCH', data=json.dumps(data))
-        json = r.json()
-        return Shout(message, json['poster']['username'], json['poster']['userId'], json['created'], json['updated'])
+        shout = r.json()
+        return Shout(message, shout['poster']['username'], shout['poster']['userId'], shout['created'], shout['updated'])
 
     async def get_funds(self):
         r = await self.request.request(url=f'https://economy.roblox.com/v1/groups/{self.id}/currency', method='GET')
