@@ -21,7 +21,7 @@ class Group:
         self.shout = shout
 
     async def exile(self, user_id: int) -> int:
-        r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{self.id}/users/{user_id}', method='GET')
+        r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{self.id}/users/{user_id}', method='POST')
         return r.status_code
 
     async def set_rank(self, user_id: int, rank_id: int) -> int:
