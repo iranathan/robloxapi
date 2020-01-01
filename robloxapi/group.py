@@ -1,5 +1,6 @@
 import json
 import logging
+import re
 from bs4 import BeautifulSoup
 from .utils.errors import *
 from .utils.classes import *
@@ -95,8 +96,9 @@ class Group:
     # TODO: Use https://groups.roblox.com/v1/groups/{groupId}/join-requests
     async def get_join_requests(self):
         r = await self.request.request(url=f'https://www.roblox.com/groups/{self.id}/joinrequests-html', method='GET')
-        soup = BeautifulSoup(r.text)
-        container = soup.find('tbody').find_all('tr')
+        soup = BeautifulSoup(r.text, 'html.parser')
+        container = soup.find('div', {'id': 'JoinRequestsList'}).table.find_all('tr') # what
+        del container[0]
         del container[-1]
         requests = []
         for request in container:

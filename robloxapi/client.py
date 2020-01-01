@@ -16,8 +16,12 @@ class Client:
             'statustype': 'inbound'
         })
         r = await self.request.request(url='https://www.roblox.com/my/money.aspx/getmyitemtrades', data=data, method='POST')
-        json = r.json()
-        # TODO: Finish this.
+        data = json.loads(r.json()['d'])["Data"]
+        trades = []
+        for trade in data:
+            t = json.loads(trade)
+            trades.append(TradeRequest(self.request, t['Date'], t['Expires'], t['TradePartner'], t['TradePartnerID'], t['Status'], t['TradeSessionID']))
+        return trades
 
     async def get_group(self, group_id: int) -> Group:
         r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{group_id}/', method='GET')
