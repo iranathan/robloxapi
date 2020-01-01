@@ -73,9 +73,9 @@ class Group:
 
     async def get_role_in_group(self, user_id):
         r = await self.request.request(url=f'https://groups.roblox.com/v1/users/{user_id}/groups/roles', method='GET')
-        json = r.json()
+        data = r.json()
         user_role = None
-        for group in json['data']:
+        for group in data['data']:
             if group['group']['id'] == self.id:
                 user_role = group
                 break
@@ -97,7 +97,7 @@ class Group:
     async def get_join_requests(self):
         r = await self.request.request(url=f'https://www.roblox.com/groups/{self.id}/joinrequests-html', method='GET')
         soup = BeautifulSoup(r.text, 'html.parser')
-        container = soup.find('div', {'id': 'JoinRequestsList'}).table.find_all('tr') # what
+        container = soup.find('div', {'id': 'JoinRequestsList'}).table.find_all('tr')  # what
         del container[0]
         del container[-1]
         requests = []
