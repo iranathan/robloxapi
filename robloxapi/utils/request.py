@@ -50,3 +50,4 @@ class Request:
             self.cookies = cookies
         else:
             raise NotAuthenticated("Cookie was incorrect.")
+
