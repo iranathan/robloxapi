@@ -6,7 +6,7 @@ class JoinRequest:
     def __init__(self, request, request_id, roblox_name, roblox_id, roblox_avatar):
         self.request = request
         self.request_id = request_id
-        self.user = User(request, roblox_name, roblox_id)
+        self.user = User(request, int(roblox_id[0]), roblox_name)
         self.avatar = roblox_avatar
 
     async def accept(self) -> int:
