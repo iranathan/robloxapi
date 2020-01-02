@@ -1,3 +1,4 @@
+from .user import *
 import json
 
 
@@ -5,11 +6,8 @@ class JoinRequest:
     def __init__(self, request, request_id, roblox_name, roblox_id, roblox_avatar):
         self.request = request
         self.request_id = request_id
-        self.user = {
-            'name': roblox_name,
-            'id': roblox_id,
-            'avatar': roblox_avatar
-        }
+        self.user = User(request, roblox_name, roblox_id)
+        self.avatar = roblox_avatar
 
     async def accept(self) -> int:
         data = {
