@@ -11,25 +11,13 @@ Here are some examples using this lib: https://github.com/Jaguar-515/robloxapi-e
 ***
 
 ### Install command:
-
-`pip install git+https://github.com/iranathan/robloxapi.git`
+Async version: `pip install git+https://github.com/iranathan/robloxapi.git@async`
 
 ***
 
 ### Docs:
 
-https://robloxapi.readthedocs.io/en/latest/
+There are currently no docs for this version. Please join this discord server for assistance https://discord.gg/ZVcBRbV
 
-If you need further assistance please join this [discord](https://discord.gg/ZVcBRbV) server and ask questions in [#python_robloxapi](https://discordapp.com/channels/332692436478590986/571069070263189515)
-
-
-
-***
-
-### Coming soon:
-
-**More auth functions**
-
-***
 
 

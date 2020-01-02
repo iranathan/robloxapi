@@ -1,8 +1,8 @@
 from distutils.core import setup
 setup(
   name = 'robloxapi',
-  packages = ['robloxapi', 'robloxapi.utils', 'robloxapi.classes'],
-  version = '4',
+  packages = ['robloxapi', 'robloxapi.utils'],
+  version = '4.1',
   license='MIT',       
   description = 'A Python wrapper for roblox',
   long_description = '''
@@ -17,8 +17,9 @@ setup(
   author_email = 'iranathan8@gmail.com',
   keywords = ['python_roblox', 'roblox', 'robloxapi'],
   install_requires=[            
-          'requests',
-          'beautifulsoup4'
+          'httpx',
+          'beautifulsoup4',
+          'requests'
       ],
   classifiers=[
     'Development Status :: 3 - Alpha',      
