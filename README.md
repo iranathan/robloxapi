@@ -11,7 +11,7 @@ Here are some examples using this lib: https://github.com/Jaguar-515/robloxapi-e
 ***
 
 ### Install command:
-Async version: `pip install git+https://github.com/iranathan/robloxapi.git@async`
+Async version: `pip install git+https://github.com/iranathan/robloxapi.git`
 
 ***
 
