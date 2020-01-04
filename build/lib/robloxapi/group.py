@@ -114,7 +114,7 @@ class Group:
         r = await self.request.request(url=f"https://groups.roblox.com/v1/groups/{self.id}/users?limit=100&sortOrder=Desc&cursor={cursor}", method="GET")
         response = r.json()
         for user in response['data']:
-            members.append(GroupMember(self.request, user["user"]["userId"], user["user"]["username"], self.id, Role(user['role']['id'], user['role']['name'], user['role']['rank'], user['role']['memberCount'])))
+            members.append(GroupMember(self.request, user["userId"], user["username"], self.id, Role(user['role']['id'], user['role']['name'], user['role']['rank'], user['role']['memberCount'])))
         if not response['nextPageCursor']:
             return members
         else:
