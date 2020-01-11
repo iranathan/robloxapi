@@ -3,7 +3,8 @@ from .utils.errors import *
 from .group import *
 from .user import *
 from .traderequest import *
-import json
+from .auth import *
+import json, asyncio
 
 
 class Client:
@@ -56,3 +57,27 @@ class Client:
         data = {'status': str(status)}
         r = await self.request.request(url='https://www.roblox.com/home/updatestatus', method='POST', data=json.dumps(data))
         return r.status_code
+
+    async def login(self, username=None, password=None, key=None):
+        client = Auth(self.request)
+        if not username or not password:
+            raise AuthenticationError("You did not supply a username or password")
+        status, cookies = await client.login(username, password)
+        if status == 200 and ".ROBLOSECURITY" in cookies:
+            self.request = Request(cookies[".ROBLOSECURITY"])
+        if not key:
+            raise CaptchaEncountered("2captcha required.")
+        else:
+            captcha = Captcha(self.request, key)
+            data, status = await captcha.create_task()
+            token = ''
+            if status == 200:
+                while True:
+                    r, s = await captcha.check_task(data["request"])
+                    if r['request'] != "CAPCHA_NOT_READY":
+                        token = r['request']
+                        break
+                    await asyncio.sleep(1.5)
+        status, cookies = await client.login(username, password, token)
+        if status == 200 and ".ROBLOSECURITY" in cookies:
+            self.request = Request(cookies[".ROBLOSECURITY"])

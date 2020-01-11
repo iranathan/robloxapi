@@ -16,3 +16,14 @@ class BadStatus(Exception):
 class NotAuthenticated(Exception):
     """Raised when a user is not authenticated"""
     pass
+
+
+class AuthenticationError(Exception):
+    """Raised when a password or username is incorrect"""
+    pass
+
+
+class CaptchaEncountered(Exception):
+    """Raised when captcha is encountered"""
+    pass
+

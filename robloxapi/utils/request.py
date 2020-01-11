@@ -27,8 +27,6 @@ class Request:
 
     async def request(self, **kwargs):
         if not 'method' in kwargs: kwargs['method'] = 'GET'
-        if kwargs['method'] == "POST" and not '.ROBLOSECURITY' in self.cookies:
-            raise NotAuthenticated("You can't preform a post request without being authenticated.")
         r = await self.requests.request(kwargs['method'], kwargs['url'], headers=self.headers, cookies=self.cookies, data=kwargs.get('data'))
         if r.status_code == 403 and r.headers.get('X-CSRF-TOKEN'):
             self.headers['X-CSRF-TOKEN'] = r.headers.get('X-CSRF-TOKEN')
