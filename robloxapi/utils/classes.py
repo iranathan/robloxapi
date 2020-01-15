@@ -23,3 +23,4 @@ class Message:
         self.subject = subject
         self.message = message
         self.success = success
+

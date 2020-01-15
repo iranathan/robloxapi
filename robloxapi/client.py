@@ -4,7 +4,8 @@ from .group import *
 from .user import *
 from .traderequest import *
 from .auth import *
-import json, asyncio
+import json as j
+import asyncio
 
 
 class Client:
@@ -12,7 +13,7 @@ class Client:
         self.request = Request(cookie)
 
     async def get_trades(self) -> TradeRequest:
-        data = json.dumps({
+        data = j.dumps({
             'startindex': 0,
             'statustype': 'inbound'
         })
@@ -55,7 +56,7 @@ class Client:
 
     async def change_status(self, status: str) -> int:
         data = {'status': str(status)}
-        r = await self.request.request(url='https://www.roblox.com/home/updatestatus', method='POST', data=json.dumps(data))
+        r = await self.request.request(url='https://www.roblox.com/home/updatestatus', method='POST', data=j.dumps(data))
         return r.status_code
 
     async def login(self, username=None, password=None, key=None):

@@ -1,17 +1,19 @@
 import json
 from .utils.errors import *
 from .utils.classes import *
-from .detaileduser import *
 from .gamepass import *
 from .group import *
 from bs4 import BeautifulSoup
 
 
-class User:
-    def __init__(self, request, roblox_id, roblox_name):
+class DetailedUser:
+    def __init__(self, request, roblox_id, roblox_name, blurb, join_date, avatar_url):
         self.request = request
         self.id = roblox_id
         self.name = roblox_name
+        self.blurb = blurb
+        self.join_date = join_date
+        self.avatar_url = avatar_url
 
     async def send_message(self, subject: str, body: str) -> Message:
         data = {
@@ -24,9 +26,9 @@ class User:
 
     async def get_role_in_group(self, group_id: int) -> Role:
         r = await self.request.request(url=f'https://groups.roblox.com/v1/users/{self.id}/groups/roles', method='GET')
-        data = r.json()
+        json = r.json()
         user_role = None
-        for group in data['data']:
+        for group in json['data']:
             if group['group']['id'] == group_id:
                 user_role = group
                 break
@@ -62,17 +64,7 @@ class User:
         r = await self.request.request(url='https://www.roblox.com/api/user/unfollow', data=data, method='POST')
         return r.status_code
 
-    # TODO: Status, Join date, Follower count, Friend count and Following count
-    async def get_detailed_user(self) -> DetailedUser:
-        r = await self.request.request(url=f'https://www.roblox.com/users/{self.id}/profile', method="GET")
-        soup = BeautifulSoup(r.text, "html.parser")
-        avatar = soup.find('span', {'class': 'avatar-card-link avatar-image-link'}).img['src']
-        blurb = soup.find('div', {'class': 'profile-about-content'}).pre.span.text
-        dates = soup.find('ul', {'class': 'profile-stats-container'})
-        join_date = dates.li.find('p', {'class': 'text-lead'}).text
-        return DetailedUser(self.request, self.id, self.name, blurb, join_date, avatar)
-
-    async def get_gamepasses(self, cursor='') -> list:
+    async def get_gamepasses(self, cursor=''):
         r = await self.request.request(url=f'https://www.roblox.com/users/inventory/list-json?assetTypeId=34&itemsPerPage=100&pageNumber=1&userId={self.id}&cursor={cursor}', method="GET")
         data = r.json()
         gamepasses = []
@@ -86,12 +78,3 @@ class User:
             sale = gamepass['Product']['IsForSale'] if gamepass.get('Product') else None
             gamepasses.append(Gamepass(self.request, gamepass['Item']['AssetId'], gamepass['Item']['Name'], price, gamepass['Thumbnail']['Url'], creator, sale))
         return gamepasses
-
-    async def has_gamepass(self, gamepass_id: int) -> bool:
-        gamepasses = await self.get_gamepasses()
-        owned = False
-        for gamepass in gamepasses:
-            if gamepass.id == gamepass_id:
-                owned = True
-                break
-        return owned
