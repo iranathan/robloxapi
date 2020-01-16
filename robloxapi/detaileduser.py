@@ -78,3 +78,12 @@ class DetailedUser:
             sale = gamepass['Product']['IsForSale'] if gamepass.get('Product') else None
             gamepasses.append(Gamepass(self.request, gamepass['Item']['AssetId'], gamepass['Item']['Name'], price, gamepass['Thumbnail']['Url'], creator, sale))
         return gamepasses
+
+    async def has_gamepass(self, gamepass_id: int) -> bool:
+        gamepasses = await self.get_gamepasses()
+        owned = False
+        for gamepass in gamepasses:
+            if gamepass.id == gamepass_id:
+                owned = True
+                break
+        return owned

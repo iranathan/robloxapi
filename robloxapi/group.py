@@ -1,11 +1,13 @@
 import json
 import logging
 import re
+import asyncio
 from bs4 import BeautifulSoup
 from .utils.errors import *
 from .utils.classes import *
 from .joinrequest import *
 from .groupmember import *
+from .auth import *
 
 
 class Group:
@@ -119,3 +121,25 @@ class Group:
             return members
         else:
             return await self.get_members(cursor=response['nextPageCursor'], members=members)
+
+    async def join(self, captcha: str):
+        auth = Captcha(self.request, captcha, pkey="63E4117F-E727-42B4-6DAA-C8448E9B137F")
+        token = ''
+        data, status = await auth.create_task()
+        if status == 200:
+            while True:
+                r, s = await auth.check_task(data["request"])
+                if r['request'] != "CAPCHA_NOT_READY":
+                    token = r['request']
+                    break
+                await asyncio.sleep(1.5)
+        data = json.dumps({
+            'captchaProvider': 'PROVIDER_ARKOSE_LABS',
+            'captchaToken': token
+        })
+        r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{self.id}/users', data=data, method="POST")
+        return r.status_code
+
+    async def leave(self):
+        r = await self.request.request(url="https://groups.roblox.com/v1/groups/3788537/users/109503558", method="DELETE")
+        return r.status_code

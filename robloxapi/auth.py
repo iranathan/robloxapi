@@ -21,10 +21,10 @@ class Auth:
 
 
 class Captcha:
-    def __init__(self, request, key):
+    def __init__(self, request, key, pkey="9F35E182-C93C-EBCC-A31D-CF8ED317B996"):
         self.request = request
         self.key = key
-        self.pkey = "9F35E182-C93C-EBCC-A31D-CF8ED317B996"
+        self.pkey = pkey
 
     async def create_task(self) -> tuple:
         r = await self.request.request(url=f'https://2captcha.com/in.php?key={self.key}&method=funcaptcha&publickey={self.pkey}&pageurl=https://roblox.com/login&json=1', method="POST")
