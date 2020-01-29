@@ -34,6 +34,14 @@ class User:
             raise NotFound('The user is not in that group.')
         return Role(user_role['role']['id'], user_role['role']['name'], user_role['role']['rank'], user_role['role']['memberCount'])
 
+    async def get_friends(self):
+        r = await self.request.request(url=f'https://friends.roblox.com/v1/users/{self.id}/friends', method="GET")
+        data = r.json()
+        friends = []
+        for friend in data['data']:
+            friends.append(User(self.request, friend['id'], friend['name']))
+        return friends
+
     async def block(self) -> int:
         data = json.dumps({
             'blockeeId': self.id
@@ -49,17 +57,11 @@ class User:
         return r.status_code
 
     async def follow(self) -> int:
-        data = json.dumps({
-            "targetUserId": self.id
-        })
-        r = await self.request.request(url='https://www.roblox.com/user/follow', data=data, method='POST')
+        r = await self.request.request(url=f'https://friends.roblox.com/v1/users/{self.id}/follow', method='POST')
         return r.status_code
 
     async def unfollow(self) -> int:
-        data = json.dumps({
-            "targetUserId": self.id
-        })
-        r = await self.request.request(url='https://www.roblox.com/api/user/unfollow', data=data, method='POST')
+        r = await self.request.request(url=f'https://friends.roblox.com/v1/users/{self.id}/unfollow', method='POST')
         return r.status_code
 
     # TODO: Status, Join date, Follower count, Friend count and Following count

@@ -1,3 +1,6 @@
+# Typings
+from typing import List
+# Packages
 from .utils.request import *
 from .utils.errors import *
 from .group import *
@@ -11,6 +14,13 @@ import asyncio
 class Client:
     def __init__(self, cookie=None):
         self.request = Request(cookie)
+
+    async def get_self(self):
+        if not ".ROBLOSECURITY" in self.request.cookies:
+            raise NotAuthenticated("You must be authenticated to preform that action.")
+        r = await self.request.request(url="https://www.roblox.com/my/profile", method="GET")
+        data = r.json()
+        return User(self.request, data["UserId"], data["Username"])
 
     async def get_trades(self) -> TradeRequest:
         data = j.dumps({
@@ -46,13 +56,22 @@ class Client:
             raise NotFound('That user was not found.')
         return User(self.request, json['Id'], json['Username'])
 
-    async def get_user(self, name=None, id=None):
+    async def get_user(self, name=None, id=None) -> User:
         if name:
             return await self.get_user_by_username(name)
         if id:
             return await self.get_user_by_id(id)
         if not id and not name:
             return None
+
+    async def get_friends(self) -> List[User]:
+        me = await self.get_self()
+        r = await self.request.request(url=f'https://friends.roblox.com/v1/users/{me.id}/friends', method="GET")
+        data = r.json()
+        friends = []
+        for friend in data['data']:
+            friends.append(User(self.request, friend['id'], friend['name']))
+        return friends
 
     async def change_status(self, status: str) -> int:
         data = {'status': str(status)}
