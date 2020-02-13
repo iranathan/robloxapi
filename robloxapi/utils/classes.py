@@ -24,3 +24,12 @@ class Message:
         self.message = message
         self.success = success
 
+
+class Limited:
+    def __init__(self, limited_id, serial_number, user_asset_id, average_price):
+        self.id = limited_id
+        self.serial_number = serial_number
+        self.user_asset_id = user_asset_id
+        self.average_price = average_price
+        self.original_price = original_price
+

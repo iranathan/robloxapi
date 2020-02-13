@@ -1,4 +1,6 @@
+import json
 from .user import *
+from .detailedtraderequest import *
 
 
 class TradeRequest:
@@ -10,19 +12,21 @@ class TradeRequest:
         self.status = status,
         self.trade_id = trade_id
 
-    # TODO: Add get_trade function (there is a lot of json it returns thanks roblox)
-    async def accept(self) -> int:
+    async def send_cmd(self, cmd):
         data = {
             'TradeID': self.trade_id,
-            'cmd': 'accept'
+            'cmd': cmd
         }
-        r = await self.request.request(url='https://www.roblox.com/trade/tradehandler.ashx', method='POST', data=data)
+        return await self.request.request(url='https://www.roblox.com/trade/tradehandler.ashx', method='POST', data=data)
+
+    async def get_detailed_trade(self) -> DetailedTradeRequest:
+        r = await self.send_cmd("pull")
+        data = r.json()
+
+    async def accept(self) -> int:
+        r = await self.send_cmd('accept')
         return r.status_code
 
     async def decline(self) -> int:
-        data = {
-            'TradeID': self.trade_id,
-            'cmd': 'decline'
-        }
-        r = await self.request.request(url='https://www.roblox.com/trade/tradehandler.ashx', method='POST', data=data)
+        r = await self.send_cmd('decline')
         return r.status_code

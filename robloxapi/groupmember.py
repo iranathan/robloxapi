@@ -30,7 +30,7 @@ class GroupMember:
         r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{self.group_id}/users/{self.id}', method="PATCH", data=data)
         return r.status_code
 
-    async def change_rank(self, change: int) -> int:
+    async def change_rank(self, change: int) -> tuple:
         roles = await self.get_group_roles()
         user_role = -1
         for r in roles:
@@ -42,7 +42,8 @@ class GroupMember:
         if len(roles) < new_user_role or int(roles[new_user_role].rank) == 255:
             raise RoleError("The role is over 255 or does not exist")
         self.role = roles[new_user_role]
-        return await self.set_rank(roles[new_user_role].id)
+        await self.set_rank(roles[new_user_role].id)
+        return self.role, roles[new_user_role]
 
     async def promote(self) -> int:
         return await self.change_rank(1)

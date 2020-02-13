@@ -40,7 +40,7 @@ class Group:
     async def demote(self, user_id: int) -> int:
         return await self.change_rank(user_id, -1)
 
-    async def change_rank(self, user_id: int, change: int) -> int:
+    async def change_rank(self, user_id: int, change: int) -> tuple:
         roles = await self.get_group_roles()
         role = await self.get_role_in_group(user_id)
         user_role = -1
@@ -52,7 +52,8 @@ class Group:
         print(roles[new_user_role].rank)
         if len(roles) < new_user_role or int(roles[new_user_role].rank) == 255:
             raise RoleError("The role is over 255 or does not exist")
-        return await self.set_rank(user_id, roles[new_user_role].id)
+        await self.set_rank(user_id, roles[new_user_role].id)
+        return role, roles[new_user_role]
 
     async def set_rank_by_id(self, user_id: int, role_id: int) -> int:
         roles = await self.get_group_roles()
