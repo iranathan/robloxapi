@@ -1,6 +1,5 @@
 import json
 from .user import *
-from .detailedtraderequest import *
 
 
 class TradeRequest:
@@ -18,10 +17,6 @@ class TradeRequest:
             'cmd': cmd
         }
         return await self.request.request(url='https://www.roblox.com/trade/tradehandler.ashx', method='POST', data=data)
-
-    async def get_detailed_trade(self) -> DetailedTradeRequest:
-        r = await self.send_cmd("pull")
-        data = r.json()
 
     async def accept(self) -> int:
         r = await self.send_cmd('accept')

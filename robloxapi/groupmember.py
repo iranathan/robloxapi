@@ -45,8 +45,8 @@ class GroupMember:
         await self.set_rank(roles[new_user_role].id)
         return self.role, roles[new_user_role]
 
-    async def promote(self) -> int:
+    async def promote(self) -> tuple:
         return await self.change_rank(1)
 
-    async def demote(self) -> int:
+    async def demote(self) -> tuple:
         return await self.change_rank(-1)

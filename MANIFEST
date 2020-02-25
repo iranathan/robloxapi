@@ -2,10 +2,14 @@
 setup.cfg
 setup.py
 robloxapi/__init__.py
+robloxapi/auth.py
 robloxapi/client.py
+robloxapi/detaileduser.py
+robloxapi/gamepass.py
 robloxapi/group.py
 robloxapi/groupmember.py
 robloxapi/joinrequest.py
+robloxapi/limited.py
 robloxapi/traderequest.py
 robloxapi/user.py
 robloxapi/utils/classes.py

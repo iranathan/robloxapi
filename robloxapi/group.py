@@ -2,12 +2,13 @@ import json
 import logging
 import re
 import asyncio
+from typing import List, Tuple
 from bs4 import BeautifulSoup
-from .utils.errors import *
-from .utils.classes import *
-from .joinrequest import *
-from .groupmember import *
-from .auth import *
+from .utils.errors import RoleError, NotFound
+from .utils.classes import Role, Shout
+from .joinrequest import JoinRequest
+from .groupmember import GroupMember
+from .auth import Auth
 
 
 class Group:
@@ -34,13 +35,13 @@ class Group:
         r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{self.id}/users/{user_id}', method="PATCH", data=data)
         return r.status_code
 
-    async def promote(self, user_id: int) -> int:
+    async def promote(self, user_id: int) -> Tuple[Role, Role]:
         return await self.change_rank(user_id, 1)
 
-    async def demote(self, user_id: int) -> int:
+    async def demote(self, user_id: int) -> Tuple[Role, Role]:
         return await self.change_rank(user_id, -1)
 
-    async def change_rank(self, user_id: int, change: int) -> tuple:
+    async def change_rank(self, user_id: int, change: int) -> Tuple[Role, Role]:
         roles = await self.get_group_roles()
         role = await self.get_role_in_group(user_id)
         user_role = -1
@@ -65,17 +66,14 @@ class Group:
             raise NotFound(f'Role {role_id} does not exist.')
         return await self.set_rank(user_id, choose.id)
 
-    async def get_wall(self, limit=10):
-        r = await self.request.request(url=f'https://groups.roblox.com/v2/groups/{self.id}/wall/posts?limit={limit}', method='GET')
-
-    async def get_group_roles(self) -> list:
+    async def get_group_roles(self) -> List[Role]:
         r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{self.id}/roles', method='GET')
         roles = []
         for role in r.json().get('roles'):
             roles.append(Role(role['id'], role['name'], role['rank'], role['memberCount']))
         return roles
 
-    async def get_role_in_group(self, user_id):
+    async def get_role_in_group(self, user_id) -> Role:
         r = await self.request.request(url=f'https://groups.roblox.com/v1/users/{user_id}/groups/roles', method='GET')
         data = r.json()
         user_role = None
@@ -93,27 +91,22 @@ class Group:
         shout = r.json()
         return Shout(message, shout['poster']['username'], shout['poster']['userId'], shout['created'], shout['updated'])
 
-    async def get_funds(self):
+    async def get_funds(self) -> int:
         r = await self.request.request(url=f'https://economy.roblox.com/v1/groups/{self.id}/currency', method='GET')
-        return r.json().get('robux')
+        return int(r.json().get('robux'))
 
     # TODO: Use https://groups.roblox.com/v1/groups/{groupId}/join-requests
-    async def get_join_requests(self):
-        r = await self.request.request(url=f'https://www.roblox.com/groups/{self.id}/joinrequests-html', method='GET')
-        soup = BeautifulSoup(r.text, 'html.parser')
-        container = soup.find('div', {'id': 'JoinRequestsList'}).table.find_all('tr')  # what
-        del container[0]
-        del container[-1]
+    async def get_join_requests(self) -> List[JoinRequest]:
+        r = await self.request.request(url=f"https://groups.roblox.com/v1/groups/{self.id}/join-requests/", method="GET")
+        data = r.json()
         requests = []
-        for request in container:
-            request_id = request.find('span', {"class": "btn-control btn-control-medium accept-join-request"})['data-rbx-join-request']
-            roblox_avatar = request.td.span.img['src']
-            roblox_name = request.find('a').text
-            roblox_id = re.findall(r'\b\d+\b', request.find('a')['href'])
-            requests.append(JoinRequest(self.request, request_id, roblox_name, roblox_id, roblox_avatar))
+        for request in data["data"]:
+            requests.append(JoinRequest(self.request, self.id, request["requester"]["username"], request["requester"]["userId"]))
         return requests
 
-    async def get_members(self, cursor='', members=[]):
+    async def get_members(self, cursor='', members=None):
+        if members is None:
+            members = []
         r = await self.request.request(url=f"https://groups.roblox.com/v1/groups/{self.id}/users?limit=100&sortOrder=Desc&cursor={cursor}", method="GET")
         response = r.json()
         for user in response['data']:
@@ -123,7 +116,7 @@ class Group:
         else:
             return await self.get_members(cursor=response['nextPageCursor'], members=members)
 
-    async def join(self, captcha: str):
+    async def join(self, captcha: str) -> int:
         auth = Captcha(self.request, captcha, pkey="63E4117F-E727-42B4-6DAA-C8448E9B137F")
         token = ''
         data, status = await auth.create_task()
@@ -141,6 +134,6 @@ class Group:
         r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{self.id}/users', data=data, method="POST")
         return r.status_code
 
-    async def leave(self):
+    async def leave(self) -> int:
         r = await self.request.request(url="https://groups.roblox.com/v1/groups/3788537/users/109503558", method="DELETE")
         return r.status_code

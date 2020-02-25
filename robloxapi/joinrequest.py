@@ -3,24 +3,15 @@ import json
 
 
 class JoinRequest:
-    def __init__(self, request, request_id, roblox_name, roblox_id, roblox_avatar):
+    def __init__(self, request, group_id, roblox_name, roblox_id):
         self.request = request
-        self.request_id = request_id
-        self.user = User(request, int(roblox_id[0]), roblox_name)
-        self.avatar = roblox_avatar
+        self.id = group_id
+        self.user = User(request, int(roblox_id), roblox_name)
 
     async def accept(self) -> int:
-        data = {
-            'groupJoinRequestId': self.request_id,
-            'accept': True
-        }
-        r = await self.request.request(url=f'https://www.roblox.com/group/handle-join-request', data=json.dumps(data), method='POST')
+        r = await self.request.request(url=f"https://groups.roblox.com/v1/groups/{self.id}/join-requests/users/{self.user.id}", method="POST", chunk=True)
         return r.status_code
 
     async def decline(self) -> int:
-        data = {
-            'groupJoinRequestId': self.request_id,
-            'accept': False
-        }
-        r = await self.request.request(url=f'https://www.roblox.com/group/handle-join-request', data=json.dumps(data), method='POST')
+        r = await self.request.request(url=f"https://groups.roblox.com/v1/groups/{self.id}/join-requests/users/{self.user.id}", method="DELETE", chunk=True)
         return r.status_code
