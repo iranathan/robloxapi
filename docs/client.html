@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.4" />
+<title>robloxapi.client API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>robloxapi.client</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># Typings
+from typing import List
+# Packages
+from .utils.request import *
+from .utils.errors import *
+from .group import *
+from .user import *
+from .traderequest import *
+from .auth import *
+import json as j
+import asyncio
+
+
+class Client:
+    &#34;&#34;&#34;
+    Client
+    &#34;&#34;&#34;
+    def __init__(self, cookie=None):
+        &#34;&#34;&#34;
+        Created a client.
+        :param cookie: A roblox cookie to login with
+        &#34;&#34;&#34;
+        self.request = Request(cookie)
+
+    async def get_self(self):
+        &#34;&#34;&#34;
+        Gets the user the lib is logged into.
+        :return: The user
+        &#34;&#34;&#34;
+        if not &#34;.ROBLOSECURITY&#34; in self.request.cookies:
+            raise NotAuthenticated(&#34;You must be authenticated to preform that action.&#34;)
+        r = await self.request.request(url=&#34;https://www.roblox.com/my/profile&#34;, method=&#34;GET&#34;)
+        data = r.json()
+        return User(self.request, data[&#34;UserId&#34;], data[&#34;Username&#34;])
+
+    async def get_trades(self) -&gt; List[TradeRequest]:
+        &#34;&#34;&#34;
+        Gets al trade requests.
+        :return: List of trade requests
+        &#34;&#34;&#34;
+        data = j.dumps({
+            &#39;startindex&#39;: 0,
+            &#39;statustype&#39;: &#39;inbound&#39;
+        })
+        r = await self.request.request(url=&#39;https://www.roblox.com/my/money.aspx/getmyitemtrades&#39;, data=data, method=&#39;POST&#39;)
+        data = json.loads(r.json()[&#39;d&#39;])[&#34;Data&#34;]
+        trades = []
+        for trade in data:
+            t = json.loads(trade)
+            trades.append(TradeRequest(self.request, t[&#39;Date&#39;], t[&#39;Expires&#39;], t[&#39;TradePartner&#39;], t[&#39;TradePartnerID&#39;], t[&#39;Status&#39;], t[&#39;TradeSessionID&#39;]))
+        return trades
+
+    async def get_group(self, group_id: int) -&gt; Group:
+        &#34;&#34;&#34;
+        Gets a group.
+        :param group_id: A roblox group id
+        :return: The group class
+        &#34;&#34;&#34;
+        r = await self.request.request(url=f&#39;https://groups.roblox.com/v1/groups/{group_id}/&#39;, method=&#39;GET&#39;)
+        if r.status_code != 200:
+            raise NotFound(&#39;That group was not found.&#39;)
+        json = r.json()
+        return Group(self.request, json[&#39;id&#39;], json[&#39;name&#39;], json[&#39;description&#39;], json[&#39;memberCount&#39;], json[&#39;shout&#39;], json[&#39;owner&#39;].get(&#39;userId&#39;), json[&#39;owner&#39;].get(&#39;username&#39;))
+
+    async def get_user_by_username(self, roblox_name: str) -&gt; User:
+        &#34;&#34;&#34;
+        Gets a user using there username.
+        :param roblox_name: The users username
+        :return: The user
+        &#34;&#34;&#34;
+        r = await self.request.request(url=f&#39;https://api.roblox.com/users/get-by-username?username={roblox_name}&#39;, method=&#34;GET&#34;)
+        json = r.json()
+        if not json.get(&#39;Id&#39;) or not json.get(&#39;Username&#39;):
+            raise NotFound(&#39;That user was not found.&#39;)
+        return User(self.request, json[&#39;Id&#39;], json[&#39;Username&#39;])
+
+    async def get_user_by_id(self, roblox_id: int) -&gt; User:
+        &#34;&#34;&#34;
+        Gets a user using there id.
+        :param roblox_id: The users id
+        :return: The user
+        &#34;&#34;&#34;
+        r = await self.request.request(url=f&#39;https://api.roblox.com/users/{roblox_id}&#39;, method=&#34;GET&#34;)
+        json = r.json()
+        if r.status_code != 200:
+            raise NotFound(&#39;That user was not found.&#39;)
+        return User(self.request, json[&#39;Id&#39;], json[&#39;Username&#39;])
+
+    async def get_user(self, name=None, id=None) -&gt; User:
+        &#34;&#34;&#34;
+        Does the same thing as get_user_by_username and get_user_by_id just with optional arguments
+        :param name: Not required the users username
+        :param id: Not required the users id
+        :return: The user
+        &#34;&#34;&#34;
+        if name:
+            return await self.get_user_by_username(name)
+        if id:
+            return await self.get_user_by_id(id)
+        if not id and not name:
+            return None
+
+    async def get_friends(self) -&gt; List[User]:
+        &#34;&#34;&#34;
+        Gets the logged in users friends
+        :return: A list of users
+        &#34;&#34;&#34;
+        me = await self.get_self()
+        r = await self.request.request(url=f&#39;https://friends.roblox.com/v1/users/{me.id}/friends&#39;, method=&#34;GET&#34;)
+        data = r.json()
+        friends = []
+        for friend in data[&#39;data&#39;]:
+            friends.append(User(self.request, friend[&#39;id&#39;], friend[&#39;name&#39;]))
+        return friends
+
+    async def change_status(self, status: str) -&gt; int:
+        &#34;&#34;&#34;
+        Changes the logged in users status
+        :param status:
+        :return: StatusCode
+        &#34;&#34;&#34;
+        data = {&#39;status&#39;: str(status)}
+        r = await self.request.request(url=&#39;https://www.roblox.com/home/updatestatus&#39;, method=&#39;POST&#39;, data=j.dumps(data))
+        return r.status_code
+
+    async def login(self, username=None, password=None, key=None):
+        &#34;&#34;&#34;
+        Logs in to a roblox account with 2captcha
+        :param username: The account username
+        :param password: The account password
+        :param key: 2captcha token
+        :return: None
+        &#34;&#34;&#34;
+        client = Auth(self.request)
+        if not username or not password:
+            raise AuthenticationError(&#34;You did not supply a username or password&#34;)
+        status, cookies = await client.login(username, password)
+        if status == 200 and &#34;.ROBLOSECURITY&#34; in cookies:
+            self.request = Request(cookies[&#34;.ROBLOSECURITY&#34;])
+        if not key:
+            raise CaptchaEncountered(&#34;2captcha required.&#34;)
+        else:
+            captcha = Captcha(self.request, key)
+            data, status = await captcha.create_task()
+            token = &#39;&#39;
+            if status == 200:
+                while True:
+                    r, s = await captcha.check_task(data[&#34;request&#34;])
+                    if r[&#39;request&#39;] != &#34;CAPCHA_NOT_READY&#34;:
+                        token = r[&#39;request&#39;]
+                        break
+                    await asyncio.sleep(1.5)
+        status, cookies = await client.login(username, password, token)
+        if status == 200 and &#34;.ROBLOSECURITY&#34; in cookies:
+            self.request = Request(cookies[&#34;.ROBLOSECURITY&#34;])</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="robloxapi.client.Client"><code class="flex name class">
+<span>class <span class="ident">Client</span></span>
+<span>(</span><span>cookie=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Client</p>
+<p>Created a client.
+:param cookie: A roblox cookie to login with</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Client:
+    &#34;&#34;&#34;
+    Client
+    &#34;&#34;&#34;
+    def __init__(self, cookie=None):
+        &#34;&#34;&#34;
+        Created a client.
+        :param cookie: A roblox cookie to login with
+        &#34;&#34;&#34;
+        self.request = Request(cookie)
+
+    async def get_self(self):
+        &#34;&#34;&#34;
+        Gets the user the lib is logged into.
+        :return: The user
+        &#34;&#34;&#34;
+        if not &#34;.ROBLOSECURITY&#34; in self.request.cookies:
+            raise NotAuthenticated(&#34;You must be authenticated to preform that action.&#34;)
+        r = await self.request.request(url=&#34;https://www.roblox.com/my/profile&#34;, method=&#34;GET&#34;)
+        data = r.json()
+        return User(self.request, data[&#34;UserId&#34;], data[&#34;Username&#34;])
+
+    async def get_trades(self) -&gt; List[TradeRequest]:
+        &#34;&#34;&#34;
+        Gets al trade requests.
+        :return: List of trade requests
+        &#34;&#34;&#34;
+        data = j.dumps({
+            &#39;startindex&#39;: 0,
+            &#39;statustype&#39;: &#39;inbound&#39;
+        })
+        r = await self.request.request(url=&#39;https://www.roblox.com/my/money.aspx/getmyitemtrades&#39;, data=data, method=&#39;POST&#39;)
+        data = json.loads(r.json()[&#39;d&#39;])[&#34;Data&#34;]
+        trades = []
+        for trade in data:
+            t = json.loads(trade)
+            trades.append(TradeRequest(self.request, t[&#39;Date&#39;], t[&#39;Expires&#39;], t[&#39;TradePartner&#39;], t[&#39;TradePartnerID&#39;], t[&#39;Status&#39;], t[&#39;TradeSessionID&#39;]))
+        return trades
+
+    async def get_group(self, group_id: int) -&gt; Group:
+        &#34;&#34;&#34;
+        Gets a group.
+        :param group_id: A roblox group id
+        :return: The group class
+        &#34;&#34;&#34;
+        r = await self.request.request(url=f&#39;https://groups.roblox.com/v1/groups/{group_id}/&#39;, method=&#39;GET&#39;)
+        if r.status_code != 200:
+            raise NotFound(&#39;That group was not found.&#39;)
+        json = r.json()
+        return Group(self.request, json[&#39;id&#39;], json[&#39;name&#39;], json[&#39;description&#39;], json[&#39;memberCount&#39;], json[&#39;shout&#39;], json[&#39;owner&#39;].get(&#39;userId&#39;), json[&#39;owner&#39;].get(&#39;username&#39;))
+
+    async def get_user_by_username(self, roblox_name: str) -&gt; User:
+        &#34;&#34;&#34;
+        Gets a user using there username.
+        :param roblox_name: The users username
+        :return: The user
+        &#34;&#34;&#34;
+        r = await self.request.request(url=f&#39;https://api.roblox.com/users/get-by-username?username={roblox_name}&#39;, method=&#34;GET&#34;)
+        json = r.json()
+        if not json.get(&#39;Id&#39;) or not json.get(&#39;Username&#39;):
+            raise NotFound(&#39;That user was not found.&#39;)
+        return User(self.request, json[&#39;Id&#39;], json[&#39;Username&#39;])
+
+    async def get_user_by_id(self, roblox_id: int) -&gt; User:
+        &#34;&#34;&#34;
+        Gets a user using there id.
+        :param roblox_id: The users id
+        :return: The user
+        &#34;&#34;&#34;
+        r = await self.request.request(url=f&#39;https://api.roblox.com/users/{roblox_id}&#39;, method=&#34;GET&#34;)
+        json = r.json()
+        if r.status_code != 200:
+            raise NotFound(&#39;That user was not found.&#39;)
+        return User(self.request, json[&#39;Id&#39;], json[&#39;Username&#39;])
+
+    async def get_user(self, name=None, id=None) -&gt; User:
+        &#34;&#34;&#34;
+        Does the same thing as get_user_by_username and get_user_by_id just with optional arguments
+        :param name: Not required the users username
+        :param id: Not required the users id
+        :return: The user
+        &#34;&#34;&#34;
+        if name:
+            return await self.get_user_by_username(name)
+        if id:
+            return await self.get_user_by_id(id)
+        if not id and not name:
+            return None
+
+    async def get_friends(self) -&gt; List[User]:
+        &#34;&#34;&#34;
+        Gets the logged in users friends
+        :return: A list of users
+        &#34;&#34;&#34;
+        me = await self.get_self()
+        r = await self.request.request(url=f&#39;https://friends.roblox.com/v1/users/{me.id}/friends&#39;, method=&#34;GET&#34;)
+        data = r.json()
+        friends = []
+        for friend in data[&#39;data&#39;]:
+            friends.append(User(self.request, friend[&#39;id&#39;], friend[&#39;name&#39;]))
+        return friends
+
+    async def change_status(self, status: str) -&gt; int:
+        &#34;&#34;&#34;
+        Changes the logged in users status
+        :param status:
+        :return: StatusCode
+        &#34;&#34;&#34;
+        data = {&#39;status&#39;: str(status)}
+        r = await self.request.request(url=&#39;https://www.roblox.com/home/updatestatus&#39;, method=&#39;POST&#39;, data=j.dumps(data))
+        return r.status_code
+
+    async def login(self, username=None, password=None, key=None):
+        &#34;&#34;&#34;
+        Logs in to a roblox account with 2captcha
+        :param username: The account username
+        :param password: The account password
+        :param key: 2captcha token
+        :return: None
+        &#34;&#34;&#34;
+        client = Auth(self.request)
+        if not username or not password:
+            raise AuthenticationError(&#34;You did not supply a username or password&#34;)
+        status, cookies = await client.login(username, password)
+        if status == 200 and &#34;.ROBLOSECURITY&#34; in cookies:
+            self.request = Request(cookies[&#34;.ROBLOSECURITY&#34;])
+        if not key:
+            raise CaptchaEncountered(&#34;2captcha required.&#34;)
+        else:
+            captcha = Captcha(self.request, key)
+            data, status = await captcha.create_task()
+            token = &#39;&#39;
+            if status == 200:
+                while True:
+                    r, s = await captcha.check_task(data[&#34;request&#34;])
+                    if r[&#39;request&#39;] != &#34;CAPCHA_NOT_READY&#34;:
+                        token = r[&#39;request&#39;]
+                        break
+                    await asyncio.sleep(1.5)
+        status, cookies = await client.login(username, password, token)
+        if status == 200 and &#34;.ROBLOSECURITY&#34; in cookies:
+            self.request = Request(cookies[&#34;.ROBLOSECURITY&#34;])</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="robloxapi.client.Client.change_status"><code class="name flex">
+<span>async def <span class="ident">change_status</span></span>(<span>self, status)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Changes the logged in users status
+:param status:
+:return: StatusCode</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def change_status(self, status: str) -&gt; int:
+    &#34;&#34;&#34;
+    Changes the logged in users status
+    :param status:
+    :return: StatusCode
+    &#34;&#34;&#34;
+    data = {&#39;status&#39;: str(status)}
+    r = await self.request.request(url=&#39;https://www.roblox.com/home/updatestatus&#39;, method=&#39;POST&#39;, data=j.dumps(data))
+    return r.status_code</code></pre>
+</details>
+</dd>
+<dt id="robloxapi.client.Client.get_friends"><code class="name flex">
+<span>async def <span class="ident">get_friends</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Gets the logged in users friends
+:return: A list of users</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def get_friends(self) -&gt; List[User]:
+    &#34;&#34;&#34;
+    Gets the logged in users friends
+    :return: A list of users
+    &#34;&#34;&#34;
+    me = await self.get_self()
+    r = await self.request.request(url=f&#39;https://friends.roblox.com/v1/users/{me.id}/friends&#39;, method=&#34;GET&#34;)
+    data = r.json()
+    friends = []
+    for friend in data[&#39;data&#39;]:
+        friends.append(User(self.request, friend[&#39;id&#39;], friend[&#39;name&#39;]))
+    return friends</code></pre>
+</details>
+</dd>
+<dt id="robloxapi.client.Client.get_group"><code class="name flex">
+<span>async def <span class="ident">get_group</span></span>(<span>self, group_id)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Gets a group.
+:param group_id: A roblox group id
+:return: The group class</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def get_group(self, group_id: int) -&gt; Group:
+    &#34;&#34;&#34;
+    Gets a group.
+    :param group_id: A roblox group id
+    :return: The group class
+    &#34;&#34;&#34;
+    r = await self.request.request(url=f&#39;https://groups.roblox.com/v1/groups/{group_id}/&#39;, method=&#39;GET&#39;)
+    if r.status_code != 200:
+        raise NotFound(&#39;That group was not found.&#39;)
+    json = r.json()
+    return Group(self.request, json[&#39;id&#39;], json[&#39;name&#39;], json[&#39;description&#39;], json[&#39;memberCount&#39;], json[&#39;shout&#39;], json[&#39;owner&#39;].get(&#39;userId&#39;), json[&#39;owner&#39;].get(&#39;username&#39;))</code></pre>
+</details>
+</dd>
+<dt id="robloxapi.client.Client.get_self"><code class="name flex">
+<span>async def <span class="ident">get_self</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Gets the user the lib is logged into.
+:return: The user</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def get_self(self):
+    &#34;&#34;&#34;
+    Gets the user the lib is logged into.
+    :return: The user
+    &#34;&#34;&#34;
+    if not &#34;.ROBLOSECURITY&#34; in self.request.cookies:
+        raise NotAuthenticated(&#34;You must be authenticated to preform that action.&#34;)
+    r = await self.request.request(url=&#34;https://www.roblox.com/my/profile&#34;, method=&#34;GET&#34;)
+    data = r.json()
+    return User(self.request, data[&#34;UserId&#34;], data[&#34;Username&#34;])</code></pre>
+</details>
+</dd>
+<dt id="robloxapi.client.Client.get_trades"><code class="name flex">
+<span>async def <span class="ident">get_trades</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Gets al trade requests.
+:return: List of trade requests</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def get_trades(self) -&gt; List[TradeRequest]:
+    &#34;&#34;&#34;
+    Gets al trade requests.
+    :return: List of trade requests
+    &#34;&#34;&#34;
+    data = j.dumps({
+        &#39;startindex&#39;: 0,
+        &#39;statustype&#39;: &#39;inbound&#39;
+    })
+    r = await self.request.request(url=&#39;https://www.roblox.com/my/money.aspx/getmyitemtrades&#39;, data=data, method=&#39;POST&#39;)
+    data = json.loads(r.json()[&#39;d&#39;])[&#34;Data&#34;]
+    trades = []
+    for trade in data:
+        t = json.loads(trade)
+        trades.append(TradeRequest(self.request, t[&#39;Date&#39;], t[&#39;Expires&#39;], t[&#39;TradePartner&#39;], t[&#39;TradePartnerID&#39;], t[&#39;Status&#39;], t[&#39;TradeSessionID&#39;]))
+    return trades</code></pre>
+</details>
+</dd>
+<dt id="robloxapi.client.Client.get_user"><code class="name flex">
+<span>async def <span class="ident">get_user</span></span>(<span>self, name=None, id=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Does the same thing as get_user_by_username and get_user_by_id just with optional arguments
+:param name: Not required the users username
+:param id: Not required the users id
+:return: The user</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def get_user(self, name=None, id=None) -&gt; User:
+    &#34;&#34;&#34;
+    Does the same thing as get_user_by_username and get_user_by_id just with optional arguments
+    :param name: Not required the users username
+    :param id: Not required the users id
+    :return: The user
+    &#34;&#34;&#34;
+    if name:
+        return await self.get_user_by_username(name)
+    if id:
+        return await self.get_user_by_id(id)
+    if not id and not name:
+        return None</code></pre>
+</details>
+</dd>
+<dt id="robloxapi.client.Client.get_user_by_id"><code class="name flex">
+<span>async def <span class="ident">get_user_by_id</span></span>(<span>self, roblox_id)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Gets a user using there id.
+:param roblox_id: The users id
+:return: The user</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def get_user_by_id(self, roblox_id: int) -&gt; User:
+    &#34;&#34;&#34;
+    Gets a user using there id.
+    :param roblox_id: The users id
+    :return: The user
+    &#34;&#34;&#34;
+    r = await self.request.request(url=f&#39;https://api.roblox.com/users/{roblox_id}&#39;, method=&#34;GET&#34;)
+    json = r.json()
+    if r.status_code != 200:
+        raise NotFound(&#39;That user was not found.&#39;)
+    return User(self.request, json[&#39;Id&#39;], json[&#39;Username&#39;])</code></pre>
+</details>
+</dd>
+<dt id="robloxapi.client.Client.get_user_by_username"><code class="name flex">
+<span>async def <span class="ident">get_user_by_username</span></span>(<span>self, roblox_name)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Gets a user using there username.
+:param roblox_name: The users username
+:return: The user</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def get_user_by_username(self, roblox_name: str) -&gt; User:
+    &#34;&#34;&#34;
+    Gets a user using there username.
+    :param roblox_name: The users username
+    :return: The user
+    &#34;&#34;&#34;
+    r = await self.request.request(url=f&#39;https://api.roblox.com/users/get-by-username?username={roblox_name}&#39;, method=&#34;GET&#34;)
+    json = r.json()
+    if not json.get(&#39;Id&#39;) or not json.get(&#39;Username&#39;):
+        raise NotFound(&#39;That user was not found.&#39;)
+    return User(self.request, json[&#39;Id&#39;], json[&#39;Username&#39;])</code></pre>
+</details>
+</dd>
+<dt id="robloxapi.client.Client.login"><code class="name flex">
+<span>async def <span class="ident">login</span></span>(<span>self, username=None, password=None, key=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Logs in to a roblox account with 2captcha
+:param username: The account username
+:param password: The account password
+:param key: 2captcha token
+:return: None</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def login(self, username=None, password=None, key=None):
+    &#34;&#34;&#34;
+    Logs in to a roblox account with 2captcha
+    :param username: The account username
+    :param password: The account password
+    :param key: 2captcha token
+    :return: None
+    &#34;&#34;&#34;
+    client = Auth(self.request)
+    if not username or not password:
+        raise AuthenticationError(&#34;You did not supply a username or password&#34;)
+    status, cookies = await client.login(username, password)
+    if status == 200 and &#34;.ROBLOSECURITY&#34; in cookies:
+        self.request = Request(cookies[&#34;.ROBLOSECURITY&#34;])
+    if not key:
+        raise CaptchaEncountered(&#34;2captcha required.&#34;)
+    else:
+        captcha = Captcha(self.request, key)
+        data, status = await captcha.create_task()
+        token = &#39;&#39;
+        if status == 200:
+            while True:
+                r, s = await captcha.check_task(data[&#34;request&#34;])
+                if r[&#39;request&#39;] != &#34;CAPCHA_NOT_READY&#34;:
+                    token = r[&#39;request&#39;]
+                    break
+                await asyncio.sleep(1.5)
+    status, cookies = await client.login(username, password, token)
+    if status == 200 and &#34;.ROBLOSECURITY&#34; in cookies:
+        self.request = Request(cookies[&#34;.ROBLOSECURITY&#34;])</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="robloxapi" href="index.html">robloxapi</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="robloxapi.client.Client" href="#robloxapi.client.Client">Client</a></code></h4>
+<ul class="">
+<li><code><a title="robloxapi.client.Client.change_status" href="#robloxapi.client.Client.change_status">change_status</a></code></li>
+<li><code><a title="robloxapi.client.Client.get_friends" href="#robloxapi.client.Client.get_friends">get_friends</a></code></li>
+<li><code><a title="robloxapi.client.Client.get_group" href="#robloxapi.client.Client.get_group">get_group</a></code></li>
+<li><code><a title="robloxapi.client.Client.get_self" href="#robloxapi.client.Client.get_self">get_self</a></code></li>
+<li><code><a title="robloxapi.client.Client.get_trades" href="#robloxapi.client.Client.get_trades">get_trades</a></code></li>
+<li><code><a title="robloxapi.client.Client.get_user" href="#robloxapi.client.Client.get_user">get_user</a></code></li>
+<li><code><a title="robloxapi.client.Client.get_user_by_id" href="#robloxapi.client.Client.get_user_by_id">get_user_by_id</a></code></li>
+<li><code><a title="robloxapi.client.Client.get_user_by_username" href="#robloxapi.client.Client.get_user_by_username">get_user_by_username</a></code></li>
+<li><code><a title="robloxapi.client.Client.login" href="#robloxapi.client.Client.login">login</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.4</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
