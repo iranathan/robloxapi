@@ -1,6 +1,10 @@
 import robloxapi, asyncio
 client = robloxapi.Client("COOKIE")
 
+
+"""
+Promote a user in a specified group.
+"""
 async def main():
     group = await client.get_group(1)
     oldrole, newrole = await group.promote(1)

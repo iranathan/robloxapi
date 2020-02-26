@@ -12,17 +12,32 @@ import asyncio
 
 
 class Client:
+    """
+    Client
+    """
     def __init__(self, cookie=None):
+        """
+        Created a client.
+        :param cookie: A roblox cookie to login with
+        """
         self.request = Request(cookie)
 
     async def get_self(self):
+        """
+        Gets the user the lib is logged into.
+        :return: The user
+        """
         if not ".ROBLOSECURITY" in self.request.cookies:
             raise NotAuthenticated("You must be authenticated to preform that action.")
         r = await self.request.request(url="https://www.roblox.com/my/profile", method="GET")
         data = r.json()
         return User(self.request, data["UserId"], data["Username"])
 
-    async def get_trades(self) -> TradeRequest:
+    async def get_trades(self) -> List[TradeRequest]:
+        """
+        Gets al trade requests.
+        :return: List of trade requests
+        """
         data = j.dumps({
             'startindex': 0,
             'statustype': 'inbound'
@@ -36,6 +51,11 @@ class Client:
         return trades
 
     async def get_group(self, group_id: int) -> Group:
+        """
+        Gets a group.
+        :param group_id: A roblox group id
+        :return: The group class
+        """
         r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{group_id}/', method='GET')
         if r.status_code != 200:
             raise NotFound('That group was not found.')
@@ -43,6 +63,11 @@ class Client:
         return Group(self.request, json['id'], json['name'], json['description'], json['memberCount'], json['shout'], json['owner'].get('userId'), json['owner'].get('username'))
 
     async def get_user_by_username(self, roblox_name: str) -> User:
+        """
+        Gets a user using there username.
+        :param roblox_name: The users username
+        :return: The user
+        """
         r = await self.request.request(url=f'https://api.roblox.com/users/get-by-username?username={roblox_name}', method="GET")
         json = r.json()
         if not json.get('Id') or not json.get('Username'):
@@ -50,6 +75,11 @@ class Client:
         return User(self.request, json['Id'], json['Username'])
 
     async def get_user_by_id(self, roblox_id: int) -> User:
+        """
+        Gets a user using there id.
+        :param roblox_id: The users id
+        :return: The user
+        """
         r = await self.request.request(url=f'https://api.roblox.com/users/{roblox_id}', method="GET")
         json = r.json()
         if r.status_code != 200:
@@ -57,6 +87,12 @@ class Client:
         return User(self.request, json['Id'], json['Username'])
 
     async def get_user(self, name=None, id=None) -> User:
+        """
+        Does the same thing as get_user_by_username and get_user_by_id just with optional arguments
+        :param name: Not required the users username
+        :param id: Not required the users id
+        :return: The user
+        """
         if name:
             return await self.get_user_by_username(name)
         if id:
@@ -65,6 +101,10 @@ class Client:
             return None
 
     async def get_friends(self) -> List[User]:
+        """
+        Gets the logged in users friends
+        :return: A list of users
+        """
         me = await self.get_self()
         r = await self.request.request(url=f'https://friends.roblox.com/v1/users/{me.id}/friends', method="GET")
         data = r.json()
@@ -74,11 +114,23 @@ class Client:
         return friends
 
     async def change_status(self, status: str) -> int:
+        """
+        Changes the logged in users status
+        :param status:
+        :return: StatusCode
+        """
         data = {'status': str(status)}
         r = await self.request.request(url='https://www.roblox.com/home/updatestatus', method='POST', data=j.dumps(data))
         return r.status_code
 
     async def login(self, username=None, password=None, key=None):
+        """
+        Logs in to a roblox account with 2captcha
+        :param username: The account username
+        :param password: The account password
+        :param key: 2captcha token
+        :return: None
+        """
         client = Auth(self.request)
         if not username or not password:
             raise AuthenticationError("You did not supply a username or password")

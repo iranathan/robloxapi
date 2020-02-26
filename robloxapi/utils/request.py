@@ -3,7 +3,14 @@ from .errors import *
 
 
 class Request:
+    """
+    Request class.
+    """
     def __init__(self, cookie=None):
+        """
+        Request class.
+        :param cookie:
+        """
         self.requests = http3.AsyncClient()
         self.cookies = {}
         self.headers = {
@@ -19,6 +26,10 @@ class Request:
             self.login(cookie)
 
     async def xcsrf(self):
+        """
+        Gets an xcstf token.
+        :return: An xcsrf
+        """
         r = await self.requests.post('https://www.roblox.com/favorite/toggle')
         if r.headers['X-CSRF-TOKEN']:
             return r.headers['X-CSRF-TOKEN']
@@ -26,6 +37,11 @@ class Request:
             return None
 
     async def request(self, **kwargs):
+        """
+        Sends a request.
+        :param kwargs: Options for the request
+        :return: Response class
+        """
         if not 'method' in kwargs: kwargs['method'] = 'GET'
         if kwargs['method'].lower() == "post" and kwargs.get("chunk"):
             self.headers["Content-Length"] = str(len(kwargs.get('data') or ""))
@@ -38,10 +54,12 @@ class Request:
                 raise BadStatus(f'Got status {r.status_code} from {kwargs["url"]} data: {r.text}')
         return r
 
-    def check_parameter(self, provided, type_str):
-        pass
-
     def login(self, cookie):
+        """
+        Saves the cookie for later sent requests.
+        :param cookie: A roblox cookie
+        :return: None
+        """
         cookies = {
             '.ROBLOSECURITY': cookie
         }

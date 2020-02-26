@@ -1,5 +1,16 @@
 class Limited:
+    """
+    Represents a limited
+    """
     def __init__(self, request, limited_id, serial_number, user_asset_id, average_price):
+        """
+        Created a limited.
+        :param request: Used to send requests
+        :param limited_id: The id of the limited
+        :param serial_number: The serial number of the limited
+        :param user_asset_id: The user asset id
+        :param average_price: The average price of the limited
+        """
         self.request = request
         self.id = limited_id
         self.serial_number = serial_number

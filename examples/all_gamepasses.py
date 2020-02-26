@@ -1,6 +1,9 @@
 import robloxapi, asyncio
 client = robloxapi.Client()
 
+"""
+This should get all the gamepasses a user has.
+"""
 
 async def main():
     ira = await client.get_user_by_id(109503558)
