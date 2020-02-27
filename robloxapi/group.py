@@ -33,7 +33,7 @@ class Group:
         self.name = group_name
         self.description = description
         if owner_id and owner_username:
-            self.owner = User(owner_id, owner_username)
+            self.owner = User(self.request, owner_id, owner_username)
         self.member_count = member_count
         self.shout = shout
 
