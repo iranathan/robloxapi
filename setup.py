@@ -19,7 +19,8 @@ setup(
   install_requires=[            
           'httpx',
           'beautifulsoup4',
-          'requests'
+          'requests',
+          'http3'
       ],
   classifiers=[
     'Development Status :: 3 - Alpha',      
