@@ -43,7 +43,7 @@ class Group:
         :param user_id: The users id
         :return: StatusCode
         """
-        r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{self.id}/users/{user_id}', method='POST')
+        r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{self.id}/users/{user_id}', method='DELETE')
         return r.status_code
 
     async def set_rank(self, user_id: int, rank_id: int) -> int:

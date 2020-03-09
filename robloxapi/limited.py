@@ -1,3 +1,7 @@
+from .utils.classes import Reseller
+from typing import List
+
+
 class Limited:
     """
     Represents a limited
@@ -18,6 +22,10 @@ class Limited:
         self.average_price = average_price
         self.original_price = original_price
 
-    async def get_resellers(self):
+    async def get_resellers(self) -> List[Reseller]:
         r = self.request.request(url="https://economy.roblox.com/v1/assets/128158439/resellers?limit=100", method='GET')
         data = r.json()['data']
+        sellers = []
+        for user in data:
+            sellers.append(Reseller(user['price'], user['seller']['name'], user['seller']['id'], user['serialNumber']))
+        return sellers

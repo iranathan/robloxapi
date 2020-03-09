@@ -58,7 +58,7 @@ class Client:
         """
         r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{group_id}/', method='GET')
         if r.status_code != 200:
-            raise NotFound('That group was not found.')
+            return None
         json = r.json()
         return Group(self.request, json['id'], json['name'], json['description'], json['memberCount'], json['shout'], json['owner'].get('userId'), json['owner'].get('username'))
 
@@ -71,7 +71,7 @@ class Client:
         r = await self.request.request(url=f'https://api.roblox.com/users/get-by-username?username={roblox_name}', method="GET")
         json = r.json()
         if not json.get('Id') or not json.get('Username'):
-            raise NotFound('That user was not found.')
+            return None
         return User(self.request, json['Id'], json['Username'])
 
     async def get_user_by_id(self, roblox_id: int) -> User:
@@ -83,7 +83,7 @@ class Client:
         r = await self.request.request(url=f'https://api.roblox.com/users/{roblox_id}', method="GET")
         json = r.json()
         if r.status_code != 200:
-            raise NotFound('That user was not found.')
+            return None
         return User(self.request, json['Id'], json['Username'])
 
     async def get_user(self, name=None, id=None) -> User:
@@ -97,8 +97,7 @@ class Client:
             return await self.get_user_by_username(name)
         if id:
             return await self.get_user_by_id(id)
-        if not id and not name:
-            return None
+        return None
 
     async def get_friends(self) -> List[User]:
         """
