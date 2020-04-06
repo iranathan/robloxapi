@@ -172,23 +172,23 @@ class Group:
             requests.append(JoinRequest(self.request, self.id, request["requester"]["username"], request["requester"]["userId"]))
         return requests
 
-    async def get_members(self, cursor='', members=None):
+    async def get_members(self):
         """
         Get all members of a group.
         :param cursor: Not required used by the lib to get all the pages
         :param members: Not required used by the lib to catch all members
         :return: A list of user classes
         """
-        if members is None:
-            members = []
-        r = await self.request.request(url=f"https://groups.roblox.com/v1/groups/{self.id}/users?limit=100&sortOrder=Desc&cursor={cursor}", method="GET")
-        response = r.json()
-        for user in response['data']:
-            members.append(GroupMember(self.request, user["user"]["userId"], user["user"]["username"], self.id, Role(user['role']['id'], user['role']['name'], user['role']['rank'], user['role']['memberCount'])))
-        if not response['nextPageCursor']:
-            return members
-        else:
-            return await self.get_members(cursor=response['nextPageCursor'], members=members)
+        cursor = ""
+        while True:
+            r = await self.request.request(url=f"https://groups.roblox.com/v1/groups/{self.id}/users?limit=100&sortOrder=Desc&cursor={cursor}", method="GET")
+            response = r.json()
+            for user in response['data']:
+                yield GroupMember(self.request, user["user"]["userId"], user["user"]["username"], self.id, Role(user['role']['id'], user['role']['name'], user['role']['rank'], user['role']['memberCount']))
+            if not response["nextPageCursor"]:
+                break
+            cursor = response["nextPageCursor"]
+        return
 
     async def join(self, captcha: str) -> int:
         """
