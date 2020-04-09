@@ -2,7 +2,7 @@ class Role:
     """
     Represents a role.
     """
-    def __init__(self, role_id: int, role_name: str, rank: int, members: int):
+    def __init__(self, role_id: int, role_name: str, rank=None, members=None):
         """
         :param role_id: The roles id
         :param role_name: The roles name
@@ -68,3 +68,32 @@ class Reseller:
         self.name = roblox_name,
         self.id = roblox_id
         self.serial_number = serial_number
+
+
+class WallPost:
+    """
+    Represents a wall post in a group.
+    """
+    def __init__(self, content, author):
+        """
+        :param content: contents of the message
+        :param author: the author of the message
+        """
+        self.content = content
+        self.author = author
+
+
+class Action:
+    """
+    Represents an audit log action.
+    """
+    def __init__(self, action, actor, description, target=None):
+        """
+        :param action: What the action was
+        :param actor: Who did the action
+        :param description: What changed
+        """
+        self.action = action
+        self.actor = actor
+        self.description = description
+        self.target = target

@@ -5,7 +5,7 @@ import asyncio
 from typing import List, Tuple
 from bs4 import BeautifulSoup
 from .utils.errors import RoleError, NotFound
-from .utils.classes import Role, Shout
+from .utils.classes import Role, Shout, WallPost, Action
 from .joinrequest import JoinRequest
 from .groupmember import GroupMember
 from .user import User
@@ -172,11 +172,36 @@ class Group:
             requests.append(JoinRequest(self.request, self.id, request["requester"]["username"], request["requester"]["userId"]))
         return requests
 
+    async def get_audit_logs(self, action=None):
+        """
+        Gets actions in the audit log.
+        :param action: Filter witch action.
+        :return:
+        """
+        r = await self.request.request(url=f"https://groups.roblox.com/v1/groups/2695946/audit-log?actionType={action or 'all'}&limit=100&sortOrder=Asc", method="GET")
+        data = r.json()
+        logs = []
+        for a in data['data']:
+            actor = User(self.request, a["actor"]["user"]["userId"], a["actor"]["user"]["username"])
+            description = None
+            target = None
+            if a['actionType'] == "Delete Post":
+                description = WallPost(a["description"]["PostDesc"], User(self.request, a["description"]["TargetId"], a["description"]["TargetName"]))
+            if a['actionType'] == "Remove Member":
+                description = User(self.request, a["description"]["TargetId"], a["description"]["TargetName"])
+            if a['actionType'] == "Accept Join Request" or a['actionType'] == "Decline Join Request":
+                description = JoinRequest(self.request, self.id, a["description"]["TargetName"], a["description"]["TargetId"])
+            if a['actionType'] == "Post Status":
+                description = Shout(a["description"]["Text"], actor.name, actor.id, a["created"], a["created"])
+            if a['actionType'] == "Change Rank":
+                description = (Role(a["description"]["OldRoleSetId"], a["description"]["OldRoleSetName"]), Role(a["description"]["NewRoleSetId"], a["description"]["NewRoleSetName"]))
+                target = User(self.request, a["description"]["TargetId"], a["description"]["TargetName"])
+            logs.append(Action(a['actionType'], actor, description, target))
+        return logs
+
     async def get_members(self):
         """
         Get all members of a group.
-        :param cursor: Not required used by the lib to get all the pages
-        :param members: Not required used by the lib to catch all members
         :return: A list of user classes
         """
         cursor = ""
