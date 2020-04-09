@@ -114,8 +114,7 @@ class User:
         soup = BeautifulSoup(r.text, "html.parser")
         avatar = soup.find('span', {'class': 'avatar-card-link avatar-image-link'}).img['src']
         blurb = soup.find('div', {'class': 'profile-about-content'}).pre.span.text
-        dates = soup.find('ul', {'class': 'profile-stats-container'})
-        join_date = dates.li.find('p', {'class': 'text-lead'}).text
+        join_date = soup.find('div', {'class': 'section profile-statistics'}).find_all('li', {'class': 'profile-stat'})[0].p.text.replace('Join Date', '').split('Place')[0]
         return DetailedUser(self.request, self.id, self.name, blurb, join_date, avatar)
 
     async def get_gamepasses(self, cursor='') -> List[Gamepass]:
