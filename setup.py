@@ -2,15 +2,13 @@ from distutils.core import setup
 setup(
   name = 'robloxapi',
   packages = ['robloxapi', 'robloxapi.utils'],
-  version = '4.3',
+  version = '4.4',
   license='MIT',       
   description = 'A Python wrapper for roblox',
   long_description = '''
   Just another wrapper for the roblox api. 
   github: https://github.com/iranathan/robloxapi
-  docs: https://robloxapi.readthedocs.io/en/latest/ (not the full package is documented will be soon.)
-  
-  There is also an async version on the github.
+  discord: https://discord.gg/ZVcBRbV
   ''',
   url = 'https://github.com/iranathan/robloxapi',
   author = 'Iranathan',                

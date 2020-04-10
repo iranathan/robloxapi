@@ -83,6 +83,7 @@ class Group:
         :return: oldrole & newrole in a tuple
         """
         roles = await self.get_group_roles()
+        roles.sort(key=lambda r: r.rank)
         role = await self.get_role_in_group(user_id)
         user_role = -1
         for r in roles:
@@ -90,7 +91,6 @@ class Group:
             if r.id == role.id:
                 break
         new_user_role = user_role + change
-        print(roles[new_user_role].rank)
         if len(roles) < new_user_role or int(roles[new_user_role].rank) == 255:
             raise RoleError("The role is over 255 or does not exist")
         await self.set_rank(user_id, roles[new_user_role].id)
