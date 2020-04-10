@@ -4,21 +4,36 @@
 [![Largest Roblox API Discord](https://img.shields.io/discord/332692436478590986.svg?style=popout)](https://discord.gg/ZVcBRbV)
 [![Downloads](http://pepy.tech/badge/robloxapi)](http://pepy.tech/project/robloxapi)
 
-A python module for using the roblox api
+A python module for interacting with the roblox api
 
-Here are some examples using this lib: https://github.com/iranathan/robloxapi/tree/master/examples
+If you would like to contribute, please open a pull request with your ideas. 
+Or if you have any issues open an issue and I will try response as soon as possible.
 
-
+Take a look at the examples: https://github.com/iranathan/robloxapi/tree/master/examples
 ***
 
 ### Install command:
-Async version: `pip install git+https://github.com/iranathan/robloxapi.git`
+There are 2 ways of installing this lib. You can ether download a stable version from pypi or directly from this repo.
 
+Stable:
+
+```pip install robloxapi```
+
+This version is most likely functional.
+Everything is first pushed to this repo before pypi.
+
+Repo:
+
+```pip install git+https://github.com/iranathan/robloxapi.git ```
+
+Where I push new features and updates.
 ***
 
 ### Docs:
 
-There are currently no docs for this version. Please join this discord server for assistance https://discord.gg/ZVcBRbV
+http://iranathan.com/robloxapi/
 
+I encourage you to join this discord server for announcements about this library. 
+You can ask questions about this library and discover other library's written in python and also other languages.
 
-
+https://discord.gg/ZVcBRbV

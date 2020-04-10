@@ -4,6 +4,7 @@ setup.py
 robloxapi/__init__.py
 robloxapi/auth.py
 robloxapi/client.py
+robloxapi/detailedtrade.py
 robloxapi/detaileduser.py
 robloxapi/gamepass.py
 robloxapi/group.py

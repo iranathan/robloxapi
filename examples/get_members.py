@@ -7,8 +7,7 @@ Gets all users of a group.
 """
 async def main():
     group = await client.get_group(2695946)
-    members = await group.get_members()
-    for member in members:
-        await member.promote()
+    async for member in group.get_members():
+        print(f"{member.name} has role {member.role.name}")
 
 asyncio.run(main())
