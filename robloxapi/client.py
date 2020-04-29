@@ -56,7 +56,7 @@ class Client:
         :param group_id: A roblox group id
         :return: The group class
         """
-        r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{group_id}/', method='GET')
+        r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{group_id}/', method='GET', noerror=True)
         if r.status_code != 200:
             return None
         json = r.json()
@@ -68,9 +68,9 @@ class Client:
         :param roblox_name: The users username
         :return: The user
         """
-        r = await self.request.request(url=f'https://api.roblox.com/users/get-by-username?username={roblox_name}', method="GET")
+        r = await self.request.request(url=f'https://api.roblox.com/users/get-by-username?username={roblox_name}', method="GET", noerror=True)
         json = r.json()
-        if not json.get('Id') or not json.get('Username'):
+        if r.status_code != 200 or not json.get('Id') or not json.get('Username'):
             return None
         return User(self.request, json['Id'], json['Username'])
 
@@ -80,9 +80,9 @@ class Client:
         :param roblox_id: The users id
         :return: The user
         """
-        r = await self.request.request(url=f'https://api.roblox.com/users/{roblox_id}', method="GET")
+        r = await self.request.request(url=f'https://api.roblox.com/users/{roblox_id}', method="GET", noerror=True)
         json = r.json()
-        if r.status_code != 200:
+        if r.status_code != 200 or not json.get('Id') or not json.get('Username'):
             return None
         return User(self.request, json['Id'], json['Username'])
 
