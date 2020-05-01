@@ -37,6 +37,26 @@ class Group:
         self.member_count = member_count
         self.shout = shout
 
+    async def pay(self, user_id: int, amount: int) -> int:
+        """
+        Pays a user.
+        :param user_id: The user to pay
+        :param amount: How much to pay the user
+        :return: StatusCode
+        """
+        data = json.dumps({
+            "PayoutType": "FixedAmount",
+            "Recipients": [
+                {
+                    "recipientId": user_id,
+                    "recipientType": "User",
+                    "amount": amount
+                }
+            ]
+        })
+        r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{self.id}/payouts', data=data, method="POST")
+        return r.status_code
+
     async def exile(self, user_id: int) -> int:
         """
         Exiles a user from the group.
