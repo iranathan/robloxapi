@@ -113,7 +113,10 @@ class User:
         r = await self.request.request(url=f'https://www.roblox.com/users/{self.id}/profile', method="GET")
         soup = BeautifulSoup(r.text, "html.parser")
         avatar = soup.find('span', {'class': 'avatar-card-link avatar-image-link'}).img['src']
-        blurb = soup.find('div', {'class': 'profile-about-content'}).pre.span.text
+        try:
+            blurb = soup.find('div', {'class': 'profile-about-content'}).pre.span.text
+        except Exception as e:
+            blurb = ''
         join_date = soup.find('div', {'class': 'section profile-statistics'}).find_all('li', {'class': 'profile-stat'})[0].p.text.replace('Join Date', '').split('Place')[0]
         return DetailedUser(self.request, self.id, self.name, blurb, join_date, avatar)
 
