@@ -1,9 +1,11 @@
 import json
-from .utils.errors import *
 from .utils.classes import *
 from .detaileduser import *
+from .utils.errors import *
+from .groupmember import *
 from .gamepass import *
 from .group import *
+
 from bs4 import BeautifulSoup
 from typing import List
 
@@ -154,3 +156,15 @@ class User:
                 owned = True
                 break
         return owned
+
+    async def get_groups(self) -> List[GroupMember]:
+        """
+        Gets all of the groups the user is in.
+        :return: Groupmember
+        """
+        r = await self.request.request(url=f"https://groups.roblox.com/v2/users/{self.id}/groups/roles", method="GET")
+        roles = []
+        for groups in r.json()['data']:
+            role = Role(groups['role']['id'], groups['role']['name'], groups['role']['rank'])
+            roles.append(GroupMember(self.request, self.id, self.name, role, groups['group']['id']))
+        return roles
