@@ -141,6 +141,7 @@ class Group:
         roles = []
         for role in r.json().get('roles'):
             roles.append(Role(role['id'], role['name'], role['rank'], role['memberCount']))
+        roles.sort(key=lambda r: r.rank)
         return roles
 
     async def get_role_in_group(self, user_id) -> Role:
