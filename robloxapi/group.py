@@ -199,7 +199,7 @@ class Group:
         :param action: Filter witch action.
         :return:
         """
-        r = await self.request.request(url=f"https://groups.roblox.com/v1/groups/2695946/audit-log?actionType={action or 'all'}&limit=100&sortOrder=Asc", method="GET")
+        r = await self.request.request(url=f"https://groups.roblox.com/v1/groups/{self.id}/audit-log?actionType={action or 'all'}&limit=100&sortOrder=Asc", method="GET")
         data = r.json()
         logs = []
         for a in data['data']:
