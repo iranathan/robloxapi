@@ -2,7 +2,7 @@ from distutils.core import setup
 setup(
   name = 'robloxapi',
   packages = ['robloxapi', 'robloxapi.utils'],
-  version = '4.4',
+  version = '4.5',
   license='MIT',       
   description = 'A Python wrapper for roblox',
   long_description = '''
