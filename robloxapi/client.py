@@ -20,7 +20,7 @@ class Client:
         Created a client.
         :param cookie: A roblox cookie to login with
         """
-        self.request = Request(cookie)
+        self.request = Request(cookie, debug)
 
     async def get_self(self):
         """
