@@ -45,7 +45,7 @@ class Request:
         """
         if not 'method' in kwargs: kwargs['method'] = 'GET'
         if kwargs['method'].lower() == "post" and kwargs.get("chunk"):
-            self.headers["Content-Length"] = str(len(kwargs.get('data') or 0))
+            self.headers["Content-Length"] = str(len(kwargs.get('data') or ""))
         r = await self.requests.request(kwargs['method'], kwargs['url'], headers=self.headers, cookies=self.cookies, data=kwargs.get('data'))
         if r.status_code == 403 and r.headers.get('X-CSRF-TOKEN'):
             self.headers['X-CSRF-TOKEN'] = r.headers.get('X-CSRF-TOKEN')
