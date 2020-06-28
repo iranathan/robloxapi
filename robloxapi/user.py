@@ -114,7 +114,7 @@ class User:
         """
         r = await self.request.request(url=f'https://www.roblox.com/users/{self.id}/profile', method="GET")
         soup = BeautifulSoup(r.text, "html.parser")
-        avatar_request = await self.request.request(url=f'https://https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds={self.id}&size=420x420&format=Png&isCircular=false', method="GET")
+        avatar_request = await self.request.request(url=f'https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds={self.id}&size=420x420&format=Png&isCircular=false', method="GET")
         avatar = str(avatar_request.json()["data"][0]["imageUrl"])
         try:
             blurb = soup.find('div', {'class': 'profile-about-content'}).pre.span.text
