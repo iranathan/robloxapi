@@ -15,12 +15,12 @@ class Client:
     """
     Client
     """
-    def __init__(self, cookie=None):
+    def __init__(self, cookie=None, debug=False):
         """
         Created a client.
         :param cookie: A roblox cookie to login with
         """
-        self.request = Request(cookie)
+        self.request = Request(cookie, debug)
 
     async def get_self(self):
         """

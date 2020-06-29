@@ -6,12 +6,13 @@ class Request:
     """
     Request class.
     """
-    def __init__(self, cookie=None):
+    def __init__(self, cookie=None, debug=False):
         """
         Request class.
         :param cookie:
         """
         self.requests = http3.AsyncClient()
+        self.debug = debug
         self.cookies = {}
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:66.0) Gecko/20100101 Firefox/66.0',
@@ -44,14 +45,16 @@ class Request:
         """
         if not 'method' in kwargs: kwargs['method'] = 'GET'
         if kwargs['method'].lower() == "post" and kwargs.get("chunk"):
-            self.headers["Content-Length"] = str(len(str(kwargs.get('data')) or ""))
-        r = await self.requests.request(kwargs['method'], kwargs['url'], headers=self.headers, cookies=self.cookies, data=str(kwargs.get('data')))
+            self.headers["Content-Length"] = str(len(kwargs.get('data') or ""))
+        r = await self.requests.request(kwargs['method'], kwargs['url'], headers=self.headers, cookies=self.cookies, data=kwargs.get('data'))
         if r.status_code == 403 and r.headers.get('X-CSRF-TOKEN'):
             self.headers['X-CSRF-TOKEN'] = r.headers.get('X-CSRF-TOKEN')
             return await self.request(**kwargs)
         elif not r.status_code == 200:
             if not kwargs.get('noerror'):
                 raise BadStatus(f'Got status {r.status_code} from {kwargs["url"]} data: {r.text}')
+        if self.debug:
+            print(kwargs['method'], kwargs['url'], r.status_code, r.text)
         return r
 
     def login(self, cookie):
