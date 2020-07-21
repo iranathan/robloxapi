@@ -60,7 +60,7 @@ class Client:
         if r.status_code == 400:
             raise NotFound(f"Group {group_id} not found")
         elif r.status_code == 429:
-            raise BadSatus("Too many requests")
+            raise BadStatus("Too many requests")
         elif r.status_code == 200:
             json = r.json()
             return Group(self.request, json['id'], json['name'], json['description'], json['memberCount'], json['shout'], json['owner'].get('userId'), json['owner'].get('username'))
