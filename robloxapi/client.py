@@ -57,10 +57,14 @@ class Client:
         :return: The group class
         """
         r = await self.request.request(url=f'https://groups.roblox.com/v1/groups/{group_id}/', method='GET', noerror=True)
-        if r.status_code != 200:
-            return None
-        json = r.json()
-        return Group(self.request, json['id'], json['name'], json['description'], json['memberCount'], json['shout'], json['owner'].get('userId'), json['owner'].get('username'))
+        if r.status_code == 200:
+             json = r.json()
+            return Group(self.request, json['id'], json['name'], json['description'], json['memberCount'], json['shout'], json['owner'].get('userId'), json['owner'].get('username'))
+        elif r.status_code == 400:
+            raise NotFound(f"Group {group_id} not found")
+        elif r.status_code == 429:
+            raise BadSatus("Too many requests")
+    
 
     async def get_user_by_username(self, roblox_name: str) -> User:
         """
