@@ -121,7 +121,8 @@ class User:
         except Exception as e:
             blurb = ''
         join_date = soup.find('div', {'class': 'section profile-statistics'}).find_all('li', {'class': 'profile-stat'})[0].p.text.replace('Join Date', '').split('Place')[0]
-        return DetailedUser(self.request, self.id, self.name, blurb, join_date, avatar)
+        status = await self.get_status()
+        return DetailedUser(self.request, self.id, self.name, status, blurb, join_date, avatar)
 
     async def get_gamepasses(self, cursor='') -> List[Gamepass]:
         """
@@ -169,3 +170,12 @@ class User:
             role = Role(groups['role']['id'], groups['role']['name'], groups['role']['rank'])
             roles.append(GroupMember(self.request, self.id, self.name, role, groups['group']['id']))
         return roles
+
+    async def get_status(self) -> str:
+        """
+        Gets user's status.
+        :return: user's status
+        """
+        r = await self.request.request(url=f"https://users.roblox.com/v1/users/{self.id}/status", method="GET")
+        json = r.json()
+        return json.get("status")

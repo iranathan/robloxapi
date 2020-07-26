@@ -11,7 +11,7 @@ class DetailedUser:
     """
     Represents a user with more detail.
     """
-    def __init__(self, request, roblox_id, roblox_name, blurb, join_date, avatar_url):
+    def __init__(self, request, roblox_id, roblox_name, status, blurb, join_date, avatar_url):
         """
         Construct a new user class with more detail.
         :param request: Used to send requests
@@ -27,6 +27,7 @@ class DetailedUser:
         self.blurb = blurb
         self.join_date = join_date
         self.avatar_url = avatar_url
+        self.status = status
 
     async def send_message(self, subject: str, body: str) -> Message:
         """
