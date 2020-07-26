@@ -11,7 +11,7 @@ class DetailedUser:
     """
     Represents a user with more detail.
     """
-    def __init__(self, request, roblox_id, roblox_name, blurb, join_date, avatar_url):
+    def __init__(self, request, roblox_id, roblox_name, status, blurb, join_date, avatar_url):
         """
         Construct a new user class with more detail.
         :param request: Used to send requests
@@ -27,6 +27,7 @@ class DetailedUser:
         self.blurb = blurb
         self.join_date = join_date
         self.avatar_url = avatar_url
+        self.status = status
 
     async def send_message(self, subject: str, body: str) -> Message:
         """
@@ -147,12 +148,3 @@ class DetailedUser:
                 owned = True
                 break
         return owned
-
-    async def get_status(self) -> str:
-        """
-        Gets user's status.
-        :return: user's status
-        """
-        r = await self.request.request(url=f"https://users.roblox.com/v1/users/{self.id}/status", method="GET")
-        json = r.json()
-        return json.get("status")
