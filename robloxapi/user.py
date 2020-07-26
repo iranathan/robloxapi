@@ -170,10 +170,11 @@ class User:
             roles.append(GroupMember(self.request, self.id, self.name, role, groups['group']['id']))
         return roles
 
-    async def get_status(self):
+    async def get_status(self) -> str:
         """
         Gets user's status.
-        :return: Statuscode
+        :return: user's status
         """
         r = await self.request.request(url=f"https://users.roblox.com/v1/users/{self.id}/status", method="GET")
-        return r.status_code
+        json = r.json()
+        return json.get("status")
