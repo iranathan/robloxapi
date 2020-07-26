@@ -121,7 +121,8 @@ class User:
         except Exception as e:
             blurb = ''
         join_date = soup.find('div', {'class': 'section profile-statistics'}).find_all('li', {'class': 'profile-stat'})[0].p.text.replace('Join Date', '').split('Place')[0]
-        return DetailedUser(self.request, self.id, self.name, blurb, join_date, avatar)
+        status = self.get_status()
+        return DetailedUser(self.request, self.id, self.name, status, blurb, join_date, avatar)
 
     async def get_gamepasses(self, cursor='') -> List[Gamepass]:
         """
