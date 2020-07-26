@@ -147,3 +147,11 @@ class DetailedUser:
                 owned = True
                 break
         return owned
+
+    async def get_status(self):
+        """
+        Gets user's status.
+        :return: Statuscode
+        """
+        r = await self.request.request(url=f"https://users.roblox.com/v1/users/{self.id}/status", method="GET")
+        return r.status_code
