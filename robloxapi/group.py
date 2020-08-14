@@ -9,7 +9,7 @@ from .utils.classes import Role, Shout, WallPost, Action
 from .joinrequest import JoinRequest
 from .groupmember import GroupMember
 from .user import User
-from .auth import Auth
+from .auth import Auth, Captcha
 
 
 class Group:
