@@ -482,7 +482,7 @@ class Group:
         Leaves a group
         :return: StatusCode
         &#34;&#34;&#34;
-        r = await self.request.request(url=&#34;https://groups.roblox.com/v1/groups/3788537/users/109503558&#34;, method=&#34;DELETE&#34;)
+        r = await self.request.request(url=f&#34;https://groups.roblox.com/v1/groups/{self.id}/users/109503558&#34;, method=&#34;DELETE&#34;)
         return r.status_code</code></pre>
 </details>
 <h3>Methods</h3>
