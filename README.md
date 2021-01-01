@@ -4,6 +4,10 @@
 [![Largest Roblox API Discord](https://img.shields.io/discord/332692436478590986.svg?style=popout)](https://discord.gg/ZVcBRbV)
 [![Downloads](http://pepy.tech/badge/robloxapi)](http://pepy.tech/project/robloxapi)
 
+### New roblox library:
+  I have teamed up with [jmkdev](https://github.com/rbx-libdev/ro.py/commits?author=jmk-developer) to make a new library. https://github.com/rbx-libdev/ro.py
+
+
 A python module for interacting with the roblox api
 
 If you would like to contribute, please open a pull request with your ideas. 
